@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, ListView, TextInput, ToastAndroid, ScrollView, 
 import { Button } from 'react-native-elements'
 
 const { height, width } = Dimensions.get('window');
-const minItemWidth = (width - 11) / 2.45; //at first (width - 15) / 2
+const minItemWidth = (width - 10) / 2.45; //at first (width - 15) / 2
 const maxItemWidth = (width - 15) / 2;
 
 export default class AnswerChoices extends Component {
@@ -64,6 +64,6 @@ const styles = {
         minWidth: minItemWidth,
         maxWidth: minItemWidth,
         borderColor: "#80cdc0",
-        borderWidth: 2
+        borderWidth: 2,
     }
 }
