@@ -15,18 +15,35 @@ export default class AnswerMultipleChoices extends Component {
         }
     }
 
-    _onPress = () => {
+    _onPress = async () => {
         if (this.props.currentPatientAnswer.title !== this.props.answer.title) {
-            this.setState({
-                selected: !this.state.selected
-            })
-            this.props._setCurrentPatientAnswer(this.props.answer)
+            //Press on same answer
+            //Delete the answer in currentMultipleChoice if the pressed answer is not the previous one
+            if (this.state.selected === true) {
+                this.setState({
+                    selected: !this.state.selected
+                })
+                this.props._setCurrentPatientAnswer("")
+                this.props._setMultipleChoiceCurrentAnswer(this.props.answer, "delete")
+            }
+            else {
+                this.setState({
+                    selected: !this.state.selected
+                })
+                this.props._setCurrentPatientAnswer(this.props.answer)
+                this.props._setMultipleChoiceCurrentAnswer(this.props.answer, "add")
+            }
+
         }
+        //Press on same answer
+        //It will delete only if the previous answer equals to pressed answer
         else {
             this.setState({
                 selected: !this.state.selected
             })
             this.props._setCurrentPatientAnswer("")
+            this.props._setMultipleChoiceCurrentAnswer(this.props.answer, "delete")
+
         }
 
     }
