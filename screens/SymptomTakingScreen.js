@@ -7,6 +7,7 @@ import Swiper from 'react-native-swiper'
 import questionSource from '../UcareData/PITShow/FormQuestions2'
 import Question from '../components/Question.symptom'
 import AnswerGeneralChoices from '../components/AnswerGeneralChoices.symptom'
+import AnswerChoices from '../components/AnswerChoices.symptom'
 import AnswerMultiChoices from '../components/AnswerMultiChoices.symptom'
 import AnswerTime from '../components/AnswerTime.symptom'
 import AnswerOther from '../components/AnswerOther.symptom'
@@ -584,45 +585,102 @@ export default class SymptomTakingScreen extends Component {
                 }
 
                 //Not emergency
-                //TODO: answer type o
+                //TODO: answer type o & when type o AND female
                 else {
                     //answer type c, M, F
-                    let questionNumber = this.state.questionNumber + 1
-                    let next = this.state.currentPatientAnswer.next
-                    let history = this.state.questionHistory
-                    history.push(this.state.currentQuestion)
-                    let allPatientAnswers = this.state.allPatientAnswers
-                    let allAnswers = ""
-                    this.state.multipleChoiceCurrentAnswer.map((answer) => allAnswers = allAnswers + answer.title + " ")
-                    allPatientAnswers.push("" + this.state.currentQuestion.title + ": " + allAnswers)
-                    let nextQuestion
-                    //Last question
-                    if (next === "end") {
+                    if (this.state.currentPatientAnswer.type === "c" || this.state.currentPatientAnswer.type === "M" || this.state.currentPatientAnswer.type === "F") {
+                        let questionNumber = this.state.questionNumber + 1
+                        let next = this.state.currentPatientAnswer.next
+                        let history = this.state.questionHistory
+                        history.push(this.state.currentQuestion)
+                        let allPatientAnswers = this.state.allPatientAnswers
+                        let allAnswers = ""
+                        this.state.multipleChoiceCurrentAnswer.map((answer) => allAnswers = allAnswers + answer.title + " ")
+                        allPatientAnswers.push("" + this.state.currentQuestion.title + ": " + allAnswers)
+                        let nextQuestion
+                        //Last question
+                        if (next === "end") {
+                            await this.setState({
+                                questionNumber: 1,
+                                questionHistory: _.uniq(history),
+                                currentQuestion: "",
+                                currentPatientAnswer: "",
+                                multipleChoiceCurrentAnswer: [],
+                                allPatientAnswers,
+                                answerNumberSelected: 0,
+                            })
+                            this._goToConfirm()
+                        }
+                        //Still has other questions
+                        else {
+                            nextQuestion = this.state.questionBasedOnChiefComplaint[next]
+                        }
                         await this.setState({
-                            questionNumber: 1,
+                            questionNumber,
                             questionHistory: _.uniq(history),
-                            currentQuestion: "",
+                            currentQuestion: nextQuestion,
                             currentPatientAnswer: "",
                             multipleChoiceCurrentAnswer: [],
                             allPatientAnswers,
                             answerNumberSelected: 0,
                         })
-                        this._goToConfirm()
+                        console.log("next ", this.state)
                     }
-                    //Still has other questions
-                    else {
-                        nextQuestion = this.state.questionBasedOnChiefComplaint[next]
+
+                    //type o
+                    //user may choose some choices and key in other input
+                    //TODO: handle when there're more than 1 o type answer in 1 question
+                    else if (this.state.otherPatientAnswer !== "") {
+                        let questionNumber = this.state.questionNumber + 1
+                        let next = this.state.currentPatientAnswer.next
+                        let history = this.state.questionHistory
+                        history.push(this.state.currentQuestion)
+                        let allPatientAnswers = this.state.allPatientAnswers
+                        let allAnswers = ""
+                        //user doesn't choose any choice except อื่นๆ
+                        if (_.isEmpty(this.state.multipleChoiceCurrentAnswer) === true) {
+                            allAnswers = allAnswers + " " + this.state.otherPatientAnswer
+                            allPatientAnswers.push("" + this.state.currentQuestion.title + ": " + allAnswers)
+                        }
+                        //user also choose other choices
+                        else {
+                            this.state.multipleChoiceCurrentAnswer.map((answer) => allAnswers = allAnswers + answer.title + " ")
+                            allAnswers = allAnswers + " " + this.state.otherPatientAnswer
+                            allPatientAnswers.push("" + this.state.currentQuestion.title + ": " + allAnswers)
+                        }
+
+                        let nextQuestion
+                        //Last question
+                        if (next === "end") {
+                            await this.setState({
+                                questionNumber: 1,
+                                questionHistory: _.uniq(history),
+                                currentQuestion: "",
+                                currentPatientAnswer: "",
+                                otherPatientAnswer: "",
+                                multipleChoiceCurrentAnswer: [],
+                                allPatientAnswers,
+                                answerNumberSelected: 0,
+                            })
+                            this._goToConfirm()
+                        }
+                        //Still has other questions
+                        else {
+                            nextQuestion = this.state.questionBasedOnChiefComplaint[next]
+                        }
+                        await this.setState({
+                            questionNumber,
+                            questionHistory: _.uniq(history),
+                            currentQuestion: nextQuestion,
+                            currentPatientAnswer: "",
+                            otherPatientAnswer: "",
+                            multipleChoiceCurrentAnswer: [],
+                            allPatientAnswers,
+                            answerNumberSelected: 0,
+                        })
+                        console.log("next ", this.state)
                     }
-                    await this.setState({
-                        questionNumber,
-                        questionHistory: _.uniq(history),
-                        currentQuestion: nextQuestion,
-                        currentPatientAnswer: "",
-                        multipleChoiceCurrentAnswer: [],
-                        allPatientAnswers,
-                        answerNumberSelected: 0,
-                    })
-                    console.log("next ", this.state)
+
                 }
 
             }
@@ -631,130 +689,6 @@ export default class SymptomTakingScreen extends Component {
                 ToastAndroid.showWithGravityAndOffset('กรุณาตอบคำถาม', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
             }
         }
-        // if (this.state.currentPatientAnswer !== "") {
-        //     //Patient has emergency symptom
-        //     if (this.state.currentPatientAnswer.type === "E") {
-        //         ToastAndroid.showWithGravityAndOffset('ฉุกเฉิน', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
-
-        //         //KOPAI
-        //         // this.props.navigator.push({
-        //         //     screen: 'example.EmergencyScreen', animationType: 'fade', title: "ฉุกเฉิน",
-        //         //     navigatorStyle: { navBarBackgroundColor: '#7ec8ba', navBarTextColor: '#ffffff' },
-        //         // })
-        //     }
-        //     //Not emergency
-        //     else if(this.state.){
-
-        //         let questionNumber = this.state.questionNumber + 1
-        //         let next = this.state.currentPatientAnswer.next
-        //         let history = this.state.questionHistory
-        //         history.push(this.state.currentQuestion)
-        //         let allPatientAnswers = this.state.allPatientAnswers
-        //         allPatientAnswers.push("" + this.state.currentQuestion.title + ": " + this.state.currentPatientAnswer.title)
-        //         let nextQuestion
-
-        //         //only chief question
-        //         if (this.state.currentQuestion.question === "โปรดระบุอาการสำคัญ") {
-        //             nextQuestion = questionSource[next].question_1
-        //             this.setState({
-        //                 chiefComplaint: this.state.currentPatientAnswer.title,
-        //                 questionBasedOnChiefComplaint: questionSource[next]
-        //             })
-        //         }
-
-        //         //specific questions
-        //         else {
-        //             //last question
-        //             if (next === "end") {
-        //                 await this.setState({
-        //                     questionNumber: 1,
-        //                     questionHistory: _.uniq(history),
-        //                     currentQuestion: "",
-        //                     currentPatientAnswer: "",
-        //                     multipleChoiceCurrentAnswer: [],
-        //                     allPatientAnswers,
-        //                     answerNumberSelected: 0,
-        //                 })
-        //                 this._goToConfirm()
-        //             }
-        //             else {
-        //                 nextQuestion = this.state.questionBasedOnChiefComplaint[next]
-        //             }
-
-        //         }
-
-        //         await this.setState({
-        //             questionNumber,
-        //             questionHistory: _.uniq(history),
-        //             currentQuestion: nextQuestion,
-        //             currentPatientAnswer: "",
-        //             multipleChoiceCurrentAnswer: [],
-        //             allPatientAnswers,
-        //             answerNumberSelected: 0,
-        //         })
-        //         console.log("next ", this.state)
-        //         // if (questionNumber >= 1) {
-        //         //     this.setState({
-        //         //         questionNumber
-        //         //     })
-        //         // }
-        //     }
-
-        // }
-        // else if (this.state.currentQuestion.question === "โปรดระบุอาการสำคัญ" && this.state.currentPatientAnswer !== "") {
-        //     ToastAndroid.showWithGravityAndOffset('กรุณาเลือกอาการสำคัญ', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
-        // }
-        // //Time question
-        // else if (this.state.currentPatientAnswer.type === "T") {
-        //     if (this.state.time !== "" && this.state.timeUnit !== "") {
-
-        //         let questionNumber = this.state.questionNumber + 1
-        //         let next = this.state.currentQuestion.next
-        //         let history = this.state.questionHistory
-        //         history.push(this.state.currentQuestion)
-        //         let allPatientAnswers = this.state.allPatientAnswers
-        //         allPatientAnswers.push("" + this.state.currentQuestion.title + ": " + this.state.time + " " + this.state.timeUnit)
-        //         //last question
-        //         if (next === "end") {
-        //             await this.setState({
-        //                 questionNumber: 1,
-        //                 questionHistory: _.uniq(history),
-        //                 currentQuestion: "",
-        //                 currentPatientAnswer: "",
-        //                 multipleChoiceCurrentAnswer: [],
-        //                 allPatientAnswers,
-        //                 answerNumberSelected: 0,
-        //                 time: "",
-        //                 timeUnit: ""
-        //             })
-        //             console.log(this.state)
-        //             this._goToConfirm()
-        //         }
-        //         //Still has next question
-        //         else if (next !== "end") {
-        //             let nextQuestion = this.state.questionBasedOnChiefComplaint[next]
-        //             await this.setState({
-        //                 questionNumber,
-        //                 questionHistory: _.uniq(history),
-        //                 currentQuestion: nextQuestion,
-        //                 currentPatientAnswer: "",
-        //                 multipleChoiceCurrentAnswer: [],
-        //                 allPatientAnswers,
-        //                 answerNumberSelected: 0,
-        //                 time: "",
-        //                 timeUnit: ""
-        //             })
-        //             console.log(this.state)
-        //         }
-        //     }
-        //     else {
-        //         ToastAndroid.showWithGravityAndOffset('กรุณาเลือกเวลา', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
-        //     }
-        // }
-        // //patient doesn't choose any answer
-        // else if (this.state.currentPatientAnswer === "") {
-        //     ToastAndroid.showWithGravityAndOffset('กรุณาตอบคำถาม', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
-        // }
     }
 
     _back = () => {
@@ -838,7 +772,6 @@ export default class SymptomTakingScreen extends Component {
                             />
                         </View>
 
-
                         <View style={styles.card}>
                             <FlatList
                                 style={{ flex: 1 }}
@@ -866,16 +799,16 @@ export default class SymptomTakingScreen extends Component {
                         rounded
                         raised
                         backgroundColor="#80cdc0"
-                        buttonStyle={styles.nextButton} />
+                        buttonStyle={styles.nextButton}
+                    />
                     {/*</ScrollView>*/}
                 </View>
-
             </ThemeProvider >
         )
     }
 
+    //TODO: render 1 choice
     _renderSpecificQuestions = () => {
-
 
         return (
             <ThemeProvider uiTheme={uiTheme}>
@@ -896,7 +829,8 @@ export default class SymptomTakingScreen extends Component {
                                                             key={answer.title}
                                                             currentPatientAnswer={this.state.currentPatientAnswer}
                                                             _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
-                                                            _setMultipleChoiceCurrentAnswer={this._setMultipleChoiceCurrentAnswer} />
+                                                            _setMultipleChoiceCurrentAnswer={this._setMultipleChoiceCurrentAnswer}
+                                                            _setOtherPatientAnswer={this._setOtherPatientAnswer} />
                                                     )
                                                 }
                                                 else {
@@ -936,17 +870,24 @@ export default class SymptomTakingScreen extends Component {
                                                     _setCurrentPatientAnswer={this._setCurrentPatientAnswer} />
                                             )
                                         }
+                                        //Choice and Other 
+                                        else {
+                                            return this.state.currentQuestion.answer.map((answer, index) => {
+                                                if (answer.type === "c" || answer.type === "E") {
+                                                    return (
+                                                        <AnswerChoices
+                                                            answer={answer}
+                                                            key={answer.title}
+                                                            currentPatientAnswer={this.state.currentPatientAnswer}
+                                                            answerNumberSelected={this.state.answerNumberSelected}
+                                                            _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
+                                                            _setAnswerNumberSelected={this._setAnswerNumberSelected} />
+                                                    )
+                                                }
+                                            })
+                                        }
                                     }
-                                    //Time question
-                                    {/*else if (this.state.currentQuestion.answer[0].type === "T") {
-                                    return (
-                                        <AnswerTime
-                                            answer={this.state.currentQuestion.answer[0]}
-                                            _setTime={this._setTime}
-                                            _setTimeUnit={this._setTimeUnit}
-                                            _setCurrentPatientAnswer={this._setCurrentPatientAnswer} />
-                                    )
-                                }*/}
+
                                 }
                             )() //immediately-invoked function expreesion, so I can use if-else in JSX
                         }
