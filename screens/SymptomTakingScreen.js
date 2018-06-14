@@ -389,8 +389,10 @@ export default class SymptomTakingScreen extends Component {
         }
         //For separate choices into 2 cards
         this.len = questionSource.chiefQuestion.answer.length
-        this.firstHalfChiefAnswer = questionSource.chiefQuestion.answer.slice(0, this.len / 2)
-        this.secondHalfChiefAnswer = questionSource.chiefQuestion.answer.slice(this.len / 2, this.len)
+        this.sortedChiefAnswer = questionSource.chiefQuestion.answer.slice()
+        this.sortedChiefAnswer = _.sortBy(this.sortedChiefAnswer, ['title'])
+        this.firstHalfChiefAnswer = this.sortedChiefAnswer.slice(0, this.len / 2)
+        this.secondHalfChiefAnswer = this.sortedChiefAnswer.slice(this.len / 2, this.len)
 
     }
 
@@ -619,7 +621,7 @@ export default class SymptomTakingScreen extends Component {
                         <View style={styles.card}>
                             <FlatList
                                 style={{ flex: 1 }}
-                                data={questionSource.chiefQuestion.answer}
+                                data={this.firstHalfChiefAnswer}
                                 numColumns={2}
                                 keyExtractor={(item, index) => item.title}
                                 renderItem={(item, index) => (
@@ -636,7 +638,21 @@ export default class SymptomTakingScreen extends Component {
 
 
                         <View style={styles.card}>
-
+                            <FlatList
+                                style={{ flex: 1 }}
+                                data={this.secondHalfChiefAnswer}
+                                numColumns={2}
+                                keyExtractor={(item, index) => item.title}
+                                renderItem={(item, index) => (
+                                    <AnswerGeneralChoices
+                                        question={questionSource.chiefQuestion}
+                                        choices={item}
+                                        currentPatientAnswer={this.state.currentPatientAnswer}
+                                        answerNumberSelected={this.state.answerNumberSelected}
+                                        _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
+                                        _setAnswerNumberSelected={this._setAnswerNumberSelected} />
+                                )}
+                            />
                         </View>
 
                     </Swiper>
