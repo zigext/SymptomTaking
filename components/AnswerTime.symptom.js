@@ -12,6 +12,7 @@ export default class AnswerTime extends Component {
     _setTime = (time) => {
         this.setState({ time })
         this.props._setTime(time)
+        this.props._setCurrentPatientAnswer(this.props.answer)
     }
     _setTimeUnit = (timeUnit) => {
         this.setState({ timeUnit })
