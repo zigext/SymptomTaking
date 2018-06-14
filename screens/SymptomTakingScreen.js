@@ -379,6 +379,7 @@ export default class SymptomTakingScreen extends Component {
         //For separate choices into 2 cards
         this.len = questionSource.chiefQuestion.answer.length
         this.sortedChiefAnswer = questionSource.chiefQuestion.answer.slice()
+        this.sortedChiefAnswer = this.sortedChiefAnswer.filter((answer) => answer.sex === "MF" || answer.sex === User.sex) //filter by sex
         this.sortedChiefAnswer = _.sortBy(this.sortedChiefAnswer, ['title'])
         this.firstHalfChiefAnswer = this.sortedChiefAnswer.slice(0, this.len / 2)
         this.secondHalfChiefAnswer = this.sortedChiefAnswer.slice(this.len / 2, this.len)
@@ -812,7 +813,9 @@ export default class SymptomTakingScreen extends Component {
                                         answerNumberSelected={this.state.answerNumberSelected}
                                         _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
                                         _setAnswerNumberSelected={this._setAnswerNumberSelected} />
-                                )}
+                                )
+                                }
+
                             />
                         </View>
 
@@ -1011,7 +1014,7 @@ const styles = StyleSheet.create({
         // marginTop: 10,
     },
     wrapper: {
-        
+
     }
 })
 
