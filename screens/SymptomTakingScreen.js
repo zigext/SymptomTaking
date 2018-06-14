@@ -668,26 +668,40 @@ export default class SymptomTakingScreen extends Component {
                                 if (this.state.currentQuestion.type === "MultiChoice") {
                                     return this.state.currentQuestion.answer.map((answer, index) => {
                                         //Answer is choice or emergency or specific gender
-                                        if (answer.type === "c" || answer.type === "E" || (answer.type === User.info.sex)) {
-                                            return (
-                                                <AnswerMultiChoices
-                                                    answer={answer}
-                                                    key={answer.title}
-                                                    currentPatientAnswer={this.state.currentPatientAnswer}
-                                                    multipleChoiceCurrentAnswer={this.state.multipleChoiceCurrentAnswer}
-                                                    answerNumberSelected={this.state.answerNumberSelected}
-                                                    _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
-                                                    _setMultipleChoiceCurrentAnswer={this._setMultipleChoiceCurrentAnswer}
-                                                    _setAnswerNumberSelected={this._setAnswerNumberSelected} />
-                                            )
+                                        if (answer.type === "c" || answer.type === "E" || (answer.type === User.info.sex) || (answer.type === "o")) {
+                                            if (answer.type === "o" && answer.title === "อื่นๆ") {
+                                                return (
+                                                    <AnswerOther
+                                                        answer={answer}
+                                                        key={answer.title}
+                                                        currentPatientAnswer={this.state.currentPatientAnswer}
+                                                        _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
+                                                        _setMultipleChoiceCurrentAnswer={this._setMultipleChoiceCurrentAnswer} />
+                                                )
+                                            }
+                                            else {
+                                                return (
+                                                    <AnswerMultiChoices
+                                                        answer={answer}
+                                                        key={answer.title}
+                                                        currentPatientAnswer={this.state.currentPatientAnswer}
+                                                        multipleChoiceCurrentAnswer={this.state.multipleChoiceCurrentAnswer}
+                                                        answerNumberSelected={this.state.answerNumberSelected}
+                                                        _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
+                                                        _setMultipleChoiceCurrentAnswer={this._setMultipleChoiceCurrentAnswer}
+                                                        _setAnswerNumberSelected={this._setAnswerNumberSelected} />
+                                                )
+                                            }
                                         }
-                                        //Answer is other input
+                                        {/*//Answer is other input
                                         else if (answer.type === "o") {
                                             return (
                                                 <AnswerOther
-                                                    key={answer.title} />
+                                                    answer={answer}
+                                                    key={answer.title}
+                                                    _setCurrentPatientAnswer={this._setCurrentPatientAnswer} />
                                             )
-                                        }
+                                        }*/}
                                     }
                                     )
                                 }
