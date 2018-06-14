@@ -17,21 +17,6 @@ const { height, width } = Dimensions.get('window');
 
 
 export default class SymptomTakingScreen extends Component {
-
-
-    //     this.state = {
-    //         currentQuestion: questionsSource[0],
-    //         currentAnswers: this.listView.cloneWithRows(questionsSource[0].answer),
-    //         currentPatientAnswer: "",
-    //         allPatientAnswer: [],
-    //         multiChoiceCurrentAnswer: [],
-    //         otherPatientAnswer: "",
-    //         caseID: "",
-    //         chiefComplaint: "",
-    //         point: 1
-    //     }
-
-
     // _next() {
     //     console.log(this.state)
     //     var addPoint = this.state.point + 1
@@ -425,6 +410,7 @@ export default class SymptomTakingScreen extends Component {
 
     _setOtherPatientAnswer = (otherPatientAnswer) => {
         this.setState({ otherPatientAnswer })
+        console.log("otherPatientAnswer = ", this.state.otherPatientAnswer)
     }
 
     _next = async () => {
@@ -494,6 +480,37 @@ export default class SymptomTakingScreen extends Component {
                         answerNumberSelected: 0,
                     })
                     console.log("next ", this.state)
+                }
+
+                //Other answer
+                else if (this.state.currentPatientAnswer.type === "o") {
+                    if (this.state.otherPatientAnswer !== "") {
+                        let questionNumber = this.state.questionNumber + 1
+                        let next = this.state.currentPatientAnswer.next
+                        let history = this.state.questionHistory
+                        history.push(this.state.currentQuestion)
+                        let allPatientAnswers = this.state.allPatientAnswers
+                        allPatientAnswers.push("" + this.state.currentQuestion.title + ": " + this.state.otherPatientAnswer)
+                        let nextQuestion
+
+                        //only อื่นๆ in chief question
+                        if (this.state.currentQuestion.question === "โปรดระบุอาการสำคัญ") {
+                            if (next === "end") {
+                                this.setState({
+                                    chiefComplaint: this.state.otherPatientAnswer,
+                                    allPatientAnswers,
+                                    answerNumberSelected: 0,
+                                    currentPatientAnswer: "",
+                                    multipleChoiceCurrentAnswer: [],
+                                    questionNumber,
+                                    questionHistory: _.uniq(history),
+                                    currentQuestion: questionSource.chiefQuestion,
+                                })
+                                this._goToConfirm()
+                            }
+
+                        }
+                    }
                 }
 
                 //Time answer
@@ -757,6 +774,7 @@ export default class SymptomTakingScreen extends Component {
     //when uncomment navigator it should has no error
     _goToConfirm = () => {
         ToastAndroid.showWithGravityAndOffset('คำถามสุดท้าย', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
+        console.log("confirm ", this.state.chiefComplaint, this.state.allPatientAnswers)
         // this.props.navigator
         //     .push(
         //     {
@@ -812,7 +830,8 @@ export default class SymptomTakingScreen extends Component {
                                         currentPatientAnswer={this.state.currentPatientAnswer}
                                         answerNumberSelected={this.state.answerNumberSelected}
                                         _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
-                                        _setAnswerNumberSelected={this._setAnswerNumberSelected} />
+                                        _setAnswerNumberSelected={this._setAnswerNumberSelected}
+                                        _setOtherPatientAnswer={this._setOtherPatientAnswer} />
                                 )
                                 }
 
@@ -833,7 +852,8 @@ export default class SymptomTakingScreen extends Component {
                                         currentPatientAnswer={this.state.currentPatientAnswer}
                                         answerNumberSelected={this.state.answerNumberSelected}
                                         _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
-                                        _setAnswerNumberSelected={this._setAnswerNumberSelected} />
+                                        _setAnswerNumberSelected={this._setAnswerNumberSelected}
+                                        _setOtherPatientAnswer={this._setOtherPatientAnswer} />
                                 )}
                             />
                         </View>
