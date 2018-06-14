@@ -17,11 +17,7 @@ const { height, width } = Dimensions.get('window');
 
 
 export default class SymptomTakingScreen extends Component {
-    // constructor(props) {
-    //     super(props)
-    //     this.listView = new ListView.DataSource({
-    //         rowHasChanged: (r1, r2) => r1 !== r2,
-    //     });
+
 
     //     this.state = {
     //         currentQuestion: questionsSource[0],
@@ -34,13 +30,6 @@ export default class SymptomTakingScreen extends Component {
     //         chiefComplaint: "",
     //         point: 1
     //     }
-    //     console.log("constructor_ ", this.state)
-
-    //     // this.props.navigator.setStyle({
-    //     //     navBarTextColor: '#ffffff',navBarBackgroundColor: '#80cdc0',navBarHeight:50,navBarTextFontSize:20,navBarSubtitleFontSize:12,navBarButtonColor:"white"
-    //     // });
-
-    // }
 
 
     // _next() {
@@ -803,7 +792,12 @@ export default class SymptomTakingScreen extends Component {
                         <Question question={questionSource.chiefQuestion} />
                     </View>
 
-                    <Swiper style={{}} showsButtons={true}>
+                    <Swiper
+                        style={styles.wrapper}
+                        dot={<View style={{ backgroundColor: 'rgba(255,255,255,.3)', width: 13, height: 13, borderRadius: 7, marginLeft: 7, marginRight: 7 }} />}
+                        activeDot={<View style={{ backgroundColor: '#fff', width: 13, height: 13, borderRadius: 7, marginLeft: 7, marginRight: 7 }} />}
+                        paginationStyle={{ bottom: 10 }}
+                        loop={false}>
                         <View style={styles.card}>
                             <FlatList
                                 style={{ flex: 1 }}
@@ -844,7 +838,7 @@ export default class SymptomTakingScreen extends Component {
                     </Swiper>
 
                     <Button
-                        icon={{name: 'arrow-right',type: 'material-community'}}
+                        icon={{ name: 'arrow-right', type: 'material-community' }}
                         onPress={this._next}
                         rounded
                         raised
@@ -861,41 +855,42 @@ export default class SymptomTakingScreen extends Component {
 
 
         return (
-            <View style={styles.containerSpecific}>
-                <ScrollView>
-                    <Question question={this.state.currentQuestion} />
-                    { //Check type of question
-                        (
-                            () => {
-                                if (this.state.currentQuestion.type === "MultiChoice") {
-                                    return this.state.currentQuestion.answer.map((answer, index) => {
-                                        //Answer is choice or emergency or specific gender
-                                        if (answer.type === "c" || answer.type === "E" || (answer.type === User.info.sex) || (answer.type === "o")) {
-                                            if (answer.type === "o" && answer.title === "อื่นๆ") {
-                                                return (
-                                                    <AnswerOther
-                                                        answer={answer}
-                                                        key={answer.title}
-                                                        currentPatientAnswer={this.state.currentPatientAnswer}
-                                                        _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
-                                                        _setMultipleChoiceCurrentAnswer={this._setMultipleChoiceCurrentAnswer} />
-                                                )
+            <ThemeProvider uiTheme={uiTheme}>
+                <View style={styles.containerSpecific}>
+                    <ScrollView>
+                        <Question question={this.state.currentQuestion} />
+                        { //Check type of question
+                            (
+                                () => {
+                                    if (this.state.currentQuestion.type === "MultiChoice") {
+                                        return this.state.currentQuestion.answer.map((answer, index) => {
+                                            //Answer is choice or emergency or specific gender
+                                            if (answer.type === "c" || answer.type === "E" || (answer.type === User.info.sex) || (answer.type === "o")) {
+                                                if (answer.type === "o") {
+                                                    return (
+                                                        <AnswerOther
+                                                            answer={answer}
+                                                            key={answer.title}
+                                                            currentPatientAnswer={this.state.currentPatientAnswer}
+                                                            _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
+                                                            _setMultipleChoiceCurrentAnswer={this._setMultipleChoiceCurrentAnswer} />
+                                                    )
+                                                }
+                                                else {
+                                                    return (
+                                                        <AnswerMultiChoices
+                                                            answer={answer}
+                                                            key={answer.title}
+                                                            currentPatientAnswer={this.state.currentPatientAnswer}
+                                                            multipleChoiceCurrentAnswer={this.state.multipleChoiceCurrentAnswer}
+                                                            answerNumberSelected={this.state.answerNumberSelected}
+                                                            _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
+                                                            _setMultipleChoiceCurrentAnswer={this._setMultipleChoiceCurrentAnswer}
+                                                            _setAnswerNumberSelected={this._setAnswerNumberSelected} />
+                                                    )
+                                                }
                                             }
-                                            else {
-                                                return (
-                                                    <AnswerMultiChoices
-                                                        answer={answer}
-                                                        key={answer.title}
-                                                        currentPatientAnswer={this.state.currentPatientAnswer}
-                                                        multipleChoiceCurrentAnswer={this.state.multipleChoiceCurrentAnswer}
-                                                        answerNumberSelected={this.state.answerNumberSelected}
-                                                        _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
-                                                        _setMultipleChoiceCurrentAnswer={this._setMultipleChoiceCurrentAnswer}
-                                                        _setAnswerNumberSelected={this._setAnswerNumberSelected} />
-                                                )
-                                            }
-                                        }
-                                        {/*//Answer is other input
+                                            {/*//Answer is other input
                                         else if (answer.type === "o") {
                                             return (
                                                 <AnswerOther
@@ -904,23 +899,23 @@ export default class SymptomTakingScreen extends Component {
                                                     _setCurrentPatientAnswer={this._setCurrentPatientAnswer} />
                                             )
                                         }*/}
-                                    }
-                                    )
-                                }
-                                else if (this.state.currentQuestion.type === "Choice") {
-                                    //Time question
-                                    if (this.state.currentQuestion.answer[0].type === "T") {
-                                        return (
-                                            <AnswerTime
-                                                answer={this.state.currentQuestion.answer[0]}
-                                                _setTime={this._setTime}
-                                                _setTimeUnit={this._setTimeUnit}
-                                                _setCurrentPatientAnswer={this._setCurrentPatientAnswer} />
+                                        }
                                         )
                                     }
-                                }
-                                //Time question
-                                {/*else if (this.state.currentQuestion.answer[0].type === "T") {
+                                    else if (this.state.currentQuestion.type === "Choice") {
+                                        //Time question
+                                        if (this.state.currentQuestion.answer[0].type === "T") {
+                                            return (
+                                                <AnswerTime
+                                                    answer={this.state.currentQuestion.answer[0]}
+                                                    _setTime={this._setTime}
+                                                    _setTimeUnit={this._setTimeUnit}
+                                                    _setCurrentPatientAnswer={this._setCurrentPatientAnswer} />
+                                            )
+                                        }
+                                    }
+                                    //Time question
+                                    {/*else if (this.state.currentQuestion.answer[0].type === "T") {
                                     return (
                                         <AnswerTime
                                             answer={this.state.currentQuestion.answer[0]}
@@ -929,38 +924,39 @@ export default class SymptomTakingScreen extends Component {
                                             _setCurrentPatientAnswer={this._setCurrentPatientAnswer} />
                                     )
                                 }*/}
-                            }
-                        )() //immediately-invoked function expreesion, so I can use if-else in JSX
-                    }
-                    <View style={styles.containerButton}>
-                        <Button
-                            title="     ย้อนกลับ    "
-                            onPress={this._back}
-                            rounded
-                            raised
-                            backgroundColor="#80cdc0"
-                            buttonStyle={styles.nextButton} />
-                        {
-                            //Next button
-                            this.state.currentQuestion.next !== "end" ?
-                                <Button
-                                    title="     ต่อไป    "
-                                    onPress={this._next}
-                                    rounded
-                                    raised
-                                    backgroundColor="#80cdc0"
-                                    buttonStyle={styles.nextButton} /> :
-                                <Button
-                                    title="     ยืนยัน    "
-                                    onPress={this._next}
-                                    rounded
-                                    raised
-                                    backgroundColor="#80cdc0"
-                                    buttonStyle={styles.nextButton} />
+                                }
+                            )() //immediately-invoked function expreesion, so I can use if-else in JSX
                         }
-                    </View>
-                </ScrollView>
-            </View>
+                        <View style={styles.containerButton}>
+                            <Button
+                                icon={{ name: 'arrow-left', type: 'material-community' }}
+                                onPress={this._back}
+                                rounded
+                                raised
+                                backgroundColor="#80cdc0"
+                                buttonStyle={styles.nextButton} />
+                            {
+                                //Next button
+                                this.state.currentQuestion.next !== "end" ?
+                                    <Button
+                                        icon={{ name: 'arrow-right', type: 'material-community' }}
+                                        onPress={this._next}
+                                        rounded
+                                        raised
+                                        backgroundColor="#80cdc0"
+                                        buttonStyle={styles.nextButton} /> :
+                                    <Button
+                                        title="     ยืนยัน    "
+                                        onPress={this._next}
+                                        rounded
+                                        raised
+                                        backgroundColor="#80cdc0"
+                                        buttonStyle={styles.nextButton} />
+                            }
+                        </View>
+                    </ScrollView>
+                </View>
+            </ThemeProvider>
         )
     }
 
@@ -1013,6 +1009,9 @@ const styles = StyleSheet.create({
         // marginLeft: 5,
         // marginRight: 5,
         // marginTop: 10,
+    },
+    wrapper: {
+        
     }
 })
 
