@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Navigator, Image, TouchableHighlight, NativeModules, ListView, TextInput, ToastAndroid, ScrollView, Picker, FlatList, Dimensions } from 'react-native';
-import { BottomNavigation, COLOR, ThemeProvider, Toolbar, Card, Checkbox, RadioButton, Icon, IconToggle, ListItem } from 'react-native-material-ui';
+import { BottomNavigation, COLOR, ThemeProvider, Toolbar, Checkbox, RadioButton, Icon, IconToggle, ListItem } from 'react-native-material-ui';
 import VectorIcon from 'react-native-vector-icons/MaterialIcons'
-import { Button } from 'react-native-elements'
+import { Button, Avatar, Card } from 'react-native-elements'
+import Swiper from 'react-native-swiper'
 import questionSource from '../UcareData/PITShow/FormQuestions2'
 import Question from '../components/Question.symptom'
-import AnswerChoices from '../components/AnswerChoices.symptom'
+import AnswerGeneralChoices from '../components/AnswerGeneralChoices.symptom'
 import AnswerMultiChoices from '../components/AnswerMultiChoices.symptom'
 import AnswerTime from '../components/AnswerTime.symptom'
 import AnswerOther from '../components/AnswerOther.symptom'
@@ -38,24 +39,6 @@ export default class SymptomTakingScreen extends Component {
     //     // this.props.navigator.setStyle({
     //     //     navBarTextColor: '#ffffff',navBarBackgroundColor: '#80cdc0',navBarHeight:50,navBarTextFontSize:20,navBarSubtitleFontSize:12,navBarButtonColor:"white"
     //     // });
-
-    // }
-
-    // _goToConfirm() {
-
-
-    //     // this.props.navigator
-    //     //     .push(
-    //     //     {
-    //     //         screen: 'example.ConfirmCaseScreen',
-    //     //         animationType: 'fade',
-    //     //         title: "ยืนยันอาการ",
-    //     //         passProps: { patientCase: this.state.allPatientAnswer, chiefComplaint: this.state.chiefComplaint },
-    //     //         navigatorStyle: {
-    //     //             navBarBackgroundColor: '#7ec8ba',
-    //     //             navBarTextColor: '#ffffff'
-    //     //         },
-    //     //     })
 
     // }
 
@@ -206,31 +189,6 @@ export default class SymptomTakingScreen extends Component {
 
     //     }
     // }
-
-    // // _skip(){    if(this.state.currentQuestion.question=="โปรดระบุอาการสำคัญ"){
-    // //                 ToastAndroid.showWithGravity(
-    // //                     "โปรดระบุอาการสำคัญ",
-    // //                     ToastAndroid.SHORT,
-    // //                     ToastAndroid.CENTER
-    // //                 );
-    // //             }
-    // //             else if(this.state.currentQuestion.next!="end"){
-    // //                 var nextQuestionPoint=this.state.currentQuestion.next
-    // //                 console.log(nextQuestionPoint)
-    // //                 this.setState({currentQuestion:questionsSource[nextQuestionPoint]})
-    // //                 this.setState({currentAnswers:this.state.currentAnswers.cloneWithRows(questionsSource[nextQuestionPoint].answer)})
-    // //                 console.log(this.state.allPatientAnswer)
-    // //                 this.setState({currentPatientAnswer:"",otherPatientAnswer:"",multiChoiceCurrentAnswer:[],timeUnit:""})
-    // //             }
-    // //             else if(this.state.currentQuestion.next=="end"){
-
-    // //                 this._goToConfirm()
-    // //                 this.setState({currentPatientAnswer:"",otherPatientAnswer:"",multiChoiceCurrentAnswer:[],timeUnit:""})
-
-    // //             } 
-
-
-    // // }
 
 
 
@@ -429,6 +387,11 @@ export default class SymptomTakingScreen extends Component {
             timeUnit: "",
             otherPatientAnswer: ""
         }
+        //For separate choices into 2 cards
+        this.len = questionSource.chiefQuestion.answer.length
+        this.firstHalfChiefAnswer = questionSource.chiefQuestion.answer.slice(0, this.len / 2)
+        this.secondHalfChiefAnswer = questionSource.chiefQuestion.answer.slice(this.len / 2, this.len)
+
     }
 
     _setCurrentPatientAnswer = async (currentPatientAnswer) => {
@@ -436,12 +399,23 @@ export default class SymptomTakingScreen extends Component {
         console.log("current answer = ", this.state.currentPatientAnswer)
     }
 
-    _setMultipleChoiceCurrentAnswer = async (answer) => {
-        //This answer is not in state yet
-        if (this.state.multipleChoiceCurrentAnswer.indexOf(answer) !== -1) {
-            this.setState({ multipleChoiceCurrentAnswer: answer })
+    _setMultipleChoiceCurrentAnswer = async (answer, method) => {
+        //user click new answer
+        if (method === "add") {
+            let newMultiple = this.state.multipleChoiceCurrentAnswer
+            newMultiple.push(answer)
+            await this.setState({
+                multipleChoiceCurrentAnswer: _.uniq(newMultiple)
+            })
         }
-
+        //user click already selected answer
+        else if (method === "delete") {
+            let multipleChoiceCurrentAnswer = this.state.multipleChoiceCurrentAnswer
+            removedMultipleChoice = multipleChoiceCurrentAnswer.filter((selectedAnswer) => {
+                return selectedAnswer.title !== answer.title
+            })
+            await this.setState({ multipleChoiceCurrentAnswer: removedMultipleChoice })
+        }
         console.log("multiple current answer = ", this.state.multipleChoiceCurrentAnswer)
     }
 
@@ -451,7 +425,6 @@ export default class SymptomTakingScreen extends Component {
 
     _setTime = async (time) => {
         this.setState({ time })
-        console.log("time ", this.state.time)
     }
 
     _setTimeUnit = (timeUnit) => {
@@ -463,7 +436,6 @@ export default class SymptomTakingScreen extends Component {
     }
 
     _next = async () => {
-        console.log("next")
         if (this.state.currentPatientAnswer !== "") {
             //Patient has emergency symptom
             if (this.state.currentPatientAnswer.type === "E") {
@@ -475,7 +447,9 @@ export default class SymptomTakingScreen extends Component {
                 //     navigatorStyle: { navBarBackgroundColor: '#7ec8ba', navBarTextColor: '#ffffff' },
                 // })
             }
+            //Not emergency
             else {
+
                 let questionNumber = this.state.questionNumber + 1
                 let next = this.state.currentPatientAnswer.next
                 let history = this.state.questionHistory
@@ -483,6 +457,8 @@ export default class SymptomTakingScreen extends Component {
                 let allPatientAnswers = this.state.allPatientAnswers
                 allPatientAnswers.push("" + this.state.currentQuestion.title + ": " + this.state.currentPatientAnswer.title)
                 let nextQuestion
+
+                //only chief question
                 if (this.state.currentQuestion.question === "โปรดระบุอาการสำคัญ") {
                     nextQuestion = questionSource[next].question_1
                     this.setState({
@@ -490,6 +466,8 @@ export default class SymptomTakingScreen extends Component {
                         questionBasedOnChiefComplaint: questionSource[next]
                     })
                 }
+
+                //specific questions
                 else {
                     //last question
                     if (next === "end") {
@@ -498,24 +476,24 @@ export default class SymptomTakingScreen extends Component {
                             questionHistory: _.uniq(history),
                             currentQuestion: "",
                             currentPatientAnswer: "",
+                            multipleChoiceCurrentAnswer: [],
                             allPatientAnswers,
                             answerNumberSelected: 0,
                         })
-                        console.log("next ", this.state)
                         this._goToConfirm()
                     }
                     else {
                         nextQuestion = this.state.questionBasedOnChiefComplaint[next]
-                        console.log("______", this.state.questionBasedOnChiefComplaint)
                     }
 
                 }
-                console.log("next question ", next, nextQuestion)
+
                 await this.setState({
                     questionNumber,
                     questionHistory: _.uniq(history),
                     currentQuestion: nextQuestion,
                     currentPatientAnswer: "",
+                    multipleChoiceCurrentAnswer: [],
                     allPatientAnswers,
                     answerNumberSelected: 0,
                 })
@@ -532,8 +510,7 @@ export default class SymptomTakingScreen extends Component {
             ToastAndroid.showWithGravityAndOffset('กรุณาเลือกอาการสำคัญ', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
         }
         //Time question
-        else if (this.state.currentQuestion.type === "Time") {
-            console.log("type = ", this.state.currentQuestion.type, this.state.currentQuestion)
+        else if (this.state.currentPatientAnswer.type === "T") {
             if (this.state.time !== "" && this.state.timeUnit !== "") {
 
                 let questionNumber = this.state.questionNumber + 1
@@ -549,6 +526,7 @@ export default class SymptomTakingScreen extends Component {
                         questionHistory: _.uniq(history),
                         currentQuestion: "",
                         currentPatientAnswer: "",
+                        multipleChoiceCurrentAnswer: [],
                         allPatientAnswers,
                         answerNumberSelected: 0,
                         time: "",
@@ -565,6 +543,7 @@ export default class SymptomTakingScreen extends Component {
                         questionHistory: _.uniq(history),
                         currentQuestion: nextQuestion,
                         currentPatientAnswer: "",
+                        multipleChoiceCurrentAnswer: [],
                         allPatientAnswers,
                         answerNumberSelected: 0,
                         time: "",
@@ -586,6 +565,7 @@ export default class SymptomTakingScreen extends Component {
     _back = () => {
         let prevQuestion = this.state.questionHistory.pop()
         let questionNumber = this.state.questionNumber - 1
+        //TODO
         if (prevQuestion.title === "อาการสำคัญ") {
 
         }
@@ -593,11 +573,6 @@ export default class SymptomTakingScreen extends Component {
             currentQuestion: prevQuestion,
             questionNumber
         })
-        console.log("prev question ", prevQuestion)
-    }
-
-    _skip = () => {
-
     }
 
     //KOPAI go to confirm screen
@@ -619,35 +594,61 @@ export default class SymptomTakingScreen extends Component {
     }
 
     //TODO: it doesn't look good when device is in landscape mode
+    //Change to card with swiper
     _renderGeneralQuestions = () => {
         return (
             <ThemeProvider uiTheme={uiTheme}>
                 <View style={styles.container}>
-                    <ScrollView style={{ flex: 1, flexGrow: 1 }} >
-                        <Question question={questionSource.chiefQuestion} />
-                        <FlatList
-                            style={{ flex: 1 }}
-                            data={questionSource.chiefQuestion.answer}
-                            numColumns={2}
-                            keyExtractor={(item, index) => item.title}
-                            renderItem={(item, index) => (
-                                <AnswerChoices
-                                    question={questionSource.chiefQuestion}
-                                    choices={item}
-                                    currentPatientAnswer={this.state.currentPatientAnswer}
-                                    answerNumberSelected={this.state.answerNumberSelected}
-                                    _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
-                                    _setAnswerNumberSelected={this._setAnswerNumberSelected} />
-                            )}
-                        />
-                        <Button
-                            title="     ต่อไป    "
-                            onPress={this._next}
+                    {/*<ScrollView style={{ flex: 1, flexGrow: 1 }} >*/}
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Avatar
+                            medium
                             rounded
-                            raised
-                            backgroundColor="#80cdc0"
-                            buttonStyle={styles.nextButton} />
-                    </ScrollView>
+                            source={{ uri: "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg" }} //KOPAI Change to User.photoURL
+                            activeOpacity={0.7}
+                        />
+                        {/*KOPAI: Change to user real data*/}
+                        <Text style={{ fontSize: 18, fontFamily: 'Kanit-Regular', color: 'black', marginLeft: 5 }}>{`${User.name.title} ${User.name.firstName} ${User.name.lastName}`}</Text>
+                    </View>
+
+                    <View style={{ margin: 10 }}>
+                        <Question question={questionSource.chiefQuestion} />
+                    </View>
+
+                    <Swiper style={{}} showsButtons={true}>
+                        <View style={styles.card}>
+                            <FlatList
+                                style={{ flex: 1 }}
+                                data={questionSource.chiefQuestion.answer}
+                                numColumns={2}
+                                keyExtractor={(item, index) => item.title}
+                                renderItem={(item, index) => (
+                                    <AnswerGeneralChoices
+                                        question={questionSource.chiefQuestion}
+                                        choices={item}
+                                        currentPatientAnswer={this.state.currentPatientAnswer}
+                                        answerNumberSelected={this.state.answerNumberSelected}
+                                        _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
+                                        _setAnswerNumberSelected={this._setAnswerNumberSelected} />
+                                )}
+                            />
+                        </View>
+
+
+                        <View style={styles.card}>
+
+                        </View>
+
+                    </Swiper>
+
+                    <Button
+                        title="     ต่อไป    "
+                        onPress={this._next}
+                        rounded
+                        raised
+                        backgroundColor="#80cdc0"
+                        buttonStyle={styles.nextButton} />
+                    {/*</ScrollView>*/}
                 </View>
 
             </ThemeProvider >
@@ -676,6 +677,7 @@ export default class SymptomTakingScreen extends Component {
                                                     multipleChoiceCurrentAnswer={this.state.multipleChoiceCurrentAnswer}
                                                     answerNumberSelected={this.state.answerNumberSelected}
                                                     _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
+                                                    _setMultipleChoiceCurrentAnswer={this._setMultipleChoiceCurrentAnswer}
                                                     _setAnswerNumberSelected={this._setAnswerNumberSelected} />
                                             )
                                         }
@@ -689,9 +691,14 @@ export default class SymptomTakingScreen extends Component {
                                     }
                                     )
                                 }
-                                else if (this.state.currentQuestion.type === "Time") {
+                                //Time question
+                                else if (this.state.currentQuestion.answer[0].type === "T") {
                                     return (
-                                        <AnswerTime _setTime={this._setTime} _setTimeUnit={this._setTimeUnit} />
+                                        <AnswerTime
+                                            answer={this.state.currentQuestion.answer[0]}
+                                            _setTime={this._setTime}
+                                            _setTimeUnit={this._setTimeUnit}
+                                            _setCurrentPatientAnswer={this._setCurrentPatientAnswer} />
                                     )
                                 }
                             }
@@ -742,14 +749,14 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'space-around', //if space-evenly, it will look good in landscape, but in portrait the AnswerChoices will exceed the device's screen
-        alignItems: "stretch", //it alignItems = center, scrollview will not expand full width 
+        alignItems: "stretch", //it alignItems = center, scrollview will not expand full width
         margin: 10,
 
     },
     containerSpecific: {
         flex: 1,
         justifyContent: 'center', //if space-evenly, it will look good in landscape, but in portrait the AnswerChoices will exceed the device's screen
-        alignItems: "stretch", //it alignItems = center, scrollview will not expand full width 
+        alignItems: "stretch", //it alignItems = center, scrollview will not expand full width
         margin: 10,
     },
     containerButton: {
@@ -757,8 +764,26 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'flex-end'
     },
+    containerMultipleChoice: {
+        flexDirection: 'row'
+    },
     nextButton: {
         marginVertical: 30
+    },
+    card: {
+        flex: 1,
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor: '#ddd',
+        borderBottomWidth: 0,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 1,
+        // marginLeft: 5,
+        // marginRight: 5,
+        // marginTop: 10,
     }
 })
 
