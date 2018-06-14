@@ -844,7 +844,7 @@ export default class SymptomTakingScreen extends Component {
                     </Swiper>
 
                     <Button
-                        title="     ต่อไป    "
+                        icon={{name: 'arrow-right',type: 'material-community'}}
                         onPress={this._next}
                         rounded
                         raised
@@ -996,7 +996,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     nextButton: {
-        marginVertical: 30
+        marginVertical: 30,
+        alignSelf: 'flex-end'
     },
     card: {
         flex: 1,
