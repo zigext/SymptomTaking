@@ -438,40 +438,158 @@ export default class SymptomTakingScreen extends Component {
     }
 
     _next = async () => {
-        if (this.state.currentPatientAnswer !== "") {
-            //Patient has emergency symptom
-            if (this.state.currentPatientAnswer.type === "E") {
-                ToastAndroid.showWithGravityAndOffset('ฉุกเฉิน', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
+        //Choice
+        if (this.state.currentQuestion.type === "Choice") {
 
-                //KOPAI
-                // this.props.navigator.push({
-                //     screen: 'example.EmergencyScreen', animationType: 'fade', title: "ฉุกเฉิน",
-                //     navigatorStyle: { navBarBackgroundColor: '#7ec8ba', navBarTextColor: '#ffffff' },
-                // })
-            }
-            //Not emergency
-            else {
+            if (this.state.currentPatientAnswer !== "") {
+                //Patient has emergency symptom
+                if (this.state.currentPatientAnswer.type === "E") {
+                    ToastAndroid.showWithGravityAndOffset('ฉุกเฉิน', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
 
-                let questionNumber = this.state.questionNumber + 1
-                let next = this.state.currentPatientAnswer.next
-                let history = this.state.questionHistory
-                history.push(this.state.currentQuestion)
-                let allPatientAnswers = this.state.allPatientAnswers
-                allPatientAnswers.push("" + this.state.currentQuestion.title + ": " + this.state.currentPatientAnswer.title)
-                let nextQuestion
-
-                //only chief question
-                if (this.state.currentQuestion.question === "โปรดระบุอาการสำคัญ") {
-                    nextQuestion = questionSource[next].question_1
-                    this.setState({
-                        chiefComplaint: this.state.currentPatientAnswer.title,
-                        questionBasedOnChiefComplaint: questionSource[next]
-                    })
+                    //KOPAI
+                    // this.props.navigator.push({
+                    //     screen: 'example.EmergencyScreen', animationType: 'fade', title: "ฉุกเฉิน",
+                    //     navigatorStyle: { navBarBackgroundColor: '#7ec8ba', navBarTextColor: '#ffffff' },
+                    // })
                 }
 
-                //specific questions
+                //Not emergency
+                //choice answer
+                else if (this.state.currentPatientAnswer.type === "c") {
+                    let questionNumber = this.state.questionNumber + 1
+                    let next = this.state.currentPatientAnswer.next
+                    let history = this.state.questionHistory
+                    history.push(this.state.currentQuestion)
+                    let allPatientAnswers = this.state.allPatientAnswers
+                    allPatientAnswers.push("" + this.state.currentQuestion.title + ": " + this.state.currentPatientAnswer.title)
+                    let nextQuestion
+
+                    //only chief question
+                    if (this.state.currentQuestion.question === "โปรดระบุอาการสำคัญ") {
+                        nextQuestion = questionSource[next].question_1
+                        this.setState({
+                            chiefComplaint: this.state.currentPatientAnswer.title,
+                            questionBasedOnChiefComplaint: questionSource[next]
+                        })
+                    }
+
+                    //specific questions
+                    else {
+                        //last question
+                        if (next === "end") {
+                            await this.setState({
+                                questionNumber: 1,
+                                questionHistory: _.uniq(history),
+                                currentQuestion: "",
+                                currentPatientAnswer: "",
+                                multipleChoiceCurrentAnswer: [],
+                                allPatientAnswers,
+                                answerNumberSelected: 0,
+                            })
+                            this._goToConfirm()
+                        }
+                        else {
+                            nextQuestion = this.state.questionBasedOnChiefComplaint[next]
+                        }
+
+                    }
+
+                    await this.setState({
+                        questionNumber,
+                        questionHistory: _.uniq(history),
+                        currentQuestion: nextQuestion,
+                        currentPatientAnswer: "",
+                        multipleChoiceCurrentAnswer: [],
+                        allPatientAnswers,
+                        answerNumberSelected: 0,
+                    })
+                    console.log("next ", this.state)
+                }
+
+                //Time answer
+                //Time question
+                else if (this.state.currentPatientAnswer.type === "T") {
+                    if (this.state.time !== "" && this.state.timeUnit !== "") {
+
+                        let questionNumber = this.state.questionNumber + 1
+                        let next = this.state.currentQuestion.next
+                        let history = this.state.questionHistory
+                        history.push(this.state.currentQuestion)
+                        let allPatientAnswers = this.state.allPatientAnswers
+                        allPatientAnswers.push("" + this.state.currentQuestion.title + ": " + this.state.time + " " + this.state.timeUnit)
+                        //last question
+                        if (next === "end") {
+                            await this.setState({
+                                questionNumber: 1,
+                                questionHistory: _.uniq(history),
+                                currentQuestion: "",
+                                currentPatientAnswer: "",
+                                multipleChoiceCurrentAnswer: [],
+                                allPatientAnswers,
+                                answerNumberSelected: 0,
+                                time: "",
+                                timeUnit: ""
+                            })
+                            console.log(this.state)
+                            this._goToConfirm()
+                        }
+                        //Still has next question
+                        else if (next !== "end") {
+                            let nextQuestion = this.state.questionBasedOnChiefComplaint[next]
+                            await this.setState({
+                                questionNumber,
+                                questionHistory: _.uniq(history),
+                                currentQuestion: nextQuestion,
+                                currentPatientAnswer: "",
+                                multipleChoiceCurrentAnswer: [],
+                                allPatientAnswers,
+                                answerNumberSelected: 0,
+                                time: "",
+                                timeUnit: ""
+                            })
+                            console.log(this.state)
+                        }
+                    }
+                    else {
+                        ToastAndroid.showWithGravityAndOffset('กรุณาเลือกเวลา', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
+                    }
+                }
+
+            }
+            else if (this.state.currentQuestion.question === "โปรดระบุอาการสำคัญ") {
+                ToastAndroid.showWithGravityAndOffset('กรุณาเลือกอาการสำคัญ', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
+            }
+
+            //patient doesn't choose any answer
+            else if (this.state.currentPatientAnswer === "" && this.state.currentQuestion.question !== "โปรดระบุอาการสำคัญ") {
+                ToastAndroid.showWithGravityAndOffset('กรุณาตอบคำถาม', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
+            }
+        }
+
+        //MultiChoice
+        else if (this.state.currentQuestion.type === "MultiChoice") {
+            if (_.isEmpty(this.state.multipleChoiceCurrentAnswer) === false) {
+
+                //Emergency
+                if (this.state.multipleChoiceCurrentAnswer.some((answer) => answer.type === "E")) {
+                    //KOPAI
+                    ToastAndroid.showWithGravityAndOffset('ฉุกเฉิน', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
+                }
+
+                //Not emergency
+                //TODO: answer type o
                 else {
-                    //last question
+                    //answer type c, M, F
+                    let questionNumber = this.state.questionNumber + 1
+                    let next = this.state.currentPatientAnswer.next
+                    let history = this.state.questionHistory
+                    history.push(this.state.currentQuestion)
+                    let allPatientAnswers = this.state.allPatientAnswers
+                    let allAnswers = ""
+                    this.state.multipleChoiceCurrentAnswer.map((answer) => allAnswers = allAnswers + answer.title + " ")
+                    allPatientAnswers.push("" + this.state.currentQuestion.title + ": " + allAnswers)
+                    let nextQuestion
+                    //Last question
                     if (next === "end") {
                         await this.setState({
                             questionNumber: 1,
@@ -484,62 +602,10 @@ export default class SymptomTakingScreen extends Component {
                         })
                         this._goToConfirm()
                     }
+                    //Still has other questions
                     else {
                         nextQuestion = this.state.questionBasedOnChiefComplaint[next]
                     }
-
-                }
-
-                await this.setState({
-                    questionNumber,
-                    questionHistory: _.uniq(history),
-                    currentQuestion: nextQuestion,
-                    currentPatientAnswer: "",
-                    multipleChoiceCurrentAnswer: [],
-                    allPatientAnswers,
-                    answerNumberSelected: 0,
-                })
-                console.log("next ", this.state)
-                // if (questionNumber >= 1) {
-                //     this.setState({
-                //         questionNumber
-                //     })
-                // }
-            }
-
-        }
-        else if (this.state.currentQuestion.question === "โปรดระบุอาการสำคัญ" && this.state.currentPatientAnswer !== "") {
-            ToastAndroid.showWithGravityAndOffset('กรุณาเลือกอาการสำคัญ', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
-        }
-        //Time question
-        else if (this.state.currentPatientAnswer.type === "T") {
-            if (this.state.time !== "" && this.state.timeUnit !== "") {
-
-                let questionNumber = this.state.questionNumber + 1
-                let next = this.state.currentQuestion.next
-                let history = this.state.questionHistory
-                history.push(this.state.currentQuestion)
-                let allPatientAnswers = this.state.allPatientAnswers
-                allPatientAnswers.push("" + this.state.currentQuestion.title + ": " + this.state.time + " " + this.state.timeUnit)
-                //last question
-                if (next === "end") {
-                    await this.setState({
-                        questionNumber: 1,
-                        questionHistory: _.uniq(history),
-                        currentQuestion: "",
-                        currentPatientAnswer: "",
-                        multipleChoiceCurrentAnswer: [],
-                        allPatientAnswers,
-                        answerNumberSelected: 0,
-                        time: "",
-                        timeUnit: ""
-                    })
-                    console.log(this.state)
-                    this._goToConfirm()
-                }
-                //Still has next question
-                else if (next !== "end") {
-                    let nextQuestion = this.state.questionBasedOnChiefComplaint[next]
                     await this.setState({
                         questionNumber,
                         questionHistory: _.uniq(history),
@@ -548,20 +614,140 @@ export default class SymptomTakingScreen extends Component {
                         multipleChoiceCurrentAnswer: [],
                         allPatientAnswers,
                         answerNumberSelected: 0,
-                        time: "",
-                        timeUnit: ""
                     })
-                    console.log(this.state)
+                    console.log("next ", this.state)
                 }
+
             }
+            //Patient doesn't answer
             else {
-                ToastAndroid.showWithGravityAndOffset('กรุณาเลือกเวลา', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
+                ToastAndroid.showWithGravityAndOffset('กรุณาตอบคำถาม', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
             }
         }
-        //patient doesn't choose any answer
-        else if (this.state.currentPatientAnswer === "") {
-            ToastAndroid.showWithGravityAndOffset('กรุณาตอบคำถาม', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
-        }
+        // if (this.state.currentPatientAnswer !== "") {
+        //     //Patient has emergency symptom
+        //     if (this.state.currentPatientAnswer.type === "E") {
+        //         ToastAndroid.showWithGravityAndOffset('ฉุกเฉิน', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
+
+        //         //KOPAI
+        //         // this.props.navigator.push({
+        //         //     screen: 'example.EmergencyScreen', animationType: 'fade', title: "ฉุกเฉิน",
+        //         //     navigatorStyle: { navBarBackgroundColor: '#7ec8ba', navBarTextColor: '#ffffff' },
+        //         // })
+        //     }
+        //     //Not emergency
+        //     else if(this.state.){
+
+        //         let questionNumber = this.state.questionNumber + 1
+        //         let next = this.state.currentPatientAnswer.next
+        //         let history = this.state.questionHistory
+        //         history.push(this.state.currentQuestion)
+        //         let allPatientAnswers = this.state.allPatientAnswers
+        //         allPatientAnswers.push("" + this.state.currentQuestion.title + ": " + this.state.currentPatientAnswer.title)
+        //         let nextQuestion
+
+        //         //only chief question
+        //         if (this.state.currentQuestion.question === "โปรดระบุอาการสำคัญ") {
+        //             nextQuestion = questionSource[next].question_1
+        //             this.setState({
+        //                 chiefComplaint: this.state.currentPatientAnswer.title,
+        //                 questionBasedOnChiefComplaint: questionSource[next]
+        //             })
+        //         }
+
+        //         //specific questions
+        //         else {
+        //             //last question
+        //             if (next === "end") {
+        //                 await this.setState({
+        //                     questionNumber: 1,
+        //                     questionHistory: _.uniq(history),
+        //                     currentQuestion: "",
+        //                     currentPatientAnswer: "",
+        //                     multipleChoiceCurrentAnswer: [],
+        //                     allPatientAnswers,
+        //                     answerNumberSelected: 0,
+        //                 })
+        //                 this._goToConfirm()
+        //             }
+        //             else {
+        //                 nextQuestion = this.state.questionBasedOnChiefComplaint[next]
+        //             }
+
+        //         }
+
+        //         await this.setState({
+        //             questionNumber,
+        //             questionHistory: _.uniq(history),
+        //             currentQuestion: nextQuestion,
+        //             currentPatientAnswer: "",
+        //             multipleChoiceCurrentAnswer: [],
+        //             allPatientAnswers,
+        //             answerNumberSelected: 0,
+        //         })
+        //         console.log("next ", this.state)
+        //         // if (questionNumber >= 1) {
+        //         //     this.setState({
+        //         //         questionNumber
+        //         //     })
+        //         // }
+        //     }
+
+        // }
+        // else if (this.state.currentQuestion.question === "โปรดระบุอาการสำคัญ" && this.state.currentPatientAnswer !== "") {
+        //     ToastAndroid.showWithGravityAndOffset('กรุณาเลือกอาการสำคัญ', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
+        // }
+        // //Time question
+        // else if (this.state.currentPatientAnswer.type === "T") {
+        //     if (this.state.time !== "" && this.state.timeUnit !== "") {
+
+        //         let questionNumber = this.state.questionNumber + 1
+        //         let next = this.state.currentQuestion.next
+        //         let history = this.state.questionHistory
+        //         history.push(this.state.currentQuestion)
+        //         let allPatientAnswers = this.state.allPatientAnswers
+        //         allPatientAnswers.push("" + this.state.currentQuestion.title + ": " + this.state.time + " " + this.state.timeUnit)
+        //         //last question
+        //         if (next === "end") {
+        //             await this.setState({
+        //                 questionNumber: 1,
+        //                 questionHistory: _.uniq(history),
+        //                 currentQuestion: "",
+        //                 currentPatientAnswer: "",
+        //                 multipleChoiceCurrentAnswer: [],
+        //                 allPatientAnswers,
+        //                 answerNumberSelected: 0,
+        //                 time: "",
+        //                 timeUnit: ""
+        //             })
+        //             console.log(this.state)
+        //             this._goToConfirm()
+        //         }
+        //         //Still has next question
+        //         else if (next !== "end") {
+        //             let nextQuestion = this.state.questionBasedOnChiefComplaint[next]
+        //             await this.setState({
+        //                 questionNumber,
+        //                 questionHistory: _.uniq(history),
+        //                 currentQuestion: nextQuestion,
+        //                 currentPatientAnswer: "",
+        //                 multipleChoiceCurrentAnswer: [],
+        //                 allPatientAnswers,
+        //                 answerNumberSelected: 0,
+        //                 time: "",
+        //                 timeUnit: ""
+        //             })
+        //             console.log(this.state)
+        //         }
+        //     }
+        //     else {
+        //         ToastAndroid.showWithGravityAndOffset('กรุณาเลือกเวลา', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
+        //     }
+        // }
+        // //patient doesn't choose any answer
+        // else if (this.state.currentPatientAnswer === "") {
+        //     ToastAndroid.showWithGravityAndOffset('กรุณาตอบคำถาม', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
+        // }
     }
 
     _back = () => {
@@ -721,8 +907,20 @@ export default class SymptomTakingScreen extends Component {
                                     }
                                     )
                                 }
+                                else if (this.state.currentQuestion.type === "Choice") {
+                                    //Time question
+                                    if (this.state.currentQuestion.answer[0].type === "T") {
+                                        return (
+                                            <AnswerTime
+                                                answer={this.state.currentQuestion.answer[0]}
+                                                _setTime={this._setTime}
+                                                _setTimeUnit={this._setTimeUnit}
+                                                _setCurrentPatientAnswer={this._setCurrentPatientAnswer} />
+                                        )
+                                    }
+                                }
                                 //Time question
-                                else if (this.state.currentQuestion.answer[0].type === "T") {
+                                {/*else if (this.state.currentQuestion.answer[0].type === "T") {
                                     return (
                                         <AnswerTime
                                             answer={this.state.currentQuestion.answer[0]}
@@ -730,7 +928,7 @@ export default class SymptomTakingScreen extends Component {
                                             _setTimeUnit={this._setTimeUnit}
                                             _setCurrentPatientAnswer={this._setCurrentPatientAnswer} />
                                     )
-                                }
+                                }*/}
                             }
                         )() //immediately-invoked function expreesion, so I can use if-else in JSX
                     }
