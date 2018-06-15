@@ -458,7 +458,14 @@ export default class SymptomTakingScreen extends Component {
                         nextQuestion = questionSource[next].question_1
                         await this.setState({
                             chiefComplaint: this.state.currentPatientAnswer.title,
-                            questionBasedOnChiefComplaint: questionSource[next]
+                            questionBasedOnChiefComplaint: questionSource[next],
+                            questionNumber,
+                            questionHistory: _.uniq(history),
+                            currentQuestion: nextQuestion,
+                            currentPatientAnswer: "",
+                            multipleChoiceCurrentAnswer: [],
+                            allPatientAnswers,
+                            answerNumberSelected: 0,
                         })
                         this.lenOfSpecificQuestion = Object.keys(this.state.questionBasedOnChiefComplaint).length
                         console.log("len for progress = ", this.lenOfSpecificQuestion)
@@ -740,17 +747,41 @@ export default class SymptomTakingScreen extends Component {
         }
     }
 
-    _back = () => {
+    _back = async () => {
         let prevQuestion = this.state.questionHistory.pop()
         let questionNumber = this.state.questionNumber - 1
-        //TODO
-        if (prevQuestion.title === "อาการสำคัญ") {
-
+        //When only chiefQuestion left in allPatientAnswers
+        if (this.state.allPatientAnswers.length <= 1) {
+            await this.setState({
+                currentQuestion: prevQuestion,
+                questionNumber,
+                allPatientAnswers: [],
+                progress: 0,
+                currentPatientAnswer: "",
+                multipleChoiceCurrentAnswer: [],
+                otherPatientAnswer: "",
+                time: "",
+                timeUnit: "",
+                chiefComplaint: ""
+            })
         }
-        this.setState({
-            currentQuestion: prevQuestion,
-            questionNumber
-        })
+        //When there are more
+        else {
+            let allPatientAnswers = this.state.allPatientAnswers
+            allPatientAnswers.pop()
+            await this.setState({
+                currentQuestion: prevQuestion,
+                questionNumber,
+                allPatientAnswers,
+                currentPatientAnswer: "",
+                multipleChoiceCurrentAnswer: [],
+                otherPatientAnswer: "",
+                time: "",
+                timeUnit: ""
+            })
+            this._calculateProgress()
+        }
+        console.log("back ", this.state)
     }
 
     //KOPAI go to confirm screen
