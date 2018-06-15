@@ -503,7 +503,7 @@ export default class SymptomTakingScreen extends Component {
                                     answerNumberSelected: 0,
                                     currentPatientAnswer: "",
                                     multipleChoiceCurrentAnswer: [],
-                                    questionNumber,
+                                    questionNumber: 1,
                                     questionHistory: _.uniq(history),
                                     currentQuestion: questionSource.chiefQuestion,
                                 })
@@ -752,7 +752,15 @@ export default class SymptomTakingScreen extends Component {
                         paginationStyle={{ bottom: 10 }}
                         loop={false}>
                         <View style={styles.card}>
-                            <FlatList
+                            <AnswerGeneralChoices
+                                question={questionSource.chiefQuestion}
+                                answers={this.firstHalfChiefAnswer}
+                                currentPatientAnswer={this.state.currentPatientAnswer}
+                                answerNumberSelected={this.state.answerNumberSelected}
+                                _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
+                                _setAnswerNumberSelected={this._setAnswerNumberSelected}
+                                _setOtherPatientAnswer={this._setOtherPatientAnswer} />
+                            {/*<FlatList
                                 style={{ flex: 1 }}
                                 data={this.firstHalfChiefAnswer}
                                 numColumns={2}
@@ -769,11 +777,19 @@ export default class SymptomTakingScreen extends Component {
                                 )
                                 }
 
-                            />
+                            />*/}
                         </View>
 
                         <View style={styles.card}>
-                            <FlatList
+                            <AnswerGeneralChoices
+                                question={questionSource.chiefQuestion}
+                                answers={this.secondHalfChiefAnswer}
+                                currentPatientAnswer={this.state.currentPatientAnswer}
+                                answerNumberSelected={this.state.answerNumberSelected}
+                                _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
+                                _setAnswerNumberSelected={this._setAnswerNumberSelected}
+                                _setOtherPatientAnswer={this._setOtherPatientAnswer} />
+                            {/*<FlatList
                                 style={{ flex: 1 }}
                                 data={this.secondHalfChiefAnswer}
                                 numColumns={2}
@@ -788,7 +804,7 @@ export default class SymptomTakingScreen extends Component {
                                         _setAnswerNumberSelected={this._setAnswerNumberSelected}
                                         _setOtherPatientAnswer={this._setOtherPatientAnswer} />
                                 )}
-                            />
+                            />*/}
                         </View>
 
                     </Swiper>
@@ -847,15 +863,6 @@ export default class SymptomTakingScreen extends Component {
                                                     )
                                                 }
                                             }
-                                            {/*//Answer is other input
-                                        else if (answer.type === "o") {
-                                            return (
-                                                <AnswerOther
-                                                    answer={answer}
-                                                    key={answer.title}
-                                                    _setCurrentPatientAnswer={this._setCurrentPatientAnswer} />
-                                            )
-                                        }*/}
                                         }
                                         )
                                     }

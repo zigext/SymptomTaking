@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TextInput, ToastAndroid, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TextInput, ToastAndroid, Dimensions, FlatList } from 'react-native';
 import { Button } from 'react-native-elements'
 
 const { height, width } = Dimensions.get('window');
@@ -12,8 +12,11 @@ export default class AnswerGeneralChoices extends Component {
         this.state = {
             selected: false,
             showTextInput: false,
-            text: ""
+            text: "",
+            choose: "",
+            prevChoose: ""
         }
+        this.prevTmp = ""
     }
 
     //Only อื่นๆ button
@@ -43,83 +46,172 @@ export default class AnswerGeneralChoices extends Component {
         }
     }
 
-    _onPress = () => {
-        //can  only choose 1 choice, choose for the first time
-        if (this.props.currentPatientAnswer.title !== this.props.choices.item.title) {
-            //for the first time 
-            if (this.props.currentPatientAnswer === "" && this.props.answerNumberSelected === 0) {
-                this.setState({
-                    selected: !this.state.selected
-                })
-                let answerNumberSelected = 1
-                this.props._setAnswerNumberSelected(answerNumberSelected)
-                if (this.props.choices.item.type === "o") {
-                    this._toggleTextInput()
-                    this.props._setCurrentPatientAnswer(this.props.choices.item)
-                }
-                else {
-                    this.props._setCurrentPatientAnswer(this.props.choices.item)
-                }
+    //flatlist outside of component
+    // _onPress = () => {
+    //     //can  only choose 1 choice, choose for the first time
+    //     if (this.props.currentPatientAnswer.title !== this.props.choices.item.title) {
+    //         //for the first time 
+    //         if (this.props.currentPatientAnswer === "" && this.props.answerNumberSelected === 0) {
+    //             this.setState({
+    //                 selected: !this.state.selected
+    //             })
+    //             let answerNumberSelected = 1
+    //             this.props._setAnswerNumberSelected(answerNumberSelected)
+    //             if (this.props.choices.item.type === "o") {
+    //                 this._toggleTextInput()
+    //                 this.props._setCurrentPatientAnswer(this.props.choices.item)
+    //             }
+    //             else {
+    //                 this.props._setCurrentPatientAnswer(this.props.choices.item)
+    //             }
 
 
+    //         }
+    //         else if (this.props.answerNumberSelected >= 1) {
+    //             console.log("choose > 1 choice")
+    //             ToastAndroid.showWithGravityAndOffset('กรุณาเลือก 1 ข้อ', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
+    //         }
+
+    //     }
+    //     //chose the same choice, disselect the choice
+    //     else {
+    //         this.setState({
+    //             selected: !this.state.selected
+    //         })
+    //         let answerNumberSelected = 0
+    //         this.props._setAnswerNumberSelected(answerNumberSelected)
+    //         if (this.props.choices.item.type === "o") {
+    //             this._toggleTextInput()
+    //             this.props._setCurrentPatientAnswer("")
+    //         }
+    //         else {
+    //             this.props._setCurrentPatientAnswer("")
+    //         }
+    //     }
+    // }
+
+    //with flatlist in component
+    //TODO: hide textInput when choose another choice, color of อื่นๆ button
+    _onPress = async (item) => {
+        await this.setState({
+            choose: item.title,
+        })
+
+        console.log("choose", this.state.choose)
+        //can  only choose 1 choice, 
+        if (this.props.currentPatientAnswer.title !== this.state.choose) {
+            this.setState({
+                selected: true
+            })
+            this.props._setCurrentPatientAnswer(item)
+
+            //other answer
+            if (item.type === "o") {
+                this._toggleTextInput()
             }
-            else if (this.props.answerNumberSelected >= 1) {
-                console.log("choose > 1 choice")
-                ToastAndroid.showWithGravityAndOffset('กรุณาเลือก 1 ข้อ', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
-            }
+            // else if (this.state.prevChoose === "อื่นๆ") {
+            //     this.setState({
+            //         showTextInput: false
+            //     })
+            // }
 
         }
-        //chose the same choice, disselect the choice
+        //Choose the same choice
         else {
-            this.setState({
-                selected: !this.state.selected
-            })
-            let answerNumberSelected = 0
-            this.props._setAnswerNumberSelected(answerNumberSelected)
-            if (this.props.choices.item.type === "o") {
+            if (item.type === "o") {
                 this._toggleTextInput()
-                this.props._setCurrentPatientAnswer("")
-            }
-            else {
-                this.props._setCurrentPatientAnswer("")
+                this.setState({
+                    selected: false
+                })
             }
         }
     }
 
+    //with flatlist in component
     render() {
+
         return (
-            <View>
-                {this.props.choices.item.title === "อื่นๆ" ?
-                    (
-                        <View>
+
+            <FlatList
+                style={{ flex: 1 }}
+                data={this.props.answers}
+                numColumns={2}
+                keyExtractor={(item, index) => item.title}
+                renderItem={(item, index) => {
+                    if (item.item.type === "o") {
+                        return (
+                            <View>
+                                <Button
+                                    title={item.item.title}
+                                    onPress={() => this._onPress(item.item)}
+                                    buttonStyle={styles.button}
+                                    fontFamily="Kanit-Regular"
+                                    rounded
+                                    raised
+                                    backgroundColor={this.state.selected ? (this.state.choose === item.item.title ? "#80cdc0" : "gray") : 'gray'}
+                                />
+                                {this._renderTextInput()}
+                            </View>
+                        )
+                    }
+                    else {
+                        return (
                             <Button
-                                title={this.props.choices.item.title}
-                                onPress={this._onPress}
+                                title={item.item.title}
+                                onPress={() => this._onPress(item.item)}
                                 buttonStyle={styles.button}
                                 fontFamily="Kanit-Regular"
                                 rounded
                                 raised
-                                backgroundColor={this.state.selected ? "#80cdc0" : 'gray'}
+                                backgroundColor={this.state.selected ? (this.state.choose === item.item.title ? "#80cdc0" : "gray") : 'gray'}
                             />
-                            {this._renderTextInput()}
-                        </View>
-                    ) :
-                    (
-                        <Button
-                            title={this.props.choices.item.title}
-                            onPress={this._onPress}
-                            buttonStyle={styles.button}
-                            fontFamily="Kanit-Regular"
-                            rounded
-                            raised
-                            backgroundColor={this.state.selected ? "#80cdc0" : 'gray'}
-                        />
-                    )}
+                        )
+                    }
+                }
+                }
+            />
 
-            </View>
         )
+
+
+        //with flatlist outside component (in container)
+        // render() {
+        //     return (
+        //         <View>
+        //             {this.props.choices.item.title === "อื่นๆ" ?
+        //                 (
+        //                     <View>
+        //                         <Button
+        //                             title={this.props.choices.item.title}
+        //                             onPress={this._onPress}
+        //                             buttonStyle={styles.button}
+        //                             fontFamily="Kanit-Regular"
+        //                             rounded
+        //                             raised
+        //                             backgroundColor={this.state.selected ? "#80cdc0" : 'gray'}
+        //                         />
+        //                         {this._renderTextInput()}
+        //                     </View>
+        //                 ) :
+        //                 (
+        //                     <Button
+        //                         title={this.props.choices.item.title}
+        //                         onPress={this._onPress}
+        //                         buttonStyle={styles.button}
+        //                         fontFamily="Kanit-Regular"
+        //                         rounded
+        //                         raised
+        //                         backgroundColor={this.state.selected ? "#80cdc0" : 'gray'}
+        //                     />
+        //                 )}
+
+        //         </View>
+        //     )
+        // }
     }
+
 }
+
 const styles = {
     button: {
         margin: 3,
