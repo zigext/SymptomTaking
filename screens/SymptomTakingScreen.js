@@ -4,6 +4,7 @@ import { BottomNavigation, COLOR, ThemeProvider, Toolbar, Checkbox, RadioButton,
 import VectorIcon from 'react-native-vector-icons/MaterialIcons'
 import { Button, Avatar, Card } from 'react-native-elements'
 import Swiper from 'react-native-swiper'
+import Swipeable from 'react-native-swipeable'
 import questionSource from '../UcareData/PITShow/FormQuestions2'
 import Question from '../components/Question.symptom'
 import AnswerGeneralChoices from '../components/AnswerGeneralChoices.symptom'
@@ -11,7 +12,9 @@ import AnswerChoices from '../components/AnswerChoices.symptom'
 import AnswerMultiChoices from '../components/AnswerMultiChoices.symptom'
 import AnswerTime from '../components/AnswerTime.symptom'
 import AnswerOther from '../components/AnswerOther.symptom'
+import ProgressBar from '../components/ProgressBar'
 import User from '../UcareData/mockdata' //mock user from firebase => KOPAI
+
 var _ = require('lodash');
 
 const { height, width } = Dimensions.get('window');
@@ -360,7 +363,8 @@ export default class SymptomTakingScreen extends Component {
             chiefComplaint: "", //main symptom
             time: "",
             timeUnit: "",
-            otherPatientAnswer: ""
+            otherPatientAnswer: "",
+            progress: 0
         }
         //For separate choices into 2 cards
         this.len = questionSource.chiefQuestion.answer.length
@@ -369,6 +373,8 @@ export default class SymptomTakingScreen extends Component {
         this.sortedChiefAnswer = _.sortBy(this.sortedChiefAnswer, ['title'])
         this.firstHalfChiefAnswer = this.sortedChiefAnswer.slice(0, this.len / 2)
         this.secondHalfChiefAnswer = this.sortedChiefAnswer.slice(this.len / 2, this.len)
+
+        this.lenOfSpecificQuestion
 
     }
 
@@ -413,6 +419,12 @@ export default class SymptomTakingScreen extends Component {
         this.setState({ otherPatientAnswer })
         console.log("otherPatientAnswer = ", this.state.otherPatientAnswer)
     }
+    //Progress shows when ask specific questions
+    _calculateProgress = () => {
+        let numberOfDoneQuestion = this.state.questionNumber - 1 //Because it include chiefQuestion
+        let progress = (numberOfDoneQuestion * 1.0) / this.lenOfSpecificQuestion
+        this.setState({ progress })
+    }
 
     _next = async () => {
         //Choice
@@ -444,10 +456,13 @@ export default class SymptomTakingScreen extends Component {
                     //only chief question
                     if (this.state.currentQuestion.question === "โปรดระบุอาการสำคัญ") {
                         nextQuestion = questionSource[next].question_1
-                        this.setState({
+                        await this.setState({
                             chiefComplaint: this.state.currentPatientAnswer.title,
                             questionBasedOnChiefComplaint: questionSource[next]
                         })
+                        this.lenOfSpecificQuestion = Object.keys(this.state.questionBasedOnChiefComplaint).length
+                        console.log("len for progress = ", this.lenOfSpecificQuestion)
+
                     }
 
                     //specific questions
@@ -480,6 +495,7 @@ export default class SymptomTakingScreen extends Component {
                         allPatientAnswers,
                         answerNumberSelected: 0,
                     })
+                    this._calculateProgress()
                     console.log("next ", this.state)
                 }
 
@@ -555,6 +571,7 @@ export default class SymptomTakingScreen extends Component {
                                 time: "",
                                 timeUnit: ""
                             })
+                            this._calculateProgress()
                             console.log(this.state)
                         }
                     }
@@ -589,6 +606,7 @@ export default class SymptomTakingScreen extends Component {
                 else {
                     //answer type c, M, F
                     if (this.state.currentPatientAnswer.type === "c" || this.state.currentPatientAnswer.type === "M" || this.state.currentPatientAnswer.type === "F") {
+                        
                         let questionNumber = this.state.questionNumber + 1
                         let next = this.state.currentPatientAnswer.next
                         let history = this.state.questionHistory
@@ -608,23 +626,26 @@ export default class SymptomTakingScreen extends Component {
                                 multipleChoiceCurrentAnswer: [],
                                 allPatientAnswers,
                                 answerNumberSelected: 0,
+                                progress: 0
                             })
                             this._goToConfirm()
                         }
                         //Still has other questions
                         else {
                             nextQuestion = this.state.questionBasedOnChiefComplaint[next]
+                            await this.setState({
+                                questionNumber,
+                                questionHistory: _.uniq(history),
+                                currentQuestion: nextQuestion,
+                                currentPatientAnswer: "",
+                                multipleChoiceCurrentAnswer: [],
+                                allPatientAnswers,
+                                answerNumberSelected: 0,
+                            })
+                            this._calculateProgress()
+                            console.log("next ", this.state)
                         }
-                        await this.setState({
-                            questionNumber,
-                            questionHistory: _.uniq(history),
-                            currentQuestion: nextQuestion,
-                            currentPatientAnswer: "",
-                            multipleChoiceCurrentAnswer: [],
-                            allPatientAnswers,
-                            answerNumberSelected: 0,
-                        })
-                        console.log("next ", this.state)
+
                     }
 
                     //type o
@@ -678,6 +699,7 @@ export default class SymptomTakingScreen extends Component {
                             allPatientAnswers,
                             answerNumberSelected: 0,
                         })
+                        this._calculateProgress()
                         console.log("next ", this.state)
                     }
 
@@ -729,6 +751,7 @@ export default class SymptomTakingScreen extends Component {
         return (
             <ThemeProvider uiTheme={uiTheme}>
                 <View style={styles.container}>
+
                     {/*<ScrollView style={{ flex: 1, flexGrow: 1 }} >*/}
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Avatar
@@ -824,6 +847,113 @@ export default class SymptomTakingScreen extends Component {
     }
 
     //TODO: render 1 choice
+    // _renderSpecificQuestions = () => {
+
+    //     return (
+    //         <ThemeProvider uiTheme={uiTheme}>
+    //             <View style={styles.containerSpecific}>
+    //                 <ScrollView>
+    //                     <Question question={this.state.currentQuestion} />
+    //                     { //Check type of question
+    //                         (
+    //                             () => {
+    //                                 if (this.state.currentQuestion.type === "MultiChoice") {
+    //                                     return this.state.currentQuestion.answer.map((answer, index) => {
+    //                                         //Answer is choice or emergency or specific gender
+    //                                         if (answer.type === "c" || answer.type === "E" || (answer.type === User.info.sex) || (answer.type === "o")) {
+    //                                             if (answer.type === "o") {
+    //                                                 return (
+    //                                                     <AnswerOther
+    //                                                         answer={answer}
+    //                                                         key={answer.title}
+    //                                                         currentPatientAnswer={this.state.currentPatientAnswer}
+    //                                                         _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
+    //                                                         _setMultipleChoiceCurrentAnswer={this._setMultipleChoiceCurrentAnswer}
+    //                                                         _setOtherPatientAnswer={this._setOtherPatientAnswer} />
+    //                                                 )
+    //                                             }
+    //                                             else {
+    //                                                 return (
+    //                                                     <AnswerMultiChoices
+    //                                                         answer={answer}
+    //                                                         key={answer.title}
+    //                                                         currentPatientAnswer={this.state.currentPatientAnswer}
+    //                                                         multipleChoiceCurrentAnswer={this.state.multipleChoiceCurrentAnswer}
+    //                                                         answerNumberSelected={this.state.answerNumberSelected}
+    //                                                         _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
+    //                                                         _setMultipleChoiceCurrentAnswer={this._setMultipleChoiceCurrentAnswer}
+    //                                                         _setAnswerNumberSelected={this._setAnswerNumberSelected} />
+    //                                                 )
+    //                                             }
+    //                                         }
+    //                                     }
+    //                                     )
+    //                                 }
+    //                                 else if (this.state.currentQuestion.type === "Choice") {
+    //                                     //Time question
+    //                                     if (this.state.currentQuestion.answer[0].type === "T") {
+    //                                         return (
+    //                                             <AnswerTime
+    //                                                 answer={this.state.currentQuestion.answer[0]}
+    //                                                 _setTime={this._setTime}
+    //                                                 _setTimeUnit={this._setTimeUnit}
+    //                                                 _setCurrentPatientAnswer={this._setCurrentPatientAnswer} />
+    //                                         )
+    //                                     }
+    //                                     //Choice and Other 
+    //                                     else {
+    //                                         return this.state.currentQuestion.answer.map((answer, index) => {
+    //                                             if (answer.type === "c" || answer.type === "E") {
+    //                                                 return (
+    //                                                     <AnswerChoices
+    //                                                         answer={answer}
+    //                                                         key={answer.title}
+    //                                                         currentPatientAnswer={this.state.currentPatientAnswer}
+    //                                                         answerNumberSelected={this.state.answerNumberSelected}
+    //                                                         _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
+    //                                                         _setAnswerNumberSelected={this._setAnswerNumberSelected} />
+    //                                                 )
+    //                                             }
+    //                                         })
+    //                                     }
+    //                                 }
+
+    //                             }
+    //                         )() //immediately-invoked function expreesion, so I can use if-else in JSX
+    //                     }
+    //                     <View style={styles.containerButton}>
+    //                         <Button
+    //                             icon={{ name: 'arrow-left', type: 'material-community' }}
+    //                             onPress={this._back}
+    //                             rounded
+    //                             raised
+    //                             backgroundColor="#80cdc0"
+    //                             buttonStyle={styles.nextButton} />
+    //                         {
+    //                             //Next button
+    //                             this.state.currentQuestion.next !== "end" ?
+    //                                 <Button
+    //                                     icon={{ name: 'arrow-right', type: 'material-community' }}
+    //                                     onPress={this._next}
+    //                                     rounded
+    //                                     raised
+    //                                     backgroundColor="#80cdc0"
+    //                                     buttonStyle={styles.nextButton} /> :
+    //                                 <Button
+    //                                     title="     ยืนยัน    "
+    //                                     onPress={this._next}
+    //                                     rounded
+    //                                     raised
+    //                                     backgroundColor="#80cdc0"
+    //                                     buttonStyle={styles.nextButton} />
+    //                         }
+    //                     </View>
+    //                 </ScrollView>
+    //             </View>
+    //         </ThemeProvider>
+    //     )
+    // }
+
     _renderSpecificQuestions = () => {
 
         return (
@@ -898,6 +1028,11 @@ export default class SymptomTakingScreen extends Component {
                                 }
                             )() //immediately-invoked function expreesion, so I can use if-else in JSX
                         }
+
+                        <View style={styles.containerProgress}>
+                            <ProgressBar progress={this.state.progress} />
+                        </View>
+
                         <View style={styles.containerButton}>
                             <Button
                                 icon={{ name: 'arrow-left', type: 'material-community' }}
@@ -958,6 +1093,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'flex-end'
+    },
+    containerProgress: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginVertical: 20
     },
     containerMultipleChoice: {
         flexDirection: 'row'
