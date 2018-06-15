@@ -477,26 +477,38 @@ export default class SymptomTakingScreen extends Component {
                                 multipleChoiceCurrentAnswer: [],
                                 allPatientAnswers,
                                 answerNumberSelected: 0,
+                                progress: 0
                             })
                             this._goToConfirm()
                         }
                         else {
                             nextQuestion = this.state.questionBasedOnChiefComplaint[next]
+                            await this.setState({
+                                questionNumber,
+                                questionHistory: _.uniq(history),
+                                currentQuestion: nextQuestion,
+                                currentPatientAnswer: "",
+                                multipleChoiceCurrentAnswer: [],
+                                allPatientAnswers,
+                                answerNumberSelected: 0,
+                            })
+                            this._calculateProgress()
+                            console.log("next ", this.state)
                         }
 
                     }
 
-                    await this.setState({
-                        questionNumber,
-                        questionHistory: _.uniq(history),
-                        currentQuestion: nextQuestion,
-                        currentPatientAnswer: "",
-                        multipleChoiceCurrentAnswer: [],
-                        allPatientAnswers,
-                        answerNumberSelected: 0,
-                    })
-                    this._calculateProgress()
-                    console.log("next ", this.state)
+                    // await this.setState({
+                    //     questionNumber,
+                    //     questionHistory: _.uniq(history),
+                    //     currentQuestion: nextQuestion,
+                    //     currentPatientAnswer: "",
+                    //     multipleChoiceCurrentAnswer: [],
+                    //     allPatientAnswers,
+                    //     answerNumberSelected: 0,
+                    // })
+                    // this._calculateProgress()
+                    // console.log("next ", this.state)
                 }
 
                 //Other answer
@@ -522,6 +534,7 @@ export default class SymptomTakingScreen extends Component {
                                     questionNumber: 1,
                                     questionHistory: _.uniq(history),
                                     currentQuestion: questionSource.chiefQuestion,
+                                    progress: 0
                                 })
                                 this._goToConfirm()
                             }
@@ -552,7 +565,8 @@ export default class SymptomTakingScreen extends Component {
                                 allPatientAnswers,
                                 answerNumberSelected: 0,
                                 time: "",
-                                timeUnit: ""
+                                timeUnit: "",
+                                progress: 0
                             })
                             console.log(this.state)
                             this._goToConfirm()
@@ -606,7 +620,7 @@ export default class SymptomTakingScreen extends Component {
                 else {
                     //answer type c, M, F
                     if (this.state.currentPatientAnswer.type === "c" || this.state.currentPatientAnswer.type === "M" || this.state.currentPatientAnswer.type === "F") {
-                        
+
                         let questionNumber = this.state.questionNumber + 1
                         let next = this.state.currentPatientAnswer.next
                         let history = this.state.questionHistory
@@ -682,25 +696,38 @@ export default class SymptomTakingScreen extends Component {
                                 multipleChoiceCurrentAnswer: [],
                                 allPatientAnswers,
                                 answerNumberSelected: 0,
+                                progress: 0
                             })
                             this._goToConfirm()
                         }
                         //Still has other questions
                         else {
                             nextQuestion = this.state.questionBasedOnChiefComplaint[next]
+                            await this.setState({
+                                questionNumber,
+                                questionHistory: _.uniq(history),
+                                currentQuestion: nextQuestion,
+                                currentPatientAnswer: "",
+                                otherPatientAnswer: "",
+                                multipleChoiceCurrentAnswer: [],
+                                allPatientAnswers,
+                                answerNumberSelected: 0,
+                            })
+                            this._calculateProgress()
+                            console.log("next ", this.state)
                         }
-                        await this.setState({
-                            questionNumber,
-                            questionHistory: _.uniq(history),
-                            currentQuestion: nextQuestion,
-                            currentPatientAnswer: "",
-                            otherPatientAnswer: "",
-                            multipleChoiceCurrentAnswer: [],
-                            allPatientAnswers,
-                            answerNumberSelected: 0,
-                        })
-                        this._calculateProgress()
-                        console.log("next ", this.state)
+                        // await this.setState({
+                        //     questionNumber,
+                        //     questionHistory: _.uniq(history),
+                        //     currentQuestion: nextQuestion,
+                        //     currentPatientAnswer: "",
+                        //     otherPatientAnswer: "",
+                        //     multipleChoiceCurrentAnswer: [],
+                        //     allPatientAnswers,
+                        //     answerNumberSelected: 0,
+                        // })
+                        // this._calculateProgress()
+                        // console.log("next ", this.state)
                     }
 
                 }
