@@ -553,51 +553,63 @@ export default class SymptomTakingScreen extends Component {
                 //Time answer
                 //Time question
                 else if (this.state.currentPatientAnswer.type === "T") {
-                    if (this.state.time !== "" && this.state.timeUnit !== "") {
-
-                        let questionNumber = this.state.questionNumber + 1
-                        let next = this.state.currentQuestion.next
-                        let history = this.state.questionHistory
-                        history.push(this.state.currentQuestion)
-                        let allPatientAnswers = this.state.allPatientAnswers
+                    let questionNumber = this.state.questionNumber + 1
+                    let next = this.state.currentQuestion.next
+                    let history = this.state.questionHistory
+                    history.push(this.state.currentQuestion)
+                    let allPatientAnswers = this.state.allPatientAnswers
+                    //date
+                    if (this.state.currentQuestion.answer[0].title === "วว/ดด/ปปปป") {
+                        if (this.state.date !== "") {
+                            allPatientAnswers.push("" + this.state.currentQuestion.title + ": " + this.state.date)
+                        }
+                        else {
+                            ToastAndroid.showWithGravityAndOffset('กรุณาระบุวันที่', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
+                        }
+                    }
+                    //time duration
+                    else if (this.state.time !== "" && this.state.timeUnit !== "") {
                         allPatientAnswers.push("" + this.state.currentQuestion.title + ": " + this.state.time + " " + this.state.timeUnit)
-                        //last question
-                        if (next === "end") {
-                            await this.setState({
-                                questionNumber: 1,
-                                questionHistory: _.uniq(history),
-                                currentQuestion: "",
-                                currentPatientAnswer: "",
-                                multipleChoiceCurrentAnswer: [],
-                                allPatientAnswers,
-                                answerNumberSelected: 0,
-                                time: "",
-                                timeUnit: "",
-                                progress: 0
-                            })
-                            console.log(this.state)
-                            this._goToConfirm()
-                        }
-                        //Still has next question
-                        else if (next !== "end") {
-                            let nextQuestion = this.state.questionBasedOnChiefComplaint[next]
-                            await this.setState({
-                                questionNumber,
-                                questionHistory: _.uniq(history),
-                                currentQuestion: nextQuestion,
-                                currentPatientAnswer: "",
-                                multipleChoiceCurrentAnswer: [],
-                                allPatientAnswers,
-                                answerNumberSelected: 0,
-                                time: "",
-                                timeUnit: ""
-                            })
-                            this._calculateProgress()
-                            console.log(this.state)
-                        }
                     }
                     else {
                         ToastAndroid.showWithGravityAndOffset('กรุณาเลือกเวลา', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
+                    }
+
+                    //last question
+                    if (next === "end") {
+                        await this.setState({
+                            questionNumber: 1,
+                            questionHistory: _.uniq(history),
+                            currentQuestion: "",
+                            currentPatientAnswer: "",
+                            multipleChoiceCurrentAnswer: [],
+                            allPatientAnswers,
+                            answerNumberSelected: 0,
+                            time: "",
+                            timeUnit: "",
+                            date: "",
+                            progress: 0
+                        })
+                        console.log(this.state)
+                        this._goToConfirm()
+                    }
+                    //Still has next question
+                    else if (next !== "end") {
+                        let nextQuestion = this.state.questionBasedOnChiefComplaint[next]
+                        await this.setState({
+                            questionNumber,
+                            questionHistory: _.uniq(history),
+                            currentQuestion: nextQuestion,
+                            currentPatientAnswer: "",
+                            multipleChoiceCurrentAnswer: [],
+                            allPatientAnswers,
+                            answerNumberSelected: 0,
+                            time: "",
+                            timeUnit: "",
+                            date: ""
+                        })
+                        this._calculateProgress()
+                        console.log(this.state)
                     }
                 }
 
@@ -689,7 +701,7 @@ export default class SymptomTakingScreen extends Component {
                         else {
                             this.state.multipleChoiceCurrentAnswer.map((answer) => allAnswers = allAnswers + answer.title + " ")
                             allAnswers = allAnswers + " " + this.state.otherPatientAnswer
-                            allAnswers = allAnswers.replace('อื่นๆ','') //remove the word อื่นๆ
+                            allAnswers = allAnswers.replace('อื่นๆ', '') //remove the word อื่นๆ
                             allPatientAnswers.push("" + this.state.currentQuestion.title + ": " + allAnswers)
                         }
 
@@ -1013,7 +1025,7 @@ export default class SymptomTakingScreen extends Component {
     //     )
     // }
 
-//TODO: render multiChoice in direction row
+    //TODO: render multiChoice in direction row
     _renderSpecificQuestions = () => {
 
         return (
