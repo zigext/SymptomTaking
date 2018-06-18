@@ -54,6 +54,7 @@ export default class AnswerMultipleChoices extends Component {
                 title={this.props.answer.title}
                 onPress={this._onPress}
                 buttonStyle={styles.button}
+                fontFamily="Kanit-Regular"
                 rounded
                 raised
                 backgroundColor={this.state.selected ? "#80cdc0" : 'gray'}
