@@ -21,38 +21,57 @@ export default class AnswerOther extends Component {
 
     //Only อื่นๆ button
     _onPress = async () => {
-        if (this.props.currentPatientAnswer.title !== this.props.answer.title) {
+        //MultiChoice
+        if (this.props._setMultipleChoiceCurrentAnswer) {
+            if (this.props.currentPatientAnswer.title !== this.props.answer.title) {
+                //Press on same answer
+                //Delete the answer in currentMultipleChoice if the pressed answer is not the previous one
+                if (this.state.selected === true) {
+                    this.setState({
+                        selected: !this.state.selected
+                    })
+                    this._toggleTextInput()
+                    this.props._setCurrentPatientAnswer("")
+                    this.props._setMultipleChoiceCurrentAnswer(this.props.answer, "delete")
+                }
+                else {
+                    this.setState({
+                        selected: !this.state.selected
+                    })
+                    this._toggleTextInput()
+                    this.props._setCurrentPatientAnswer(this.props.answer)
+                    this.props._setMultipleChoiceCurrentAnswer(this.props.answer, "add")
+                }
+
+            }
             //Press on same answer
-            //Delete the answer in currentMultipleChoice if the pressed answer is not the previous one
-            if (this.state.selected === true) {
+            //It will delete only if the previous answer equals to pressed answer
+            else {
                 this.setState({
                     selected: !this.state.selected
                 })
                 this._toggleTextInput()
                 this.props._setCurrentPatientAnswer("")
                 this.props._setMultipleChoiceCurrentAnswer(this.props.answer, "delete")
-            }
-            else {
-                this.setState({
-                    selected: !this.state.selected
-                })
-                this._toggleTextInput()
-                this.props._setCurrentPatientAnswer(this.props.answer)
-                this.props._setMultipleChoiceCurrentAnswer(this.props.answer, "add")
-            }
 
+            }
         }
-        //Press on same answer
-        //It will delete only if the previous answer equals to pressed answer
+        //Choice
         else {
-            this.setState({
+            await this.setState({
                 selected: !this.state.selected
             })
             this._toggleTextInput()
-            this.props._setCurrentPatientAnswer("")
-            this.props._setMultipleChoiceCurrentAnswer(this.props.answer, "delete")
-
+            if (this.state.selected) {
+                console.log("X ", this.state.selected, this.props.answer)
+                this.props._setCurrentPatientAnswer(this.props.answer)
+            }
+            else {
+                console.log("Y ", this.state.selected)
+                this.props._setCurrentPatientAnswer("")
+            }
         }
+
 
     }
 
@@ -68,7 +87,7 @@ export default class AnswerOther extends Component {
                 <TextInput
                     onChangeText={this._onChangeText}
                     value={this.state.text}
-                    placeholder={ this.props.answer.title + " (โปรดระบุ)"} />
+                    placeholder={this.props.answer.title + " (โปรดระบุ)"} />
             );
         } else {
             return null;
