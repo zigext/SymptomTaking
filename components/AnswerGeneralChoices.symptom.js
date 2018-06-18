@@ -145,6 +145,7 @@ export default class AnswerGeneralChoices extends Component {
                                     title={item.item.title}
                                     onPress={() => this._onPress(item.item)}
                                     buttonStyle={styles.button}
+                                    fontSize={14}
                                     fontFamily="Kanit-Regular"
                                     rounded
                                     raised
@@ -160,6 +161,7 @@ export default class AnswerGeneralChoices extends Component {
                                 title={item.item.title}
                                 onPress={() => this._onPress(item.item)}
                                 buttonStyle={styles.button}
+                                fontSize={14}
                                 fontFamily="Kanit-Regular"
                                 rounded
                                 raised
@@ -216,6 +218,7 @@ const styles = {
     button: {
         margin: 3,
         flex: 1,
+        // flexWrap: "wrap",
         minWidth: minItemWidth,
         maxWidth: minItemWidth,
         borderColor: "#80cdc0",
