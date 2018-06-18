@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View, TextInput, ToastAndroid, TouchableOpacity, Dimensions, Picker } from 'react-native';
+import React, { Component } from 'react'
+import { StyleSheet, Text, View, TextInput, ToastAndroid, TouchableOpacity, Dimensions, Picker } from 'react-native'
+import DatePicker from 'react-native-datepicker'
 
 export default class AnswerTime extends Component {
     constructor(props) {
@@ -7,6 +8,7 @@ export default class AnswerTime extends Component {
         this.state = {
             time: "",
             timeUnit: "",
+            date: ""
         }
     }
     _setTime = (time) => {
@@ -19,7 +21,31 @@ export default class AnswerTime extends Component {
         this.props._setTimeUnit(timeUnit)
     }
 
-    render() {
+    _onDateChange = (date) => {
+        this.setState({ date })
+        console.log(this.state.date)
+    }
+
+    _renderDatePicker() {
+        return (
+            <View style={{ flex: 1, alignItems: 'center' }}>
+                <DatePicker
+                    mode='date'
+                    style={{ flex: 1 }}
+                    date={this.state.date}
+                    format='DD/MM/YYYY'
+                    placeholder="กรุณาระบุวันที่"
+                    minDate="01/01/1960"
+                    maxDate={new Date()}
+                    style={styles.elementContainer}
+                    customStyles={styles.customStyles}
+                    onDateChange={this._onDateChange}
+                />
+            </View>
+        )
+    }
+
+    _renderPicker() {
         return (
             <View style={styles.container}>
                 <View style={{ flex: 1 }}>
@@ -158,7 +184,14 @@ export default class AnswerTime extends Component {
 
                 </View>
             </View>
-        );
+        )
+    }
+
+    render() {
+        if (this.props.answer.title === "วว/ดด/ปปปป")
+            return this._renderDatePicker()
+        else
+            return this._renderPicker()
     }
 }
 
@@ -166,5 +199,17 @@ const styles = {
     container: {
         flex: 1,
         flexDirection: 'row',
+    },
+    customStyles: {
+        dateIcon: {
+            position: 'absolute',
+            left: 0,
+            top: 4,
+            marginLeft: 5
+        },
+        dateText: {
+            marginLeft: 30
+        },
+
     }
 };
