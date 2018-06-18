@@ -78,7 +78,7 @@ export default class AnswerOther extends Component {
     render() {
         return (
             <View>
-                {this.props.answer.type === "o" ?
+                {this.props.answer.title === "อื่นๆ" ?
                     (
                         <View>
                             <Button
@@ -97,7 +97,7 @@ export default class AnswerOther extends Component {
                         <TextInput
                             onChangeText={(text) => { this.setState({ text }) }}
                             value={this.state.text}
-                            placeholder={"อื่นๆ (โปรดระบุ)"} />
+                            placeholder={this.props.answer.title} />
                     )
                 }
             </View>
