@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ListView, TextInput, ToastAndroid, ScrollView, Dimensions } from 'react-native';
-import { Button } from 'react-native-elements'
+import { StyleSheet, Text, View, ListView, TextInput, ToastAndroid, ScrollView, Dimensions, TouchableHighlight } from 'react-native';
+import { Button, Icon } from 'react-native-elements'
+import Swipeable from 'react-native-swipeable'
 
 const { height, width } = Dimensions.get('window');
-const minItemWidth = (width - 10) / 2.45; //at first (width - 15) / 2
+const minItemWidth = (width - 11) / 2.45; //at first (width - 15) / 2
 const maxItemWidth = (width - 15) / 2;
 
+const leftContent = <Text>Pull to activate</Text>;
+
+const rightButtons = [
+    <TouchableHighlight><Text>Button 1</Text></TouchableHighlight>,
+    <TouchableHighlight><Text>Button 2</Text></TouchableHighlight>
+];
+
+//TODO: when select another choice change the previous selected one to gray
 export default class AnswerChoices extends Component {
     constructor(props) {
         super(props)
@@ -14,56 +23,65 @@ export default class AnswerChoices extends Component {
         }
     }
 
-    _onPress = () => {
-        //can  only choose 1 choice, choose for the first time
-        if (this.props.currentPatientAnswer.title !== this.props.choices.item.title) {
-            //for the first time 
-            if (this.props.currentPatientAnswer === "" && this.props.answerNumberSelected === 0) {
+    _onPress = async () => {
+        if (this.props.currentPatientAnswer.title !== this.props.answer.title) {
+            //Press on same answer
+            if (this.state.selected === true) {
                 this.setState({
                     selected: !this.state.selected
                 })
-                let answerNumberSelected = 1
-                this.props._setCurrentPatientAnswer(this.props.choices.item)
-                this.props._setAnswerNumberSelected(answerNumberSelected)
+                this.props._setCurrentPatientAnswer("")
             }
-            else if (this.props.answerNumberSelected >= 1) {
-                console.log("choose > 1 choice")
-                ToastAndroid.showWithGravityAndOffset('กรุณาเลือก 1 ข้อ', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
+            else {
+                this.setState({
+                    selected: !this.state.selected
+                })
+                this.props._setCurrentPatientAnswer(this.props.answer)
             }
 
         }
-        //chose the same choice, disselect the choice
+        //Press on same answer
+        //It will delete only if the previous answer equals to pressed answer
         else {
             this.setState({
                 selected: !this.state.selected
             })
-            let answerNumberSelected = 0
             this.props._setCurrentPatientAnswer("")
-            this.props._setAnswerNumberSelected(answerNumberSelected)
+
         }
+        // if (this.props.currentPatientAnswer.title !== this.props.key) {
+        //     console.log("111")
+        //     this.setState({
+        //         selected: !this.state.selected
+        //     })
+        // }
+
     }
 
     render() {
         return (
+            // <Swipeable leftContent={leftContent} rightButtons={rightButtons}>
+            //     <Text>My swipeable content</Text>
+            // </Swipeable>
             <Button
-                title={this.props.choices.item.title}
+                title={this.props.answer.title}
                 onPress={this._onPress}
                 buttonStyle={styles.button}
                 fontFamily="Kanit-Regular"
                 rounded
                 raised
                 backgroundColor={this.state.selected ? "#80cdc0" : 'gray'}
-            />
+                icon={this.state.selected ? { name: 'check', type: 'evilicon' } : null} />
         )
     }
+
 }
+
 const styles = {
     button: {
         margin: 3,
         flex: 1,
-        minWidth: minItemWidth,
-        maxWidth: minItemWidth,
-        borderColor: "#80cdc0",
-        borderWidth: 2,
+        // minWidth: minItemWidth,
+        // maxWidth: minItemWidth
     }
 }
