@@ -426,6 +426,8 @@ export default class SymptomTakingScreen extends Component {
         this.setState({ progress })
     }
 
+    //TODO: bug when click answer with the same title, 
+    //it will automatically choose answer with the same title in next question
     _next = async () => {
         //Choice
         if (this.state.currentQuestion.type === "Choice") {
@@ -465,6 +467,7 @@ export default class SymptomTakingScreen extends Component {
                             currentPatientAnswer: "",
                             multipleChoiceCurrentAnswer: [],
                             allPatientAnswers,
+                            otherPatientAnswer: "",
                             answerNumberSelected: 0,
                         })
                         this.lenOfSpecificQuestion = Object.keys(this.state.questionBasedOnChiefComplaint).length
@@ -483,6 +486,10 @@ export default class SymptomTakingScreen extends Component {
                                 currentPatientAnswer: "",
                                 multipleChoiceCurrentAnswer: [],
                                 allPatientAnswers,
+                                otherPatientAnswer: "",
+                                time: "",
+                                timeUnit: "",
+                                date: "",
                                 answerNumberSelected: 0,
                                 progress: 0
                             })
@@ -496,7 +503,11 @@ export default class SymptomTakingScreen extends Component {
                                 currentQuestion: nextQuestion,
                                 currentPatientAnswer: "",
                                 multipleChoiceCurrentAnswer: [],
+                                otherPatientAnswer: "",
                                 allPatientAnswers,
+                                time: "",
+                                timeUnit: "",
+                                date: "",
                                 answerNumberSelected: 0,
                             })
                             this._calculateProgress()
@@ -532,11 +543,36 @@ export default class SymptomTakingScreen extends Component {
                         //only อื่นๆ in chief question
                         if (this.state.currentQuestion.question === "โปรดระบุอาการสำคัญ") {
                             if (next === "end") {
-                                this.setState({
+                                await this.setState({
                                     chiefComplaint: this.state.otherPatientAnswer,
                                     allPatientAnswers,
                                     answerNumberSelected: 0,
                                     currentPatientAnswer: "",
+                                    multipleChoiceCurrentAnswer: [],
+                                    otherPatientAnswer: "",
+                                    questionNumber: 1,
+                                    questionHistory: _.uniq(history),
+                                    currentQuestion: questionSource.chiefQuestion,
+                                    time: "",
+                                    timeUnit: "",
+                                    date: "",
+                                    progress: 0
+                                })
+                                this._goToConfirm()
+                            }
+                        }
+                        //specific question
+                        else {
+                            //Last question
+                            if (next === "end") {
+                                await this.setState({
+                                    allPatientAnswers,
+                                    answerNumberSelected: 0,
+                                    currentPatientAnswer: "",
+                                    otherPatientAnswer: "",
+                                    time: "",
+                                    timeUnit: "",
+                                    date: "",
                                     multipleChoiceCurrentAnswer: [],
                                     questionNumber: 1,
                                     questionHistory: _.uniq(history),
@@ -545,7 +581,25 @@ export default class SymptomTakingScreen extends Component {
                                 })
                                 this._goToConfirm()
                             }
-
+                            //Not last
+                            else {
+                                nextQuestion = this.state.questionBasedOnChiefComplaint[next]
+                                await this.setState({
+                                    allPatientAnswers,
+                                    answerNumberSelected: 0,
+                                    currentPatientAnswer: "",
+                                    otherPatientAnswer: "",
+                                    time: "",
+                                    timeUnit: "",
+                                    date: "",
+                                    multipleChoiceCurrentAnswer: [],
+                                    questionNumber,
+                                    questionHistory: _.uniq(history),
+                                    currentQuestion: nextQuestion,
+                                })
+                                this._calculateProgress()
+                                console.log("next ", this.state)
+                            }
                         }
                     }
                 }
@@ -639,7 +693,7 @@ export default class SymptomTakingScreen extends Component {
                 else {
                     //answer type c, M, F
                     if (this.state.currentPatientAnswer.type === "c" || this.state.currentPatientAnswer.type === "M" || this.state.currentPatientAnswer.type === "F") {
-                        console.log('5555555')
+                        
                         let questionNumber = this.state.questionNumber + 1
                         let next = this.state.currentPatientAnswer.next
                         let history = this.state.questionHistory
@@ -649,9 +703,10 @@ export default class SymptomTakingScreen extends Component {
                         this.state.multipleChoiceCurrentAnswer.map((answer) => allAnswers = allAnswers + answer.title + " ")
                         allPatientAnswers.push("" + this.state.currentQuestion.title + ": " + allAnswers)
                         let nextQuestion
+
                         //Last question
                         if (next === "end") {
-                            console.log('666666')
+                            
                             await this.setState({
                                 questionNumber: 1,
                                 questionHistory: _.uniq(history),
@@ -659,6 +714,10 @@ export default class SymptomTakingScreen extends Component {
                                 currentPatientAnswer: "",
                                 multipleChoiceCurrentAnswer: [],
                                 allPatientAnswers,
+                                otherPatientAnswer: "",
+                                time: "",
+                                timeUnit: "",
+                                date: "",
                                 answerNumberSelected: 0,
                                 progress: 0
                             })
@@ -674,7 +733,11 @@ export default class SymptomTakingScreen extends Component {
                                 currentPatientAnswer: "",
                                 multipleChoiceCurrentAnswer: [],
                                 allPatientAnswers,
+                                otherPatientAnswer: "",
                                 answerNumberSelected: 0,
+                                time: "",
+                                timeUnit: "",
+                                date: "",
                             })
                             this._calculateProgress()
                             console.log("next ", this.state)
@@ -716,6 +779,9 @@ export default class SymptomTakingScreen extends Component {
                                 otherPatientAnswer: "",
                                 multipleChoiceCurrentAnswer: [],
                                 allPatientAnswers,
+                                time: "",
+                                timeUnit: "",
+                                date: "",
                                 answerNumberSelected: 0,
                                 progress: 0
                             })
@@ -732,6 +798,9 @@ export default class SymptomTakingScreen extends Component {
                                 otherPatientAnswer: "",
                                 multipleChoiceCurrentAnswer: [],
                                 allPatientAnswers,
+                                time: "",
+                                timeUnit: "",
+                                date: "",
                                 answerNumberSelected: 0,
                             })
                             this._calculateProgress()
@@ -1091,6 +1160,16 @@ export default class SymptomTakingScreen extends Component {
                                                             answerNumberSelected={this.state.answerNumberSelected}
                                                             _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
                                                             _setAnswerNumberSelected={this._setAnswerNumberSelected} />
+                                                    )
+                                                }
+                                                else if (answer.type === "o") {
+                                                    return (
+                                                        <AnswerOther
+                                                            answer={answer}
+                                                            key={answer.title}
+                                                            currentPatientAnswer={this.state.currentPatientAnswer}
+                                                            _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
+                                                            _setOtherPatientAnswer={this._setOtherPatientAnswer} />
                                                     )
                                                 }
                                             })
