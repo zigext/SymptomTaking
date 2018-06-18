@@ -627,7 +627,7 @@ export default class SymptomTakingScreen extends Component {
                 else {
                     //answer type c, M, F
                     if (this.state.currentPatientAnswer.type === "c" || this.state.currentPatientAnswer.type === "M" || this.state.currentPatientAnswer.type === "F") {
-
+                        console.log('5555555')
                         let questionNumber = this.state.questionNumber + 1
                         let next = this.state.currentPatientAnswer.next
                         let history = this.state.questionHistory
@@ -639,6 +639,7 @@ export default class SymptomTakingScreen extends Component {
                         let nextQuestion
                         //Last question
                         if (next === "end") {
+                            console.log('666666')
                             await this.setState({
                                 questionNumber: 1,
                                 questionHistory: _.uniq(history),
@@ -688,6 +689,7 @@ export default class SymptomTakingScreen extends Component {
                         else {
                             this.state.multipleChoiceCurrentAnswer.map((answer) => allAnswers = allAnswers + answer.title + " ")
                             allAnswers = allAnswers + " " + this.state.otherPatientAnswer
+                            allAnswers = allAnswers.replace('อื่นๆ','') //remove the word อื่นๆ
                             allPatientAnswers.push("" + this.state.currentQuestion.title + ": " + allAnswers)
                         }
 
@@ -804,7 +806,6 @@ export default class SymptomTakingScreen extends Component {
     }
 
     //TODO: it doesn't look good when device is in landscape mode
-    //Change to card with swiper
     _renderGeneralQuestions = () => {
         return (
             <ThemeProvider uiTheme={uiTheme}>
@@ -1012,6 +1013,7 @@ export default class SymptomTakingScreen extends Component {
     //     )
     // }
 
+//TODO: render multiChoice in direction row
     _renderSpecificQuestions = () => {
 
         return (
