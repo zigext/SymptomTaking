@@ -369,7 +369,7 @@ export default class SymptomTakingScreen extends Component {
         //For separate choices into 2 cards
         this.len = questionSource.chiefQuestion.answer.length
         this.sortedChiefAnswer = questionSource.chiefQuestion.answer.slice()
-        this.sortedChiefAnswer = this.sortedChiefAnswer.filter((answer) => answer.sex === "MF" || answer.sex === User.sex) //filter by sex
+        this.sortedChiefAnswer = this.sortedChiefAnswer.filter((answer) => answer.sex === "MF" || answer.sex === User.info.sex) //filter by sex
         this.sortedChiefAnswer = _.sortBy(this.sortedChiefAnswer, ['title'])
         this.firstHalfChiefAnswer = this.sortedChiefAnswer.slice(0, this.len / 2)
         this.secondHalfChiefAnswer = this.sortedChiefAnswer.slice(this.len / 2, this.len)
@@ -432,7 +432,7 @@ export default class SymptomTakingScreen extends Component {
 
             if (this.state.currentPatientAnswer !== "") {
                 //Patient has emergency symptom
-                if (this.state.currentPatientAnswer.type === "E") {
+                if (this.state.currentPatientAnswer.type === "E" || this.state.currentPatientAnswer.type === "U") {
                     ToastAndroid.showWithGravityAndOffset('ฉุกเฉิน', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
 
                     //KOPAI
@@ -617,7 +617,7 @@ export default class SymptomTakingScreen extends Component {
             if (_.isEmpty(this.state.multipleChoiceCurrentAnswer) === false) {
 
                 //Emergency
-                if (this.state.multipleChoiceCurrentAnswer.some((answer) => answer.type === "E")) {
+                if (this.state.multipleChoiceCurrentAnswer.some((answer) => answer.type === "E" || answer.type === "U")) {
                     //KOPAI
                     ToastAndroid.showWithGravityAndOffset('ฉุกเฉิน', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
                 }
@@ -1027,7 +1027,7 @@ export default class SymptomTakingScreen extends Component {
                                     if (this.state.currentQuestion.type === "MultiChoice") {
                                         return this.state.currentQuestion.answer.map((answer, index) => {
                                             //Answer is choice or emergency or specific gender
-                                            if (answer.type === "c" || answer.type === "E" || (answer.type === User.info.sex) || (answer.type === "o")) {
+                                            if (answer.type === "c" || answer.type === "E" || answer.type === "U" || (answer.type === User.info.sex) || (answer.type === "o")) {
                                                 if (answer.type === "o") {
                                                     return (
                                                         <AnswerOther
@@ -1070,7 +1070,7 @@ export default class SymptomTakingScreen extends Component {
                                         //Choice and Other 
                                         else {
                                             return this.state.currentQuestion.answer.map((answer, index) => {
-                                                if (answer.type === "c" || answer.type === "E") {
+                                                if (answer.type === "c" || answer.type === "E" || answer.type === "U") {
                                                     return (
                                                         <AnswerChoices
                                                             answer={answer}
