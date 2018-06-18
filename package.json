@@ -13,7 +13,11 @@
     "react-native": "0.55.4",
     "react-native-elements": "^0.19.1",
     "react-native-material-ui": "^1.22.3",
-    "react-native-vector-icons": "^4.6.0"
+    "react-native-progress": "^3.5.0",
+    "react-native-swipeable": "^0.6.0",
+    "react-native-swiper": "^1.5.13",
+    "react-native-vector-icons": "^4.6.0",
+    "react-native-wheel-picker": "^1.2.0"
   },
   "devDependencies": {
     "babel-jest": "23.0.1",
