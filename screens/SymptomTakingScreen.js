@@ -420,6 +420,11 @@ export default class SymptomTakingScreen extends Component {
         this.setState({ otherPatientAnswer })
         console.log("otherPatientAnswer = ", this.state.otherPatientAnswer)
     }
+
+    _setDate = (date) => {
+        this.setState({ date })
+        console.log("this.state.date = ", this.state.date)
+    }
     //Progress shows when ask specific questions
     _calculateProgress = () => {
         let numberOfDoneQuestion = this.state.questionNumber - 1 //Because it include chiefQuestion
@@ -427,8 +432,6 @@ export default class SymptomTakingScreen extends Component {
         this.setState({ progress })
     }
 
-    //TODO: bug when click answer with the same title, 
-    //it will automatically choose answer with the same title in next question
     _next = async () => {
         //Choice
         if (this.state.currentQuestion.type === "Choice") {
@@ -448,6 +451,7 @@ export default class SymptomTakingScreen extends Component {
                 //Not emergency
                 //choice answer
                 else if (this.state.currentPatientAnswer.type === "c") {
+                    
                     let questionNumber = this.state.questionNumber + 1
                     let next = this.state.currentPatientAnswer.next
                     let history = this.state.questionHistory
@@ -471,6 +475,7 @@ export default class SymptomTakingScreen extends Component {
                             otherPatientAnswer: "",
                             answerNumberSelected: 0,
                         })
+                        console.log("X ", this.state.questionBasedOnChiefComplaint, this.state.currentQuestion)
                         this.lenOfSpecificQuestion = Object.keys(this.state.questionBasedOnChiefComplaint).length
                         console.log("len for progress = ", this.lenOfSpecificQuestion)
 
@@ -1032,14 +1037,16 @@ export default class SymptomTakingScreen extends Component {
                                     }
                                     else if (this.state.currentQuestion.type === "Choice") {
                                         //Time question
+                                        //TODO: time may not be the only answer of this question
                                         if (this.state.currentQuestion.answer[0].type === "T") {
                                             return (
                                                 <AnswerTime
                                                     answer={this.state.currentQuestion.answer[0]}
-                                                    key={`${this.state.currentQuestion.title} : ${answer.title}`}
+                                                    
                                                     _setTime={this._setTime}
                                                     _setTimeUnit={this._setTimeUnit}
-                                                    _setCurrentPatientAnswer={this._setCurrentPatientAnswer} />
+                                                    _setCurrentPatientAnswer={this._setCurrentPatientAnswer} 
+                                                    _setDate={this._setDate} />
                                             )
                                         }
                                         //Choice and Other 
