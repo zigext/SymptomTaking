@@ -23,7 +23,8 @@ export default class AnswerTime extends Component {
 
     _onDateChange = (date) => {
         this.setState({ date })
-        console.log(this.state.date)
+        this.props._setDate(date)
+        this.props._setCurrentPatientAnswer(this.props.answer)
     }
 
     _renderDatePicker() {
