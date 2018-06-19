@@ -373,6 +373,7 @@ export default class SymptomTakingScreen extends Component {
         this.sortedChiefAnswer = _.sortBy(this.sortedChiefAnswer, ['title'])
         this.firstHalfChiefAnswer = this.sortedChiefAnswer.slice(0, this.len / 2)
         this.secondHalfChiefAnswer = this.sortedChiefAnswer.slice(this.len / 2, this.len)
+        // this.secondHalfChiefAnswer = _.sortBy(this.secondHalfChiefAnswer, ['title'])
 
         this.lenOfSpecificQuestion
 
@@ -986,114 +987,6 @@ export default class SymptomTakingScreen extends Component {
         )
     }
 
-    //TODO: render 1 choice
-    // _renderSpecificQuestions = () => {
-
-    //     return (
-    //         <ThemeProvider uiTheme={uiTheme}>
-    //             <View style={styles.containerSpecific}>
-    //                 <ScrollView>
-    //                     <Question question={this.state.currentQuestion} />
-    //                     { //Check type of question
-    //                         (
-    //                             () => {
-    //                                 if (this.state.currentQuestion.type === "MultiChoice") {
-    //                                     return this.state.currentQuestion.answer.map((answer, index) => {
-    //                                         //Answer is choice or emergency or specific gender
-    //                                         if (answer.type === "c" || answer.type === "E" || (answer.type === User.info.sex) || (answer.type === "o")) {
-    //                                             if (answer.type === "o") {
-    //                                                 return (
-    //                                                     <AnswerOther
-    //                                                         answer={answer}
-    //                                                         key={answer.title}
-    //                                                         currentPatientAnswer={this.state.currentPatientAnswer}
-    //                                                         _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
-    //                                                         _setMultipleChoiceCurrentAnswer={this._setMultipleChoiceCurrentAnswer}
-    //                                                         _setOtherPatientAnswer={this._setOtherPatientAnswer} />
-    //                                                 )
-    //                                             }
-    //                                             else {
-    //                                                 return (
-    //                                                     <AnswerMultiChoices
-    //                                                         answer={answer}
-    //                                                         key={answer.title}
-    //                                                         currentPatientAnswer={this.state.currentPatientAnswer}
-    //                                                         multipleChoiceCurrentAnswer={this.state.multipleChoiceCurrentAnswer}
-    //                                                         answerNumberSelected={this.state.answerNumberSelected}
-    //                                                         _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
-    //                                                         _setMultipleChoiceCurrentAnswer={this._setMultipleChoiceCurrentAnswer}
-    //                                                         _setAnswerNumberSelected={this._setAnswerNumberSelected} />
-    //                                                 )
-    //                                             }
-    //                                         }
-    //                                     }
-    //                                     )
-    //                                 }
-    //                                 else if (this.state.currentQuestion.type === "Choice") {
-    //                                     //Time question
-    //                                     if (this.state.currentQuestion.answer[0].type === "T") {
-    //                                         return (
-    //                                             <AnswerTime
-    //                                                 answer={this.state.currentQuestion.answer[0]}
-    //                                                 _setTime={this._setTime}
-    //                                                 _setTimeUnit={this._setTimeUnit}
-    //                                                 _setCurrentPatientAnswer={this._setCurrentPatientAnswer} />
-    //                                         )
-    //                                     }
-    //                                     //Choice and Other 
-    //                                     else {
-    //                                         return this.state.currentQuestion.answer.map((answer, index) => {
-    //                                             if (answer.type === "c" || answer.type === "E") {
-    //                                                 return (
-    //                                                     <AnswerChoices
-    //                                                         answer={answer}
-    //                                                         key={answer.title}
-    //                                                         currentPatientAnswer={this.state.currentPatientAnswer}
-    //                                                         answerNumberSelected={this.state.answerNumberSelected}
-    //                                                         _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
-    //                                                         _setAnswerNumberSelected={this._setAnswerNumberSelected} />
-    //                                                 )
-    //                                             }
-    //                                         })
-    //                                     }
-    //                                 }
-
-    //                             }
-    //                         )() //immediately-invoked function expreesion, so I can use if-else in JSX
-    //                     }
-    //                     <View style={styles.containerButton}>
-    //                         <Button
-    //                             icon={{ name: 'arrow-left', type: 'material-community' }}
-    //                             onPress={this._back}
-    //                             rounded
-    //                             raised
-    //                             backgroundColor="#80cdc0"
-    //                             buttonStyle={styles.nextButton} />
-    //                         {
-    //                             //Next button
-    //                             this.state.currentQuestion.next !== "end" ?
-    //                                 <Button
-    //                                     icon={{ name: 'arrow-right', type: 'material-community' }}
-    //                                     onPress={this._next}
-    //                                     rounded
-    //                                     raised
-    //                                     backgroundColor="#80cdc0"
-    //                                     buttonStyle={styles.nextButton} /> :
-    //                                 <Button
-    //                                     title="     ยืนยัน    "
-    //                                     onPress={this._next}
-    //                                     rounded
-    //                                     raised
-    //                                     backgroundColor="#80cdc0"
-    //                                     buttonStyle={styles.nextButton} />
-    //                         }
-    //                     </View>
-    //                 </ScrollView>
-    //             </View>
-    //         </ThemeProvider>
-    //     )
-    // }
-
     //TODO: render multiChoice in direction row
     _renderSpecificQuestions = () => {
 
@@ -1113,7 +1006,7 @@ export default class SymptomTakingScreen extends Component {
                                                     return (
                                                         <AnswerOther
                                                             answer={answer}
-                                                            key={answer.title}
+                                                            key={`${this.state.currentQuestion.title} : ${answer.title}`}
                                                             currentPatientAnswer={this.state.currentPatientAnswer}
                                                             _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
                                                             _setMultipleChoiceCurrentAnswer={this._setMultipleChoiceCurrentAnswer}
@@ -1124,7 +1017,7 @@ export default class SymptomTakingScreen extends Component {
                                                     return (
                                                         <AnswerMultiChoices
                                                             answer={answer}
-                                                            key={answer.title}
+                                                            key={`${this.state.currentQuestion.title} : ${answer.title}`}
                                                             currentPatientAnswer={this.state.currentPatientAnswer}
                                                             multipleChoiceCurrentAnswer={this.state.multipleChoiceCurrentAnswer}
                                                             answerNumberSelected={this.state.answerNumberSelected}
@@ -1143,6 +1036,7 @@ export default class SymptomTakingScreen extends Component {
                                             return (
                                                 <AnswerTime
                                                     answer={this.state.currentQuestion.answer[0]}
+                                                    key={`${this.state.currentQuestion.title} : ${answer.title}`}
                                                     _setTime={this._setTime}
                                                     _setTimeUnit={this._setTimeUnit}
                                                     _setCurrentPatientAnswer={this._setCurrentPatientAnswer} />
@@ -1155,7 +1049,7 @@ export default class SymptomTakingScreen extends Component {
                                                     return (
                                                         <AnswerChoices
                                                             answer={answer}
-                                                            key={answer.title}
+                                                            key={`${this.state.currentQuestion.title} : ${answer.title}`}
                                                             currentPatientAnswer={this.state.currentPatientAnswer}
                                                             answerNumberSelected={this.state.answerNumberSelected}
                                                             _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
@@ -1166,7 +1060,7 @@ export default class SymptomTakingScreen extends Component {
                                                     return (
                                                         <AnswerOther
                                                             answer={answer}
-                                                            key={answer.title}
+                                                            key={`${this.state.currentQuestion.title} : ${answer.title}`}
                                                             currentPatientAnswer={this.state.currentPatientAnswer}
                                                             _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
                                                             _setOtherPatientAnswer={this._setOtherPatientAnswer} />
