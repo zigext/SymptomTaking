@@ -12,6 +12,7 @@ import AnswerChoices from '../components/AnswerChoices.symptom'
 import AnswerMultiChoices from '../components/AnswerMultiChoices.symptom'
 import AnswerTime from '../components/AnswerTime.symptom'
 import AnswerOther from '../components/AnswerOther.symptom'
+import AnswerVasScore from '../components/AnswerVasScore.symptom'
 import ProgressBar from '../components/ProgressBar'
 import User from '../UcareData/mockdata' //mock user from firebase => KOPAI
 
@@ -1047,6 +1048,11 @@ export default class SymptomTakingScreen extends Component {
                                                     _setTimeUnit={this._setTimeUnit}
                                                     _setCurrentPatientAnswer={this._setCurrentPatientAnswer} 
                                                     _setDate={this._setDate} />
+                                            )
+                                        }
+                                        else if(this.state.currentQuestion.answer[0].type === "V"){
+                                            return (
+                                                <AnswerVasScore />
                                             )
                                         }
                                         //Choice and Other 
