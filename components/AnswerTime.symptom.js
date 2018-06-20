@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, Text, View, TextInput, ToastAndroid, TouchableOpacity, Dimensions, Picker } from 'react-native'
+import { Button, Icon } from 'react-native-elements'
 import DatePicker from 'react-native-datepicker'
 
 export default class AnswerTime extends Component {
@@ -8,8 +9,18 @@ export default class AnswerTime extends Component {
         this.state = {
             time: "",
             timeUnit: "",
-            date: ""
+            date: "",
+            showTimePicker: false,
+            selected: false
         }
+    }
+
+    //TODO: Can click only 1 choice
+
+    _toggleTimePicker = () => {
+        this.setState({
+            showTimePicker: !this.state.showTimePicker
+        });
     }
     _setTime = (time) => {
         this.setState({ time })
@@ -27,6 +38,17 @@ export default class AnswerTime extends Component {
         this.props._setCurrentPatientAnswer(this.props.answer)
     }
 
+    _onTimePickerChange = (time) => {
+        this.setState({ time })
+        this.props._setTime(time)
+        this.props._setCurrentPatientAnswer(this.props.answer)
+    }
+
+    _onPressTimePickerButton = () => {
+        this._toggleTimePicker()
+        this.setState({ selected: !this.state.selected })
+    }
+
     _renderDatePicker() {
         return (
             <View style={{ flex: 1, alignItems: 'center' }}>
@@ -42,6 +64,45 @@ export default class AnswerTime extends Component {
                     customStyles={styles.customStyles}
                     onDateChange={this._onDateChange}
                 />
+            </View>
+        )
+    }
+
+    _renderTimePicker() {
+        if (this.state.showTimePicker) {
+            return (
+                <View style={{ flex: 1, alignItems: 'center' }}>
+                    <DatePicker
+                        mode='time'
+                        style={{ flex: 1 }}
+                        date={this.state.time}
+                        format="HH:mm"
+                        placeholder="กรุณาระบุเวลา"
+                        minuteInterval={10}
+                        style={styles.elementContainer}
+                        customStyles={styles.customStyles}
+                        onDateChange={this._onTimePickerChange}
+                    />
+                </View>
+            );
+        } else {
+            return null;
+        }
+    }
+
+    _renderTimePickerButton() {
+        return (
+            <View>
+                <Button
+                    title={this.props.answer.title}
+                    onPress={this._onPressTimePickerButton}
+                    buttonStyle={styles.button}
+                    rounded
+                    raised
+                    backgroundColor={this.state.selected ? "#80cdc0" : 'gray'}
+                    icon={this.state.selected ? { name: 'check', type: 'evilicon' } : null}
+                    fontFamily="Kanit-Regular" />
+                {this._renderTimePicker()}
             </View>
         )
     }
@@ -152,7 +213,43 @@ export default class AnswerTime extends Component {
                                         <Picker.Item label="30" value="30" />
                                         <Picker.Item label="31" value="31" />
                                     </Picker>
-                                ) : null
+                                ) : this.props.answer.title === "วันเดือน" ?
+                                    (
+                                        <Picker selectedValue={this.state.time} onValueChange={(itemValue, itemIndex) => this._setTime(itemValue)}>
+                                            <Picker.Item label="เวลา" value="" />
+                                            <Picker.Item label="1" value="1" />
+                                            <Picker.Item label="2" value="2" />
+                                            <Picker.Item label="3" value="3" />
+                                            <Picker.Item label="4" value="4" />
+                                            <Picker.Item label="5" value="5" />
+                                            <Picker.Item label="6" value="6" />
+                                            <Picker.Item label="7" value="7" />
+                                            <Picker.Item label="8" value="8" />
+                                            <Picker.Item label="9" value="9" />
+                                            <Picker.Item label="10" value="10" />
+                                            <Picker.Item label="11" value="11" />
+                                            <Picker.Item label="12" value="12" />
+                                            <Picker.Item label="13" value="13" />
+                                            <Picker.Item label="14" value="14" />
+                                            <Picker.Item label="15" value="15" />
+                                            <Picker.Item label="16" value="16" />
+                                            <Picker.Item label="17" value="17" />
+                                            <Picker.Item label="18" value="18" />
+                                            <Picker.Item label="19" value="19" />
+                                            <Picker.Item label="20" value="20" />
+                                            <Picker.Item label="21" value="21" />
+                                            <Picker.Item label="22" value="22" />
+                                            <Picker.Item label="23" value="23" />
+                                            <Picker.Item label="24" value="24" />
+                                            <Picker.Item label="25" value="25" />
+                                            <Picker.Item label="26" value="26" />
+                                            <Picker.Item label="27" value="27" />
+                                            <Picker.Item label="28" value="28" />
+                                            <Picker.Item label="29" value="29" />
+                                            <Picker.Item label="30" value="30" />
+                                            <Picker.Item label="31" value="31" />
+                                        </Picker>
+                                    ) : null
                     }
 
                 </View>
@@ -179,8 +276,16 @@ export default class AnswerTime extends Component {
                                     <Picker.Item label="เดือน" value="เดือน" />
                                     <Picker.Item label="ปี" value="ปี" />
                                 </Picker>
-                            ) :
-                            null
+                            ) : this.props.answer.title === "วันเดือน" ?
+                                (
+                                    <Picker
+                                        selectedValue={this.state.timeUnit}
+                                        onValueChange={(itemValue, itemIndex) => this._setTimeUnit(itemValue)}>
+                                        <Picker.Item label="หน่วยเวลา" value="" />
+                                        <Picker.Item label="วัน" value="วัน" />
+                                        <Picker.Item label="เดือน" value="เดือน" />
+                                    </Picker>
+                                ) : null
                     }
 
                 </View>
@@ -191,6 +296,8 @@ export default class AnswerTime extends Component {
     render() {
         if (this.props.answer.title === "วว/ดด/ปปปป")
             return this._renderDatePicker()
+        else if (this.props.answer.title === "เวลา")
+            return this._renderTimePickerButton()
         else
             return this._renderPicker()
     }
@@ -200,6 +307,10 @@ const styles = {
     container: {
         flex: 1,
         flexDirection: 'row',
+    },
+    button: {
+        margin: 3,
+        flex: 1,
     },
     customStyles: {
         dateIcon: {
