@@ -22,332 +22,6 @@ const { height, width } = Dimensions.get('window');
 
 
 export default class SymptomTakingScreen extends Component {
-    // _next() {
-    //     console.log(this.state)
-    //     var addPoint = this.state.point + 1
-    //     this.setState({ point: addPoint })
-    //     if (this.state.currentQuestion.type == "Choice") {
-    //         if (this.state.currentPatientAnswer != "") {
-    //             console.log("answer checked,checking answer type")
-    //             if (this.state.currentQuestion.emergency) {
-
-    //                 // this.props.navigator.push({
-    //                 //     screen: 'example.EmergencyScreen', animationType: 'fade', title: "ฉุกเฉิน",
-    //                 //     navigatorStyle: { navBarBackgroundColor: '#7ec8ba', navBarTextColor: '#ffffff' },
-    //                 // })
-
-    //             }
-
-    //             else if (this.state.currentPatientAnswer.title != "ข้าม" && this.state.currentPatientAnswer.type == "c") {
-    //                 var arrayvar = this.state.allPatientAnswer
-    //                 arrayvar.push("" + this.state.currentQuestion.title + ": " + this.state.currentPatientAnswer.title)
-    //                 this.setState({ allPatientAnswer: arrayvar })
-
-    //             }
-    //             else if (this.state.currentPatientAnswer.type == "o") {
-    //                 if (this.state.otherPatientAnswer != "") {
-    //                     var arrayvar = this.state.allPatientAnswer
-    //                     arrayvar.push("" + this.state.currentQuestion.title + ": " + this.state.otherPatientAnswer)
-    //                     this.setState({ allPatientAnswer: arrayvar })
-    //                 }
-    //                 else {
-    //                     ToastAndroid.showWithGravityAndOffset('โปรดระบุอาการอื่นๆ', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300);
-    //                 }
-    //             }
-    //             else if (this.state.currentPatientAnswer.type == "T") {
-    //                 if (this.state.otherPatientAnswer != "" && this.state.timeUnit != "") {
-    //                     var arrayvar = this.state.allPatientAnswer
-    //                     arrayvar.push("" + this.state.currentQuestion.title + ": " + this.state.otherPatientAnswer + " " + this.state.timeUnit)
-    //                     this.setState({ allPatientAnswer: arrayvar })
-    //                 }
-    //                 else {
-    //                     ToastAndroid.showWithGravityAndOffset('โปรดระบุข้อมูลให้ครบ', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300);
-    //                 }
-    //                 //mock
-
-
-    //                 if (this.state.currentQuestion.next != "end" && this.state.otherPatientAnswer != "" && this.state.timeUnit != "") {
-
-    //                     var nextQuestionPoint = this.state.currentQuestion.next
-    //                     console.log(nextQuestionPoint)
-    //                     this.setState({ currentQuestion: questionsSource[nextQuestionPoint] })
-    //                     this.setState({ currentAnswers: this.state.currentAnswers.cloneWithRows(questionsSource[nextQuestionPoint].answer) })
-    //                     console.log("All answers = ", this.state.allPatientAnswer)
-    //                     console.log("other patient answer = ", this.state.otherPatientAnswer)
-    //                     this.setState({ currentPatientAnswer: "", otherPatientAnswer: "", multiChoiceCurrentAnswer: [], timeUnit: "" })
-
-    //                 }
-    //                 else if (this.state.currentQuestion.next == "end") {
-    //                     this._goToConfirm()
-    //                 }
-
-
-    //             }
-    //             if (this.state.currentQuestion.question == "โปรดระบุอาการสำคัญ") {
-    //                 console.log("first question")
-    //                 if (this.state.currentPatientAnswer.next == "end") {
-    //                     // this.props.navigator
-    //                     //     .push(
-    //                     //     {
-    //                     //         screen: 'example.ConfirmCaseScreen',
-    //                     //         animationType: 'fade',
-    //                     //         title: "ยืนยันอาการ",
-    //                     //         passProps: { patientCase: this.state.allPatientAnswer, chiefComplaint: this.state.otherPatientAnswer },
-    //                     //         navigatorStyle: {
-    //                     //             navBarBackgroundColor: '#7ec8ba',
-    //                     //             navBarTextColor: '#ffffff'
-    //                     //         },
-    //                     //     })
-    //                 }
-    //                 else {
-    //                     this.setState({ chiefComplaint: this.state.currentPatientAnswer.title })
-    //                     var nextQuestionPoint = this.state.currentPatientAnswer.next
-    //                     console.log(nextQuestionPoint)
-    //                     this.setState({ currentQuestion: questionsSource[nextQuestionPoint] })
-    //                     this.setState({ currentAnswers: this.state.currentAnswers.cloneWithRows(questionsSource[nextQuestionPoint].answer) })
-    //                     console.log(this.state.allPatientAnswer)
-
-    //                 }
-
-    //             }
-    //             else if (this.state.currentQuestion.emergency != true) {
-    //                 if (this.state.currentQuestion.next != "end" && this.state.currentPatientAnswer.type != "T") {
-
-    //                     var nextQuestionPoint = this.state.currentQuestion.next
-
-    //                     this.setState({ currentQuestion: questionsSource[nextQuestionPoint] })
-    //                     this.setState({ currentAnswers: this.state.currentAnswers.cloneWithRows(questionsSource[nextQuestionPoint].answer) })
-
-    //                 }
-    //                 else if (this.state.currentQuestion.next == "end" && this.state.currentPatientAnswer.type != "T") {
-    //                     this._goToConfirm()
-    //                 }
-    //                 else if (this.state.currentQuestion.emergency != true && this.state.currentPatientAnswer.type != "T") {
-    //                     this._goToConfirm()
-    //                 }
-    //             }
-    //             this.setState({
-    //                 multiChoiceCurrentAnswer: [],
-    //                 otherPatientAnswer: "",
-    //                 currentPatientAnswer: "",
-    //             })
-    //         }
-    //         else {
-    //             ToastAndroid.showWithGravityAndOffset('โปรดเลือกคำตอบ 1 ข้อ', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300);
-    //         }
-    //     }
-    //     else { //สำหรับmultiChoice
-    //         if (this.state.multiChoiceCurrentAnswer != "" && _.indexOf(this.state.multiChoiceCurrentAnswer, "ข้าม") == -1) {
-    //             var arrayvar = this.state.allPatientAnswer
-    //             arrayvar.push("" + this.state.currentQuestion.title + ": " + this.state.multiChoiceCurrentAnswer + " " + this.state.otherPatientAnswer)
-    //             this.setState({
-    //                 allPatientAnswer: arrayvar,
-    //                 multiChoiceCurrentAnswer: [],
-    //                 otherPatientAnswer: "",
-    //                 currentPatientAnswer: ""
-    //             })
-    //         }
-    //         if (this.state.currentQuestion.next != "end") { //ใช้ตำแหน่งของตัวสุดท้ายในอาเรย์ กรณีที่เจอEกับUจะได้เอาตัวที่เป็น0 ไปก่อน
-    //             var nextQuestionPoint = this.state.currentQuestion.next
-    //             console.log(nextQuestionPoint)
-    //             this.setState({ currentQuestion: questionsSource[nextQuestionPoint] })
-    //             this.setState({ currentAnswers: this.state.currentAnswers.cloneWithRows(questionsSource[nextQuestionPoint].answer) })
-    //             console.log(this.state.allPatientAnswer)
-    //             this.setState({ currentPatientAnswer: "", otherPatientAnswer: "", multiChoiceCurrentAnswer: [] })
-    //         }
-    //         else if (this.state.currentQuestion.answer[this.state.currentQuestion.answer.length - 1].next == "end") {
-    //             console.log(this.state.allPatientAnswer)
-
-    //             this._goToConfirm()
-
-    //         }
-    //         else {
-    //             this._goToConfirm()
-    //         }
-
-
-    //     }
-    // }
-
-
-
-    // render() {
-    //     return (
-    //         <ThemeProvider uiTheme={uiTheme} >
-
-    //             <View style={{ margin: 10 }} >
-    //                 <View style={{ borderColor: 'gray', borderBottomWidth: 1 }} >
-    //                     <Text style={{ color: 'black', fontSize: 18, fontWeight: 'bold' }}>{this.state.currentQuestion.question}</Text>
-    //                     <Text style={{ fontSize: 12, color: "black", marginBottom: 10 }} >{(this.state.currentQuestion.type == 'Choice') ? "(เลือกได้ 1 ข้อ)" : "(เลือกได้หลายข้อ)"}</Text>
-    //                     <RadioButton label="Checked by default" checked value="Value" />
-    //                 </View>
-
-    //             </View>
-    //             <ScrollView style={{ flex: 9 }}>
-    //                 {this.state.currentQuestion.answer.map((answer, idx) => {
-
-    //                     if (this.state.currentQuestion.type == "Choice") {
-    //                         if (answer.type == "c" || answer.type == "E" || answer.type == "U") {
-    //                             return (
-
-    //                                 <RadioButton key={idx}
-    //                                     label={answer.title}
-
-    //                                     checkedIcon="radio-button-checked"
-    //                                     uncheckedIcon="radio-button-unchecked"
-    //                                     checked={this.state.currentPatientAnswer.title == answer.title}
-    //                                     value={answer.title}
-    //                                     onCheck={() => this.setState({
-    //                                         currentPatientAnswer: answer,
-    //                                         otherPatientAnswer: ""
-    //                                     })} />
-    //                             )
-    //                         }
-    //                         else if (answer.type == "o") {
-    //                             return <View key={idx} style={{ flexDirection: "row" }}>
-
-    //                                 <RadioButton key={answer.title}
-    //                                     style={{ flex: 5 }}
-    //                                     label={answer.title}
-    //                                     checked={this.state.currentPatientAnswer.title == answer.title}
-    //                                     value={answer.title}
-    //                                     onCheck={() => this.setState({ currentPatientAnswer: answer, })} />
-    //                                 <TextInput style={{ flex: 5 }}
-    //                                     onChangeText={(otherPatientAnswer) => {
-    //                                         this.setState({ otherPatientAnswer })
-    //                                         this.setState({ currentPatientAnswer: answer })
-    //                                     }
-    //                                     }
-    //                                     value={this.state.otherPatientAnswer}
-    //                                     placeholder={answer.title + " โปรดระบุ"}
-    //                                 /></View>
-    //                         }
-    //                         else if (answer.type == "T") {
-    //                             return <View key={idx} style={{ flexDirection: "row", margin: 10 }}>
-
-    //                                 <View style={{ flex: 5 }}>
-    //                                     <Text>ระยะเวลา</Text>
-    //                                     <TextInput style={{ flex: 5 }}
-    //                                         keyboardType="numeric"
-    //                                         onChangeText={(otherPatientAnswer) => {
-    //                                             this.setState({ otherPatientAnswer })
-    //                                             this.setState({ currentPatientAnswer: answer })
-    //                                         }}
-    //                                     />
-    //                                 </View>
-    //                                 <View style={{ flex: 5 }}>
-    //                                     <Text>หน่วยเวลา</Text>
-    //                                     <Picker
-    //                                         selectedValue={this.state.timeUnit}
-    //                                         onValueChange={(itemValue, itemIndex) => this.setState({ timeUnit: itemValue })}>
-    //                                         <Picker.Item label="โปรดระบุหน่วยเวลา" value="" />
-    //                                         <Picker.Item label="นาที" value="นาที" />
-    //                                         <Picker.Item label="ชั่วโมง" value="ชั่วโมง" />
-    //                                         <Picker.Item label="วัน" value="วัน" />
-    //                                         <Picker.Item label="เดือน" value="เดือน" />
-    //                                         <Picker.Item label="ปี" value="ปี" />
-    //                                     </Picker>
-    //                                 </View>
-    //                             </View>
-    //                         }
-
-    //                         else {
-    //                             return null
-    //                         }
-
-    //                     }
-    //                     else if (this.state.currentQuestion.type == "multiChoice") {
-    //                         if (answer.type == "c" || answer.type == "E" || answer.type == "U") {
-    //                             var name = answer.title
-
-    //                             return (
-
-    //                                 <RadioButton key={idx}
-    //                                     label={answer.title}
-    //                                     checkedIcon="radio-button-checked"
-    //                                     uncheckedIcon="radio-button-unchecked"
-    //                                     checked={_.indexOf(this.state.multiChoiceCurrentAnswer, answer.title) != -1}
-    //                                     value={answer.title}
-    //                                     onCheck={() => {
-
-    //                                         var arry = []
-    //                                         arry = this.state.multiChoiceCurrentAnswer
-    //                                         console.log(arry)
-    //                                         if (_.indexOf(arry, answer.title) == -1) {
-    //                                             arry.push(answer.title)
-    //                                             arry = _.uniq(arry)
-    //                                             console.log(arry)
-    //                                         }
-    //                                         else {
-
-    //                                             console.log("else" + _.remove(arry, function (n) { return n == answer.title }))
-    //                                         }
-
-    //                                         this.setState({ multiChoiceCurrentAnswer: _.uniq(arry) })
-    //                                         console.log(this.state.multiChoiceCurrentAnswer)
-    //                                     }} />
-    //                             )
-    //                         }
-    //                         else if (answer.type == "o" || answer.type == "T") {
-    //                             return (<View key={idx} style={{ flexDirection: "row" }}>
-    //                                 <RadioButton key={answer.title}
-    //                                     style={{ flex: 5 }}
-    //                                     label={answer.title}
-    //                                     checked={this.state.otherPatientAnswer}
-    //                                     value={answer.title}
-    //                                     onCheck={() => this.setState({ currentPatientAnswer: answer, })} />
-    //                                 <TextInput style={{ flex: 5 }}
-    //                                     onChangeText={(otherPatientAnswer) => {
-    //                                         this.setState({ otherPatientAnswer })
-    //                                     }
-    //                                     }
-    //                                     value={this.state.otherPatientAnswer}
-    //                                     placeholder={"" + answer.title + " (โปรดระบุ)"}
-    //                                 />
-
-    //                             </View>)
-    //                         }
-
-
-    //                         else {
-    //                             return null
-    //                         }
-
-    //                     }
-
-    //                 })}
-
-    //             </ScrollView>
-
-
-    //             <Text></Text>
-    //             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-    //                 {this.state.currentQuestion.question == "โปรดระบุอาการสำคัญ" ?
-    //                     <Button title="ข้ามคำถามนี้"
-    //                         disabledStyle={{ backgroundColor: "#F8F9FB" }}
-    //                         color="#F8F9FB"
-    //                         disabled={true}
-    //                         //onPress={this._skip.bind(this)} 
-    //                         rounded
-    //                         backgroundColor="#80cdc0" />
-    //                     : <Button title="ข้ามคำถามนี้"
-    //                         //onPress={this._skip.bind(this)} 
-    //                         rounded backgroundColor="#80cdc0" />
-    //                 }
-
-    //                 <Button
-    //                     title="     ต่อไป    "
-    //                     onPress={this._next.bind(this)}
-    //                     rounded
-    //                     backgroundColor="#80cdc0" />
-
-    //             </View>
-    //             <Text></Text>
-
-    //         </ThemeProvider >
-
-    //     )
-    // }
 
     constructor(props) {
         super(props)
@@ -374,7 +48,6 @@ export default class SymptomTakingScreen extends Component {
         this.sortedChiefAnswer = _.sortBy(this.sortedChiefAnswer, ['title'])
         this.firstHalfChiefAnswer = this.sortedChiefAnswer.slice(0, this.len / 2)
         this.secondHalfChiefAnswer = this.sortedChiefAnswer.slice(this.len / 2, this.len)
-        // this.secondHalfChiefAnswer = _.sortBy(this.secondHalfChiefAnswer, ['title'])
 
         this.lenOfSpecificQuestion
 
@@ -413,7 +86,7 @@ export default class SymptomTakingScreen extends Component {
         this.setState({ time })
     }
 
-    _setTimeUnit = (timeUnit) => {
+    _setTimeUnit = async (timeUnit) => {
         this.setState({ timeUnit })
     }
 
@@ -452,7 +125,7 @@ export default class SymptomTakingScreen extends Component {
                 //Not emergency
                 //choice answer
                 else if (this.state.currentPatientAnswer.type === "c") {
-                    
+
                     let questionNumber = this.state.questionNumber + 1
                     let next = this.state.currentPatientAnswer.next
                     let history = this.state.questionHistory
@@ -619,8 +292,9 @@ export default class SymptomTakingScreen extends Component {
                     let history = this.state.questionHistory
                     history.push(this.state.currentQuestion)
                     let allPatientAnswers = this.state.allPatientAnswers
+                    console.log("_____", this.state.currentPatientAnswer,this.state.time, this.state.timeUnit)
                     //date
-                    if (this.state.currentQuestion.answer[0].title === "วว/ดด/ปปปป") {
+                    if (this.state.currentPatientAnswer.title === "วว/ดด/ปปปป") {
                         if (this.state.date !== "") {
                             allPatientAnswers.push("" + this.state.currentQuestion.title + ": " + this.state.date)
                         }
@@ -628,12 +302,20 @@ export default class SymptomTakingScreen extends Component {
                             ToastAndroid.showWithGravityAndOffset('กรุณาระบุวันที่', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
                         }
                     }
-                    //time duration
+                    //time
+                    else if(this.state.currentPatientAnswer.title === "เวลา"){
+                        if(this.state.time !== ""){
+                            allPatientAnswers.push("" + this.state.currentQuestion.title + ": " + this.state.time)
+                        }
+                    }
+                    //time duration 
                     else if (this.state.time !== "" && this.state.timeUnit !== "") {
+                        console.log("______________", this.state.time, this.state.timeUnit)
                         allPatientAnswers.push("" + this.state.currentQuestion.title + ": " + this.state.time + " " + this.state.timeUnit)
                     }
                     else {
                         ToastAndroid.showWithGravityAndOffset('กรุณาเลือกเวลา', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
+                        return
                     }
 
                     //last question
@@ -700,7 +382,7 @@ export default class SymptomTakingScreen extends Component {
                 else {
                     //answer type c, M, F
                     if (this.state.currentPatientAnswer.type === "c" || this.state.currentPatientAnswer.type === "M" || this.state.currentPatientAnswer.type === "F") {
-                        
+
                         let questionNumber = this.state.questionNumber + 1
                         let next = this.state.currentPatientAnswer.next
                         let history = this.state.questionHistory
@@ -713,7 +395,7 @@ export default class SymptomTakingScreen extends Component {
 
                         //Last question
                         if (next === "end") {
-                            
+
                             await this.setState({
                                 questionNumber: 1,
                                 questionHistory: _.uniq(history),
@@ -1039,7 +721,7 @@ export default class SymptomTakingScreen extends Component {
                                     else if (this.state.currentQuestion.type === "Choice") {
                                         //Time question
                                         //TODO: time may not be the only answer of this question
-                                        if (this.state.currentQuestion.answer[0].type === "T") {
+                                        {/*if (this.state.currentQuestion.answer[0].type === "T") {
                                             return (
                                                 <AnswerTime
                                                     answer={this.state.currentQuestion.answer[0]}
@@ -1054,36 +736,52 @@ export default class SymptomTakingScreen extends Component {
                                             return (
                                                 <AnswerVasScore />
                                             )
-                                        }
+                                        }*/}
                                         //Choice and Other 
-                                        else {
-                                            return this.state.currentQuestion.answer.map((answer, index) => {
-                                                if (answer.type === "c" || answer.type === "E" || answer.type === "U") {
-                                                    return (
-                                                        <AnswerChoices
-                                                            answer={answer}
-                                                            key={`${this.state.currentQuestion.title} : ${answer.title}`}
-                                                            currentPatientAnswer={this.state.currentPatientAnswer}
-                                                            answerNumberSelected={this.state.answerNumberSelected}
-                                                            _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
-                                                            _setAnswerNumberSelected={this._setAnswerNumberSelected} />
-                                                    )
-                                                }
-                                                else if (answer.type === "o") {
-                                                    return (
-                                                        <AnswerOther
-                                                            answer={answer}
-                                                            key={`${this.state.currentQuestion.title} : ${answer.title}`}
-                                                            currentPatientAnswer={this.state.currentPatientAnswer}
-                                                            _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
-                                                            _setOtherPatientAnswer={this._setOtherPatientAnswer} />
-                                                    )
-                                                }
-                                            })
-                                        }
-                                    }
 
+                                        return this.state.currentQuestion.answer.map((answer, index) => {
+                                            if (answer.type === "c" || answer.type === "E" || answer.type === "U") {
+                                                return (
+                                                    <AnswerChoices
+                                                        answer={answer}
+                                                        key={`${this.state.currentQuestion.title} : ${answer.title}`}
+                                                        currentPatientAnswer={this.state.currentPatientAnswer}
+                                                        answerNumberSelected={this.state.answerNumberSelected}
+                                                        _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
+                                                        _setAnswerNumberSelected={this._setAnswerNumberSelected} />
+                                                )
+                                            }
+                                            else if (answer.type === "o") {
+                                                return (
+                                                    <AnswerOther
+                                                        answer={answer}
+                                                        key={`${this.state.currentQuestion.title} : ${answer.title}`}
+                                                        currentPatientAnswer={this.state.currentPatientAnswer}
+                                                        _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
+                                                        _setOtherPatientAnswer={this._setOtherPatientAnswer} />
+                                                )
+                                            }
+                                            else if (answer.type === "T") {
+                                                return (
+                                                    <AnswerTime
+                                                        answer={answer}
+                                                        key={`${this.state.currentQuestion.title} : ${answer.title}`}
+                                                        _setTime={this._setTime}
+                                                        _setTimeUnit={this._setTimeUnit}
+                                                        _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
+                                                        _setDate={this._setDate} />
+                                                )
+                                            }
+                                            else if (answer.type === "V") {
+                                                return (
+                                                    <AnswerVasScore />
+                                                )
+                                            }
+                                        })
+                                    }
                                 }
+
+
                             )() //immediately-invoked function expreesion, so I can use if-else in JSX
                         }
 
