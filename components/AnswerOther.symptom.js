@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, ListView, TextInput, ToastAndroid, ScrollView, Dimensions } from 'react-native';
 import { Button, Icon } from 'react-native-elements'
 
+//อื่นๆ button and textInput
 export default class AnswerOther extends Component {
     constructor(props) {
         super(props)
@@ -63,11 +64,9 @@ export default class AnswerOther extends Component {
             })
             this._toggleTextInput()
             if (this.state.selected) {
-                console.log("X ", this.state.selected, this.props.answer)
                 this.props._setCurrentPatientAnswer(this.props.answer)
             }
             else {
-                console.log("Y ", this.state.selected)
                 this.props._setCurrentPatientAnswer("")
             }
         }
@@ -110,7 +109,8 @@ export default class AnswerOther extends Component {
                                 rounded
                                 raised
                                 backgroundColor={this.state.selected ? "#80cdc0" : 'gray'}
-                                icon={this.state.selected ? { name: 'check', type: 'evilicon' } : null} />
+                                icon={this.state.selected ? { name: 'check', type: 'evilicon' } : null}
+                                fontFamily="Kanit-Regular" />
 
                             {this._renderTextInput()}
                         </View>
