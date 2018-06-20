@@ -13,6 +13,7 @@ import AnswerMultiChoices from '../components/AnswerMultiChoices.symptom'
 import AnswerTime from '../components/AnswerTime.symptom'
 import AnswerOther from '../components/AnswerOther.symptom'
 import AnswerVasScore from '../components/AnswerVasScore.symptom'
+import AnswerTakePicture from '../components/AnswerTakePicture.symptom'
 import ProgressBar from '../components/ProgressBar'
 import User from '../UcareData/mockdata' //mock user from firebase => KOPAI
 
@@ -39,7 +40,8 @@ export default class SymptomTakingScreen extends Component {
             time: "",
             timeUnit: "",
             otherPatientAnswer: "",
-            progress: 0
+            progress: 0,
+            imageUrl: ""
         }
         //For separate choices into 2 cards
         this.len = questionSource.chiefQuestion.answer.length
@@ -97,8 +99,13 @@ export default class SymptomTakingScreen extends Component {
 
     _setDate = (date) => {
         this.setState({ date })
-        console.log("this.state.date = ", this.state.date)
     }
+
+    _setImage = (pathStorage, filename, timestamp) => {
+        this.setState({ pathStorage, filename, timestamp })
+        console.log("_setImage ", this.state.pathStorage, this.state.filename, this.state.timestamp)
+    }
+
     //Progress shows when ask specific questions
     _calculateProgress = () => {
         let numberOfDoneQuestion = this.state.questionNumber - 1 //Because it include chiefQuestion
@@ -149,7 +156,7 @@ export default class SymptomTakingScreen extends Component {
                             otherPatientAnswer: "",
                             answerNumberSelected: 0,
                         })
-                        console.log("X ", this.state.questionBasedOnChiefComplaint, this.state.currentQuestion)
+
                         this.lenOfSpecificQuestion = Object.keys(this.state.questionBasedOnChiefComplaint).length
                         console.log("len for progress = ", this.lenOfSpecificQuestion)
 
@@ -288,11 +295,10 @@ export default class SymptomTakingScreen extends Component {
                 //Time question
                 else if (this.state.currentPatientAnswer.type === "T") {
                     let questionNumber = this.state.questionNumber + 1
-                    let next = this.state.currentQuestion.next
+                    let next = this.state.currentPatientAnswer.next
                     let history = this.state.questionHistory
                     history.push(this.state.currentQuestion)
                     let allPatientAnswers = this.state.allPatientAnswers
-                    console.log("_____", this.state.currentPatientAnswer,this.state.time, this.state.timeUnit)
                     //date
                     if (this.state.currentPatientAnswer.title === "วว/ดด/ปปปป") {
                         if (this.state.date !== "") {
@@ -303,14 +309,13 @@ export default class SymptomTakingScreen extends Component {
                         }
                     }
                     //time
-                    else if(this.state.currentPatientAnswer.title === "เวลา"){
-                        if(this.state.time !== ""){
+                    else if (this.state.currentPatientAnswer.title === "เวลา") {
+                        if (this.state.time !== "") {
                             allPatientAnswers.push("" + this.state.currentQuestion.title + ": " + this.state.time)
                         }
                     }
                     //time duration 
                     else if (this.state.time !== "" && this.state.timeUnit !== "") {
-                        console.log("______________", this.state.time, this.state.timeUnit)
                         allPatientAnswers.push("" + this.state.currentQuestion.title + ": " + this.state.time + " " + this.state.timeUnit)
                     }
                     else {
@@ -350,6 +355,57 @@ export default class SymptomTakingScreen extends Component {
                             time: "",
                             timeUnit: "",
                             date: ""
+                        })
+                        this._calculateProgress()
+                        console.log(this.state)
+                    }
+                }
+
+                //upload picture
+                else if (this.state.currentPatientAnswer.type === "P") {
+                    await this.uploadImage()
+                    let questionNumber = this.state.questionNumber + 1
+                    let next = this.state.currentPatientAnswer.next
+                    let history = this.state.questionHistory
+                    history.push(this.state.currentQuestion)
+                    let allPatientAnswers = this.state.allPatientAnswers
+                    allPatientAnswers.push("" + this.state.currentQuestion.title + ": " + this.state.imageUrl)
+                    if (next === "end") {
+                        await this.setState({
+                            questionNumber: 1,
+                            questionHistory: _.uniq(history),
+                            currentQuestion: "",
+                            currentPatientAnswer: "",
+                            multipleChoiceCurrentAnswer: [],
+                            allPatientAnswers,
+                            answerNumberSelected: 0,
+                            time: "",
+                            timeUnit: "",
+                            date: "",
+                            progress: 0,
+                            pathStorage: "",
+                            filename: "",
+                            timestamp: ""
+                        })
+                        console.log(this.state)
+                        this._goToConfirm()
+                    }
+                    else if (next !== "end") {
+                        let nextQuestion = this.state.questionBasedOnChiefComplaint[next]
+                        await this.setState({
+                            questionNumber,
+                            questionHistory: _.uniq(history),
+                            currentQuestion: nextQuestion,
+                            currentPatientAnswer: "",
+                            multipleChoiceCurrentAnswer: [],
+                            allPatientAnswers,
+                            answerNumberSelected: 0,
+                            time: "",
+                            timeUnit: "",
+                            date: "",
+                            pathStorage: "",
+                            filename: "",
+                            timestamp: ""
                         })
                         this._calculateProgress()
                         console.log(this.state)
@@ -575,6 +631,31 @@ export default class SymptomTakingScreen extends Component {
         //     })
     }
 
+    //KOPAI: upload image to firebasestorage
+    uploadImage = () => {
+        console.log("Upload image")
+        let str = "" + this.state.filename + this.state.timestamp
+        this.setState({
+            imageUrl: str
+        })
+
+        // if (filename) {
+        //     firebase
+        //         .storage()
+        //         .ref(`/images/${filename}+${timestamp}`)
+        //         .putFile(pathStorage)
+        //         .then(uploadedFile => {
+        //             console.log('Upload complete: ', uploadedFile)
+        //             let downloadUrl = uploadedFile.downloadUrl
+        //              this.setState( { imageUrl: downloadUrl })
+        //             //เอา this.state.imageUrl ไปใช้แสดงในแชท
+        //         })
+        //         .catch(err => {
+        //             console.log('Error in upload picture: ', err)
+        //         })
+        // }
+    }
+
     //TODO: it doesn't look good when device is in landscape mode
     _renderGeneralQuestions = () => {
         return (
@@ -774,7 +855,17 @@ export default class SymptomTakingScreen extends Component {
                                             }
                                             else if (answer.type === "V") {
                                                 return (
-                                                    <AnswerVasScore />
+                                                    <AnswerVasScore
+                                                        key={`${this.state.currentQuestion.title} : ${answer.title}`} />
+                                                )
+                                            }
+                                            else if (answer.type === "P") {
+                                                return (
+                                                    <AnswerTakePicture
+                                                        answer={answer}
+                                                        key={`${this.state.currentQuestion.title} : ${answer.title}`}
+                                                        _setImage={this._setImage}
+                                                        _setCurrentPatientAnswer={this._setCurrentPatientAnswer} />
                                                 )
                                             }
                                         })
