@@ -17,6 +17,21 @@ import User from '../UcareData/mockdata' //mock user from firebase => KOPAI
 
 var _ = require('lodash')
 
+// var data = [
+//     { title: "a", type: "c", question: "อาการร่วม" },
+//     { title: "b", type: "c", question: "อาการร่วม" },
+//     { title: "c", type: "c", question: "อาการร่วม" },
+//     { title: "ttt", type: "T", question: "เวลา" },
+// ]
+// var result = _.chain(data)
+//     .groupBy("question")
+//     .toPairs()
+//     .map(function (currentItem) {
+//         return _.zipObject(['questionTitle', 'answers'], currentItem);
+//     })
+//     .value();
+// console.log("result ", result)
+
 //TODO: how to check if user answer both questions
 
 export default class SymptomTakingScreen extends Component {
@@ -49,7 +64,7 @@ export default class SymptomTakingScreen extends Component {
     }
 
     _setAnswersForThePage = async (answer, method) => {
-        
+
         if (method === "add") {
             let answersForThePage = this.state.answersForThePage
             answersForThePage.push(answer)
@@ -185,6 +200,83 @@ export default class SymptomTakingScreen extends Component {
                 ToastAndroid.showWithGravityAndOffset('กรุณาระบุอาการสำคัญ', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
             }
         }
+
+        //user has answered
+        else if (_.isEmpty(this.state.answersForThePage) === false) {
+
+            //Emergency
+            if (this.state.answersForThePage.some((answer) => answer.type === "E" || answer.type === "U")) {
+                this._goToEmergency()
+            }
+
+            //Not emergency
+            else {
+                //each questionSet and its answers will point to next questionSet, 
+                //so I can choose any answer in that page's answers
+                //already handle in case of emergency & urgency 
+                let groupAnswers = _.chain(this.state.answersForThePage)
+                    .groupBy("question")
+                    .toPairs()
+                    .map(function (currentItem) {
+                        return _.zipObject(['questionTitle', 'answers'], currentItem)
+                    })
+                    .value()
+                console.log("groupAnswer ", groupAnswers)
+
+                let pageAnswers = this.state.answersForThePage
+                let lastAnswer = pageAnswers.pop()
+                let questionNumber = this.state.questionNumber + 1
+                let next = lastAnswer.next
+                let history = this.state.questionHistory
+                history.push(this.state.currentQuestionSet)
+                let allPatientAnswers = this.state.allPatientAnswers
+                let nextQuestionSet
+
+                let allAnswers = this.state.allPatientAnswers
+                groupAnswers.map((group) => {
+                    let str = ""
+                    str = str + group.questionTitle + ": "
+                    group.answers.map((answer) => {
+                        str = str + " " + answer.title
+                    })
+                    allAnswers.push(str)
+                })
+                console.log("all answer = ", allAnswers)
+
+
+                //last question
+                if (next === "end") {
+                    await this.setState({
+                        questionNumber: 1,
+                        questionHistory: _.uniq(history),
+                        currentQuestion: "",
+                        currentQuestionSet: [],
+                        allPatientAnswers: allAnswers,
+                        answerNumberSelected: 0,
+                        progress: 0
+                    })
+                    this._goToConfirm()
+                }
+                //have next questionSet
+                else if (next !== "end") {
+                    nextQuestionSet = this.state.questionBasedOnChiefComplaint[next]
+                    await this.setState({
+                        questionNumber,
+                        questionHistory: _.uniq(history),
+                        allPatientAnswers: allAnswers,
+                        currentQuestion: nextQuestionSet,
+                        currentQuestionSet: nextQuestionSet
+                    })
+                    this._calculateProgress()
+                    console.log("next ", this.state)
+                }
+
+            }
+        }
+        //user doesn't answer
+        else if (_.isEmpty(this.state.answersForThePage) === true) {
+            ToastAndroid.showWithGravityAndOffset('กรุณาตอบคำถามให้ครบ', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
+        }
     }
 
     _back = async () => {
@@ -222,6 +314,15 @@ export default class SymptomTakingScreen extends Component {
             this._calculateProgress()
         }
         console.log("back ", this.state)
+    }
+
+    //KOPAI: go to emrgency screen
+    _goToEmergency = () => {
+        ToastAndroid.showWithGravityAndOffset('ฉุกเฉิน', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
+        // this.props.navigator.push({
+        //     screen: 'example.EmergencyScreen', animationType: 'fade', title: "ฉุกเฉิน",
+        //     navigatorStyle: { navBarBackgroundColor: '#7ec8ba', navBarTextColor: '#ffffff' },
+        // })
     }
 
     //KOPAI go to confirm screen
