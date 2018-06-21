@@ -13,6 +13,8 @@ var _ = require('lodash')
 const ADD = "add"
 const DELETE = "delete"
 
+// answers = answers.slice(0, -2).sort().concat(answers.slice(-2)) //sort answer by 
+
 export default class QuestionDisplay extends Component {
     constructor(props) {
         super(props)
@@ -29,6 +31,13 @@ export default class QuestionDisplay extends Component {
             timeUnit_2: "",
             allPatientAnswers: [],
         }
+        this.baseState = this.state
+    }
+
+    reset = async () => {
+        await this.setState(this.baseState)
+        await this.setState({ multipleChoiceCurrentAnswer_1: [] })
+        console.log("reset", this.state)
     }
 
     _callSetAnswerForThePage = (answer, method) => {
@@ -65,34 +74,34 @@ export default class QuestionDisplay extends Component {
         console.log("multiple current answer 1 = ", this.state.multipleChoiceCurrentAnswer_1)
     }
 
-    _setAllPatientAnswers = () => {
-        let allPatientAnswers = this.state.allPatientAnswers
-        let questionPerPage = this.props.questionSet.length
-        if (questionPerPage === 1) {
-            if (this.props.questionSet[0].type === "Choice") {
+    // _setAllPatientAnswers = () => {
+    //     let allPatientAnswers = this.state.allPatientAnswers
+    //     let questionPerPage = this.props.questionSet.length
+    //     if (questionPerPage === 1) {
+    //         if (this.props.questionSet[0].type === "Choice") {
 
-            }
-            if (this.props.questionSet[0].type === "MultiChoice") {
-                if (_.isEmpty(this.state.multipleChoiceCurrentAnswer_1 !== false)) {
-                    let allAnswers = ""
-                    this.state.multipleChoiceCurrentAnswer_1.map((answer) => allAnswers = allAnswers + answer.title + " ")
-                    allPatientAnswers.push("" + this.props.questionSet[0].title + ": " + allAnswers)
-                    console.log("all = ", allPatientAnswers)
+    //         }
+    //         if (this.props.questionSet[0].type === "MultiChoice") {
+    //             if (_.isEmpty(this.state.multipleChoiceCurrentAnswer_1 !== false)) {
+    //                 let allAnswers = ""
+    //                 this.state.multipleChoiceCurrentAnswer_1.map((answer) => allAnswers = allAnswers + answer.title + " ")
+    //                 allPatientAnswers.push("" + this.props.questionSet[0].title + ": " + allAnswers)
+    //                 console.log("all = ", allPatientAnswers)
 
-                    //user choose อื่นๆ
-                    if (this.state.otherPatientAnswer_1 !== "") {
-                        allAnswers = allAnswers + " " + this.state.otherPatientAnswer_1
-                        allAnswers = allAnswers.replace('อื่นๆ', '') //remove the word อื่นๆ
-                        console.log("อื่นๆ = ", allAnswers)
-                    }
-                }
+    //                 //user choose อื่นๆ
+    //                 if (this.state.otherPatientAnswer_1 !== "") {
+    //                     allAnswers = allAnswers + " " + this.state.otherPatientAnswer_1
+    //                     allAnswers = allAnswers.replace('อื่นๆ', '') //remove the word อื่นๆ
+    //                     console.log("อื่นๆ = ", allAnswers)
+    //                 }
+    //             }
 
-            }
-        }
-        if (questionPerPage === 2) {
+    //         }
+    //     }
+    //     if (questionPerPage === 2) {
 
-        }
-    }
+    //     }
+    // }
 
     _setAnswerNumberSelected = async (answerNumberSelected) => {
         this.setState({ answerNumberSelected })
@@ -205,79 +214,40 @@ export default class QuestionDisplay extends Component {
     }
 
     _renderTwoQuestions() {
-        console.log("state in display = ", this.state)
         return (
             <View style={styles.container}>
 
-                <Question question={this.props.questionSet[0]} />
-                {
-                    this.props.questionSet[0].type === "Choice" ?
-                        this.props.questionSet[0].answer.map((answer, index) => {
-
-                        })
-                        : this.props.questionSet[0].type === "MultiChoice" ?
-                            (<View style={{ flexDirection: "row", flex: 1, flexWrap: "wrap" }}>
-                                {this.props.questionSet[0].answer.map((answer, index) => {
-                                    if (answer.type === "c" || answer.type === "E" || answer.type === "U" || (answer.type === User.info.sex) || (answer.type === "o")) {
-                                        if (answer.type === "o") {
-                                            return (
-                                                <AnswerOther
-                                                    answer={answer}
-                                                    key={`${this.props.questionSet[0].title} : ${answer.title}`}
-
-                                                />
-                                            )
-                                        }
-                                        else {
-                                            return (
-                                                <AnswerMultiChoices
-                                                    answer={answer}
-                                                    key={`${this.props.questionSet[0].title} : ${answer.title}`}
-                                                    currentPatientAnswer={this.state.currentPatientAnswer_1}
-                                                    multipleChoiceCurrentAnswer={this.state.multipleChoiceCurrentAnswer_1}
-                                                    _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
-                                                    _setMultipleChoiceCurrentAnswer={this._setMultipleChoiceCurrentAnswer1}
-                                                />
-                                            )
-                                        }
-                                    }
-                                })}
-                            </View>)
-                            : null
-                }
-
-
-                <Question question={this.props.questionSet[1]} />
-                {
-                    this.props.questionSet[1].type === "Choice" ?
-                        this.props.questionSet[1].answer.map((answer, index) => {
-                            if (answer.type === "c" || answer.type === "E" || answer.type === "U") {
-                                return (
-                                    <AnswerChoices
-                                        answer={answer}
-                                        key={`${this.state.questionSet[1].title} : ${answer.title}`}
-                                    />
-                                )
-                            }
-                            else if (answer.type === "T") {
-                                return (
-                                    <AnswerTime
-                                        answer={answer}
-                                        key={`${this.state.questionSet[1].title} : ${answer.title}`}
-                                    />
-                                )
-                            }
-                        })
-                        : this.props.questionSet[1].type === "MultiChoice" ?
-                            (
-                                <View style={{ flexDirection: "row", flex: 1, flexWrap: "wrap" }}>
-                                    {this.props.questionSet[1].answer.map((answer, index) => {
+                <View style={styles.questionContainer}>
+                    <Question question={this.props.questionSet[0]} />
+                    {
+                        this.props.questionSet[0].type === "Choice" ?
+                            this.props.questionSet[0].answer.map((answer, index) => {
+                                if (answer.type === "c" || answer.type === "E" || answer.type === "U") {
+                                    return (
+                                        <AnswerChoices
+                                            answer={answer}
+                                            key={`${this.props.questionSet[0].title} : ${answer.title}`}
+                                        />
+                                    )
+                                }
+                                else if (answer.type === "T") {
+                                    return (
+                                        <AnswerTime
+                                            answer={answer}
+                                            key={`${this.props.questionSet[0].title} : ${answer.title}`}
+                                        />
+                                    )
+                                }
+                            })
+                            : this.props.questionSet[0].type === "MultiChoice" ?
+                                (<View style={{ flexDirection: "row", flex: 1, flexWrap: "wrap" }}>
+                                    {this.props.questionSet[0].answer.map((answer, index) => {
                                         if (answer.type === "c" || answer.type === "E" || answer.type === "U" || (answer.type === User.info.sex) || (answer.type === "o")) {
                                             if (answer.type === "o") {
                                                 return (
                                                     <AnswerOther
                                                         answer={answer}
-                                                        key={`${this.props.questionSet[1].title} : ${answer.title}`}
+                                                        key={`${this.props.questionSet[0].title} : ${answer.title}`}
 
                                                     />
                                                 )
@@ -286,21 +256,79 @@ export default class QuestionDisplay extends Component {
                                                 return (
                                                     <AnswerMultiChoices
                                                         answer={answer}
-                                                        key={`${this.props.questionSet[1].title} : ${answer.title}`}
-                                                        currentPatientAnswer={this.state.currentPatientAnswer_2}
-                                                        multipleChoiceCurrentAnswer={this.state.multipleChoiceCurrentAnswer_2}
-                                                        _setCurrentPatientAnswer={this._setCurrentPatientAnswer2}
-                                                        _setMultipleChoiceCurrentAnswer={this._setMultipleChoiceCurrentAnswer2}
+                                                        key={`${this.props.questionSet[0].title} : ${answer.title}`}
+                                                        currentPatientAnswer={this.state.currentPatientAnswer_1}
+                                                        multipleChoiceCurrentAnswer={this.state.multipleChoiceCurrentAnswer_1}
+                                                        _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
+                                                        _setMultipleChoiceCurrentAnswer={this._setMultipleChoiceCurrentAnswer1}
                                                     />
                                                 )
                                             }
                                         }
-                                    })
-                                    }
-                                </View>
-                            )
-                            : null
-                }
+                                    })}
+                                </View>)
+                                : null
+                    }
+                </View>
+
+                <View style={styles.questionContainer}>
+                    <Question question={this.props.questionSet[1]} />
+                    {
+                        this.props.questionSet[1].type === "Choice" ?
+                            this.props.questionSet[1].answer.map((answer, index) => {
+                                if (answer.type === "c" || answer.type === "E" || answer.type === "U") {
+                                    return (
+                                        <AnswerChoices
+                                            answer={answer}
+                                            key={`${this.state.questionSet[1].title} : ${answer.title}`}
+                                        />
+                                    )
+                                }
+                                else if (answer.type === "T") {
+                                    return (
+                                        <AnswerTime
+                                            answer={answer}
+                                            key={`${this.state.questionSet[1].title} : ${answer.title}`}
+                                        />
+                                    )
+                                }
+                            })
+                            : this.props.questionSet[1].type === "MultiChoice" ?
+                                (
+                                    <View style={{ flexDirection: "row", flex: 1, flexWrap: "wrap" }}>
+                                        {
+                                            this.props.questionSet[1].answer.map((answer, index) => {
+                                                if (answer.type === "c" || answer.type === "E" || answer.type === "U" || (answer.type === User.info.sex) || (answer.type === "o")) {
+                                                    if (answer.type === "o") {
+                                                        return (
+                                                            <AnswerOther
+                                                                answer={answer}
+                                                                key={`${this.props.questionSet[1].title} : ${answer.title}`}
+
+                                                            />
+                                                        )
+                                                    }
+                                                    else {
+                                                        return (
+                                                            <AnswerMultiChoices
+                                                                answer={answer}
+                                                                key={`${this.props.questionSet[1].title} : ${answer.title}`}
+                                                                currentPatientAnswer={this.state.currentPatientAnswer_2}
+                                                                multipleChoiceCurrentAnswer={this.state.multipleChoiceCurrentAnswer_2}
+                                                                _setCurrentPatientAnswer={this._setCurrentPatientAnswer2}
+                                                                _setMultipleChoiceCurrentAnswer={this._setMultipleChoiceCurrentAnswer2}
+                                                            />
+                                                        )
+                                                    }
+                                                }
+                                            }
+                                            )
+                                        }
+                                    </View>
+                                )
+                                : null
+                    }
+                </View>
             </View>
         )
     }
@@ -316,5 +344,9 @@ export default class QuestionDisplay extends Component {
 const styles = {
     container: {
         flex: 1
+    },
+    questionContainer: {
+        flex: 1,
+        marginVertical: 20
     }
 }
