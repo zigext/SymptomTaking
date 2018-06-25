@@ -112,7 +112,7 @@ export default class AnswerTime extends Component {
             <View style={styles.container}>
                 <View style={{ flex: 1 }}>
                     {
-                        this.props.answer.title === "time" ?
+                        this.props.answer.title === "ระยะเวลา" ?
                             (
                                 <Picker selectedValue={this.state.time} onValueChange={(itemValue, itemIndex) => this._setTime(itemValue)}>
                                     <Picker.Item label="เวลา" value="" />
@@ -254,7 +254,7 @@ export default class AnswerTime extends Component {
 
                 </View>
                 <View style={{ flex: 1 }}>
-                    {this.props.answer.title === "time" ?
+                    {this.props.answer.title === "ระยะเวลา" ?
                         (
                             <Picker
                                 selectedValue={this.state.timeUnit}
