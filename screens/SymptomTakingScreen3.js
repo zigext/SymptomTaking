@@ -243,7 +243,7 @@ export default class SymptomTakingScreen extends Component {
                     return
                 }
 
-                let questionNumber = this.state.questionNumber + 1
+                let questionNumber = this.state.questionNumber + this.state.currentQuestionSet.length
                 let history = this.state.questionHistory
                 history.push(this.state.currentQuestionSet)
                 let nextQuestionSet = []
