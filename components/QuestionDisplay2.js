@@ -40,19 +40,74 @@ export default class QuestionDisplay extends Component {
         console.log("reset", this.state)
     }
 
-    _callSetAnswerForThePage = (answer, method) => {
-        //answer type T (ระยะเวลา) with Picker
-        if (this.state.time_1 && this.state.timeUnit_1) {
-            let obj = {}
-            obj.type = this.state.currentPatientAnswer_1.type
-            obj.question = this.state.currentPatientAnswer_1.question
-            obj.title = `${this.state.time_1} ${this.state.timeUnit_1}`
-            this.props._setAnswersForThePage(obj, method)
-            this.setState({
-                time_1: "",
-                timeUnit_1: ""
-            })
+    _callSetAnswerForThePage = async (answer, method) => {
+        if (this.state.currentPatientAnswer_1.type === "T") {
+            //answer type T (ระยะเวลา) with Picker
+            if (this.state.currentPatientAnswer_1.title === "ระยะเวลา") {
+                if (this.state.time_1 && this.state.timeUnit_1) {
+                    let obj = {}
+                    obj.type = this.state.currentPatientAnswer_1.type
+                    obj.question = this.state.currentPatientAnswer_1.question
+                    obj.title = `${this.state.time_1} ${this.state.timeUnit_1}`
+                    this.props._setAnswersForThePage(obj, method)
+                    this.setState({
+                        time_1: "",
+                        timeUnit_1: ""
+                    })
+                }
+                else {
+                    //user doesn't choose both time and timeUnit
+                    if ((this.state.time_1 && !this.state.timeUnit_1) || (!this.state.time_1 && this.state.timeUnit_1)) {
+                        console.log("return")
+                        return
+                    }
+
+                }
+                // return
+            }
         }
+        else if (this.state.currentPatientAnswer_1.type !== "T") {
+            console.log("not T")
+            this.props._setAnswersForThePage(answer, method)
+        }
+
+        if (this.state.currentPatientAnswer_2.type === "T") {
+            //answer type T (ระยะเวลา) with Picker
+            if (this.state.currentPatientAnswer_2.title === "ระยะเวลา") {
+                if (this.state.time_2 && this.state.timeUnit_2) {
+                    let obj = {}
+                    obj.type = this.state.currentPatientAnswer_2.type
+                    obj.question = this.state.currentPatientAnswer_2.question
+                    obj.title = `${this.state.time_2} ${this.state.timeUnit_2}`
+                    this.props._setAnswersForThePage(obj, method)
+                    this.setState({
+                        time_2: "",
+                        timeUnit_2: ""
+                    })
+                }
+                else {
+                    //user doesn't choose both time and timeUnit
+                    if ((this.state.time_2 && !this.state.timeUnit_2) || (!this.state.time_2 && this.state.timeUnit_2)) {
+                        return
+                    }
+
+                }
+                // return
+            }
+        }
+        else if (this.state.currentPatientAnswer_2.type !== "T") {
+            console.log("Not T")
+            console.log(answer)
+            this.props._setAnswersForThePage(answer, method)
+        }
+
+        console.log("outside", answer)
+        // this.props._setAnswersForThePage(answer, method)
+
+        // this.props._setAnswersForThePage(answer, method)
+
+
+
         // if (this.state.time_1) {
         //     // let obj = {}
         //     // obj.type = this.state.currentPatientAnswer_1.type
@@ -70,33 +125,36 @@ export default class QuestionDisplay extends Component {
         //     // this.props._setAnswersForThePage(obj, method)
         // }
 
-        else {
-            //user doesn't choose both time and timeUnit
-            if ((this.state.time_1 && !this.state.timeUnit_1) || (!this.state.time_1 && this.state.timeUnit_1)) {
-                return
-            }
-            if ((this.state.time_2 && !this.state.timeUnit_2) || (!this.state.time_2 && this.state.timeUnit_2)) {
-                return
-            }
-            if (this.state.currentPatientAnswer_1.type === "o" && this.state.otherPatientAnswer_1 !== "") {
-                let obj = {}
-                obj.type = this.state.currentPatientAnswer_1.type
-                obj.question = this.state.currentPatientAnswer_1.question
-                obj.title = `${this.state.otherPatientAnswer_1} `
-                this.props._setAnswersForThePage(obj, method)
-                return
-            }
-            if (this.state.currentPatientAnswer_2.type === "o" && this.state.otherPatientAnswer_2 !== "") {
-                let obj = {}
-                obj.type = this.state.currentPatientAnswer_2.type
-                obj.question = this.state.currentPatientAnswer_2.question
-                obj.title = `${this.state.otherPatientAnswer_2} `
-                this.props._setAnswersForThePage(obj, method)
-                return
-            }
-            console.log("XXX")
-            this.props._setAnswersForThePage(answer, method)
-        }
+        // else {
+        //     //user doesn't choose both time and timeUnit
+        //     if ((this.state.time_1 && !this.state.timeUnit_1) || (!this.state.time_1 && this.state.timeUnit_1)) {
+        //         console.log("return")
+        //         return
+        //     }
+        //     if ((this.state.time_2 && !this.state.timeUnit_2) || (!this.state.time_2 && this.state.timeUnit_2)) {
+        //         return
+        //     }
+
+        //     //user answer textInput 
+        //     if (this.state.currentPatientAnswer_1.type === "o" && this.state.otherPatientAnswer_1 !== "") {
+        //         let obj = {}
+        //         obj.type = this.state.currentPatientAnswer_1.type
+        //         obj.question = this.state.currentPatientAnswer_1.question
+        //         obj.title = `${this.state.otherPatientAnswer_1} `
+        //         this.props._setAnswersForThePage(obj, method)
+        //         return
+        //     }
+        //     if (this.state.currentPatientAnswer_2.type === "o" && this.state.otherPatientAnswer_2 !== "") {
+        //         let obj = {}
+        //         obj.type = this.state.currentPatientAnswer_2.type
+        //         obj.question = this.state.currentPatientAnswer_2.question
+        //         obj.title = `${this.state.otherPatientAnswer_2} `
+        //         this.props._setAnswersForThePage(obj, method)
+        //         return
+        //     }
+        //     console.log("X")
+        //     this.props._setAnswersForThePage(answer, method)
+        // }
     }
 
     _setCurrentPatientAnswer1 = async (currentPatientAnswer_1) => {
@@ -204,7 +262,42 @@ export default class QuestionDisplay extends Component {
                 {
                     this.props.questionSet[0].type === "Choice" ?
                         this.props.questionSet[0].answer.map((answer, index) => {
+                            if (answer.type === "c" || answer.type === "E" || answer.type === "U" || (answer.type === User.info.sex)) {
+                                return (
+                                    <AnswerChoices
+                                        answer={answer}
+                                        key={`${this.props.questionSet[0].title} : ${answer.title}`}
+                                        currentPatientAnswer={this.state.currentPatientAnswer_1}
+                                        _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
+                                        _setOtherPatientAnswer={this._setOtherPatientAnswer1}
+                                    />
+                                )
 
+                            }
+                            else if (answer.type === "o") {
+                                return (
+                                    <AnswerOther
+                                        answer={answer}
+                                        key={`${this.props.questionSet[0].title} : ${answer.title}`}
+                                        currentPatientAnswer={this.state.currentPatientAnswer_1}
+                                        _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
+                                        _setMultipleChoiceCurrentAnswer={this._setMultipleChoiceCurrentAnswer1}
+                                        _setOtherPatientAnswer={this._setOtherPatientAnswer1}
+                                    />
+                                )
+                            }
+                            else if (answer.type === "T") {
+                                return (
+                                    <AnswerTime
+                                        answer={answer}
+                                        key={`${this.props.questionSet[0].title} : ${answer.title}`}
+                                        _setTime={this._setTime1}
+                                        _setTimeUnit={this._setTimeUnit1}
+                                        _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
+                                        _setDate={this._setDate}
+                                    />
+                                )
+                            }
                         })
                         : this.props.questionSet[0].type === "MultiChoice" ?
 
@@ -244,21 +337,25 @@ export default class QuestionDisplay extends Component {
         )
     }
 
-    _renderTwoQuestions() {
 
+    _renderTwoQuestions() {
         return (
             <View style={styles.container}>
 
+                {/*Question no.1*/}
                 <View style={styles.questionContainer}>
                     <Question question={this.props.questionSet[0]} />
                     {
                         this.props.questionSet[0].type === "Choice" ?
                             this.props.questionSet[0].answer.map((answer, index) => {
-                                if (answer.type === "c" || answer.type === "E" || answer.type === "U") {
+                                if (answer.type === "c" || answer.type === "E" || answer.type === "U" || (answer.type === User.info.sex)) {
                                     return (
                                         <AnswerChoices
                                             answer={answer}
                                             key={`${this.props.questionSet[0].title} : ${answer.title}`}
+                                            currentPatientAnswer={this.state.currentPatientAnswer_1}
+                                            _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
+                                            _setOtherPatientAnswer={this._setOtherPatientAnswer1}
                                         />
                                     )
                                 }
@@ -271,6 +368,16 @@ export default class QuestionDisplay extends Component {
                                             _setTimeUnit={this._setTimeUnit1}
                                             _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
                                             _setDate={this._setDate}
+                                        />
+                                    )
+                                }
+                                else if (answer.type === "o") {
+                                    return (
+                                        <AnswerOther
+                                            answer={answer}
+                                            key={`${this.props.questionSet[0].title} : ${answer.title}`}
+                                            _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
+                                            _setOtherPatientAnswer={this._setOtherPatientAnswer1}
                                         />
                                     )
                                 }
@@ -309,16 +416,20 @@ export default class QuestionDisplay extends Component {
                     }
                 </View>
 
+                {/*Question no.2*/}
                 <View style={styles.questionContainer}>
                     <Question question={this.props.questionSet[1]} />
                     {
                         this.props.questionSet[1].type === "Choice" ?
                             this.props.questionSet[1].answer.map((answer, index) => {
-                                if (answer.type === "c" || answer.type === "E" || answer.type === "U") {
+                                if (answer.type === "c" || answer.type === "E" || answer.type === "U" || (answer.type === User.info.sex)) {
                                     return (
                                         <AnswerChoices
                                             answer={answer}
-                                            key={`${this.state.questionSet[1].title} : ${answer.title}`}
+                                            key={`${this.props.questionSet[1].title} : ${answer.title}`}
+                                            currentPatientAnswer={this.state.currentPatientAnswer_2}
+                                            _setCurrentPatientAnswer={this._setCurrentPatientAnswer2}
+                                            _setOtherPatientAnswer={this._setOtherPatientAnswer2}
                                         />
                                     )
                                 }
@@ -326,7 +437,7 @@ export default class QuestionDisplay extends Component {
                                     return (
                                         <AnswerTime
                                             answer={answer}
-                                            key={`${this.state.questionSet[1].title} : ${answer.title}`}
+                                            key={`${this.props.questionSet[1].title} : ${answer.title}`}
                                             _setTime={this._setTime2}
                                             _setTimeUnit={this._setTimeUnit2}
                                             _setCurrentPatientAnswer={this._setCurrentPatientAnswer2}
