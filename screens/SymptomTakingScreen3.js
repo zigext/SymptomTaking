@@ -56,7 +56,6 @@ export default class SymptomTakingScreen extends Component {
 
         if (method === "add") {
             let answersForThePage = this.state.answersForThePage
-            console.log("____", answersForThePage, typeof answersForThePage)
             answersForThePage.push(answer)
             await this.setState({
                 answersForThePage: _.uniq(answersForThePage)
@@ -235,6 +234,7 @@ export default class SymptomTakingScreen extends Component {
                         return _.zipObject(['questionTitle', 'answers'], currentItem)
                     })
                     .value()
+                groupAnswers = groupAnswers.filter((answer) => answer.questionTitle !== "undefined")
                 console.log("group = ", groupAnswers)
 
                 //user doesn't answer all the questions in page
@@ -252,6 +252,11 @@ export default class SymptomTakingScreen extends Component {
                 //have special answer that will go to another direction
                 if (_.includes(_.keys(this.state.currentPage), "nextSpecial")) {
                     console.log("nextSpecial")
+                    this.state.currentPage.nextNormal.map((answer) => {
+                        if(answer.title === this.state.currentPatientAnswer.title){
+                            nextPage = answer.next
+                        }
+                    })
                 }
                 //normal answer
                 else {
