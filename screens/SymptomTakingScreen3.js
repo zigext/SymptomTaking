@@ -58,7 +58,7 @@ export default class SymptomTakingScreen extends Component {
             let answersForThePage = this.state.answersForThePage
             answersForThePage.push(answer)
             await this.setState({
-                answersForThePage: _.uniq(answersForThePage)
+                answersForThePage: _.uniq(answersForThePage) //TODO: make it deep check
             })
         }
         else if (method === "delete") {
@@ -252,11 +252,18 @@ export default class SymptomTakingScreen extends Component {
                 //have special answer that will go to another direction
                 if (_.includes(_.keys(this.state.currentPage), "nextSpecial")) {
                     console.log("nextSpecial")
-                    this.state.currentPage.nextNormal.map((answer) => {
-                        if(answer.title === this.state.currentPatientAnswer.title){
-                            nextPage = answer.next
-                        }
+                    this.state.currentPage.nextSpecial.map((answer) => {
+                        this.state.answersForThePage.map((a) => {
+                            if (answer.title === a.title) {
+                                nextPage = answer.next
+                                console.log("special = ", nextPage, answer.title, this.state.currentPatientAnswer.title)
+                            }
+                        })
+
                     })
+                    if (!nextPage) {
+                        nextPage = this.state.currentPage.nextNormal.next
+                    }
                 }
                 //normal answer
                 else {
@@ -343,7 +350,7 @@ export default class SymptomTakingScreen extends Component {
         if (this.state.allPatientAnswers.length <= 1) {
             await this.setState({
                 currentQuestion: prevQuestionSet,
-                currentQuestionSet: prevQuestionSet, 
+                currentQuestionSet: prevQuestionSet,
                 questionNumber: 1, //back to chiefQuestion
                 allPatientAnswers: [],
                 progress: 0,
