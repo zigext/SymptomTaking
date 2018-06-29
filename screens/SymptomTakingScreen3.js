@@ -266,6 +266,7 @@ export default class SymptomTakingScreen extends Component {
                     group.answers.map((answer) => {
                         str = str + " " + answer.title
                     })
+                    str = str.replace('อื่นๆ', '') //remove the word อื่นๆ
                     allPatientAnswers.push(str)
                 })
                 console.log("all answer = ", allPatientAnswers)
@@ -331,9 +332,9 @@ export default class SymptomTakingScreen extends Component {
     }
 
     _back = async () => {
-        let prevQuestion = this.state.questionHistory.pop()
-        let questionNumber = this.state.questionNumber - 1
-        //When only chiefQuestion left in allPatientAnswers
+        let prevQuestionSet = this.state.questionHistory.pop()
+        let questionNumber = this.state.questionNumber - prevQuestionSet.length
+        //When only chiefQuestion are left in allPatientAnswers
         if (this.state.allPatientAnswers.length <= 1) {
             await this.setState({
                 currentQuestion: prevQuestion,
@@ -348,7 +349,7 @@ export default class SymptomTakingScreen extends Component {
                 chiefComplaint: ""
             })
         }
-        //When there are more
+        // //When there are more
         else {
             let allPatientAnswers = this.state.allPatientAnswers
             allPatientAnswers.pop()
@@ -364,7 +365,41 @@ export default class SymptomTakingScreen extends Component {
             })
             this._calculateProgress()
         }
-        console.log("back ", this.state)
+
+        // let prevQuestion = this.state.questionHistory.pop()
+        // let questionNumber = this.state.questionNumber - 1
+        // //When only chiefQuestion left in allPatientAnswers
+        // if (this.state.allPatientAnswers.length <= 1) {
+        //     await this.setState({
+        //         currentQuestion: prevQuestion,
+        //         questionNumber,
+        //         allPatientAnswers: [],
+        //         progress: 0,
+        //         currentPatientAnswer: "",
+        //         multipleChoiceCurrentAnswer: [],
+        //         otherPatientAnswer: "",
+        //         time: "",
+        //         timeUnit: "",
+        //         chiefComplaint: ""
+        //     })
+        // }
+        // //When there are more
+        // else {
+        //     let allPatientAnswers = this.state.allPatientAnswers
+        //     allPatientAnswers.pop()
+        //     await this.setState({
+        //         currentQuestion: prevQuestion,
+        //         questionNumber,
+        //         allPatientAnswers,
+        //         currentPatientAnswer: "",
+        //         multipleChoiceCurrentAnswer: [],
+        //         otherPatientAnswer: "",
+        //         time: "",
+        //         timeUnit: ""
+        //     })
+        //     this._calculateProgress()
+        // }
+        // console.log("back ", this.state)
     }
 
     //KOPAI: go to emrgency screen
