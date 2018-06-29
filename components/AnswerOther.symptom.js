@@ -76,8 +76,14 @@ export default class AnswerOther extends Component {
 
     _onChangeText = (text) => {
         this.setState({ text })
-        this.props._setOtherPatientAnswer(text)
+        // this.props._setOtherPatientAnswer(text)
         this.props._setCurrentPatientAnswer(this.props.answer)
+    }
+
+    _onEndEditing = () => {
+        let text = this.state.text
+        console.log("text = ", text)
+        this.props._setOtherPatientAnswer(text)
     }
 
     //Only อื่นๆ button
@@ -85,10 +91,11 @@ export default class AnswerOther extends Component {
         if (this.state.showTextInput) {
             return (
                 <TextInput
+                    onEndEditing={this._onEndEditing}
                     onChangeText={this._onChangeText}
                     value={this.state.text}
-                    placeholder={this.props.answer.title + " (โปรดระบุ)"} 
-                    maxLength = {100}
+                    placeholder={this.props.answer.title + " (โปรดระบุ)"}
+                    maxLength={100}
                     multiline />
             );
         } else {
@@ -121,7 +128,7 @@ export default class AnswerOther extends Component {
                             value={this.state.text}
                             placeholder={this.props.answer.title}
                             maxLength={100}
-                            keyboardType={ this.props.answer.category === "quantity" ? "numeric" : "default" } />
+                            keyboardType={this.props.answer.category === "quantity" ? "numeric" : "default"} />
                     )
                 }
             </View>
