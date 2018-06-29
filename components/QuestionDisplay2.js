@@ -59,6 +59,7 @@ export default class QuestionDisplay extends Component {
                     //user doesn't choose both time and timeUnit
                     if ((this.state.time_1 && !this.state.timeUnit_1) || (!this.state.time_1 && this.state.timeUnit_1)) {
                         console.log("return")
+                        ToastAndroid.showWithGravityAndOffset('กรุณาระบุเวลาและหน่วยเวลา', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
                         return
                     }
 
@@ -74,7 +75,7 @@ export default class QuestionDisplay extends Component {
                 obj.question = this.state.currentPatientAnswer_1.question
                 obj.title = `${this.state.otherPatientAnswer_1} `
                 this.props._setAnswersForThePage(obj, method)
-                return
+                // return
             }
             this.props._setAnswersForThePage(answer, method)
         }
@@ -96,6 +97,7 @@ export default class QuestionDisplay extends Component {
                 else {
                     //user doesn't choose both time and timeUnit
                     if ((this.state.time_2 && !this.state.timeUnit_2) || (!this.state.time_2 && this.state.timeUnit_2)) {
+                         ToastAndroid.showWithGravityAndOffset('กรุณาระบุเวลาและหน่วยเวลา', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
                         return
                     }
 
@@ -105,14 +107,14 @@ export default class QuestionDisplay extends Component {
         }
         else if (this.state.currentPatientAnswer_2.type !== "T") {
             console.log("Not T")
-                if (this.state.currentPatientAnswer_2.type === "o" && this.state.otherPatientAnswer_2 !== "") {
-                    let obj = {}
-                    obj.type = this.state.currentPatientAnswer_2.type
-                    obj.question = this.state.currentPatientAnswer_2.question
-                    obj.title = `${this.state.otherPatientAnswer_2} `
-                    this.props._setAnswersForThePage(obj, method)
-                    return
-                }
+            if (this.state.currentPatientAnswer_2.type === "o" && this.state.otherPatientAnswer_2 !== "") {
+                let obj = {}
+                obj.type = this.state.currentPatientAnswer_2.type
+                obj.question = this.state.currentPatientAnswer_2.question
+                obj.title = `${this.state.otherPatientAnswer_2} `
+                this.props._setAnswersForThePage(obj, method)
+                // return
+            }
             this.props._setAnswersForThePage(answer, method)
         }
 
@@ -218,7 +220,7 @@ export default class QuestionDisplay extends Component {
 
     _setOtherPatientAnswer1 = async (otherPatientAnswer_1) => {
         await this.setState({ otherPatientAnswer_1 })
-        this._callSetAnswerForThePage(otherPatientAnswer_2, ADD)
+        this._callSetAnswerForThePage(otherPatientAnswer_1, ADD)
         console.log("otherPatientAnswer 1 = ", this.state.otherPatientAnswer_1)
     }
 
@@ -251,11 +253,13 @@ export default class QuestionDisplay extends Component {
     }
 
     _setTime2 = async (time_2) => {
-        this.setState({ time_2 })
+        await this.setState({ time_2 })
+        this._callSetAnswerForThePage(time_2, ADD)
     }
 
-    _setTimeUnit2 = (timeUnit_2) => {
-        this.setState({ timeUnit_2 })
+    _setTimeUnit2 = async (timeUnit_2) => {
+        await this.setState({ timeUnit_2 })
+        this._callSetAnswerForThePage(timeUnit_2, ADD)
     }
 
     _setOtherPatientAnswer2 = async (otherPatientAnswer_2) => {
@@ -443,6 +447,16 @@ export default class QuestionDisplay extends Component {
                                             answer={answer}
                                             key={`${this.props.questionSet[1].title} : ${answer.title}`}
                                             currentPatientAnswer={this.state.currentPatientAnswer_2}
+                                            _setCurrentPatientAnswer={this._setCurrentPatientAnswer2}
+                                            _setOtherPatientAnswer={this._setOtherPatientAnswer2}
+                                        />
+                                    )
+                                }
+                                else if (answer.type === "o") {
+                                    return (
+                                        <AnswerOther
+                                            answer={answer}
+                                            key={`${this.props.questionSet[1].title} : ${answer.title}`}
                                             _setCurrentPatientAnswer={this._setCurrentPatientAnswer2}
                                             _setOtherPatientAnswer={this._setOtherPatientAnswer2}
                                         />
