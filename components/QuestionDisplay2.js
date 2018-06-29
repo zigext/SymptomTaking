@@ -68,6 +68,14 @@ export default class QuestionDisplay extends Component {
         }
         else if (this.state.currentPatientAnswer_1.type !== "T") {
             console.log("not T")
+            if (this.state.currentPatientAnswer_1.type === "o" && this.state.otherPatientAnswer_1 !== "") {
+                let obj = {}
+                obj.type = this.state.currentPatientAnswer_1.type
+                obj.question = this.state.currentPatientAnswer_1.question
+                obj.title = `${this.state.otherPatientAnswer_1} `
+                this.props._setAnswersForThePage(obj, method)
+                return
+            }
             this.props._setAnswersForThePage(answer, method)
         }
 
@@ -97,7 +105,14 @@ export default class QuestionDisplay extends Component {
         }
         else if (this.state.currentPatientAnswer_2.type !== "T") {
             console.log("Not T")
-            console.log(answer)
+                if (this.state.currentPatientAnswer_2.type === "o" && this.state.otherPatientAnswer_2 !== "") {
+                    let obj = {}
+                    obj.type = this.state.currentPatientAnswer_2.type
+                    obj.question = this.state.currentPatientAnswer_2.question
+                    obj.title = `${this.state.otherPatientAnswer_2} `
+                    this.props._setAnswersForThePage(obj, method)
+                    return
+                }
             this.props._setAnswersForThePage(answer, method)
         }
 
