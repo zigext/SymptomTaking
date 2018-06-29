@@ -337,8 +337,9 @@ export default class SymptomTakingScreen extends Component {
         //When only chiefQuestion are left in allPatientAnswers
         if (this.state.allPatientAnswers.length <= 1) {
             await this.setState({
-                currentQuestion: prevQuestion,
-                questionNumber,
+                currentQuestion: prevQuestionSet,
+                currentQuestionSet: prevQuestionSet, 
+                questionNumber: 1, //back to chiefQuestion
                 allPatientAnswers: [],
                 progress: 0,
                 currentPatientAnswer: "",
@@ -352,9 +353,15 @@ export default class SymptomTakingScreen extends Component {
         // //When there are more
         else {
             let allPatientAnswers = this.state.allPatientAnswers
-            allPatientAnswers.pop()
+            if (prevQuestionSet.length === 1)
+                allPatientAnswers.pop()
+            else if (prevQuestionSet.length === 2) {
+                allPatientAnswers.pop()
+                allPatientAnswers.pop()
+            }
             await this.setState({
-                currentQuestion: prevQuestion,
+                currentQuestion: prevQuestionSet,
+                currentQuestionSet: prevQuestionSet,
                 questionNumber,
                 allPatientAnswers,
                 currentPatientAnswer: "",
@@ -399,7 +406,7 @@ export default class SymptomTakingScreen extends Component {
         //     })
         //     this._calculateProgress()
         // }
-        // console.log("back ", this.state)
+        console.log("back ", this.state)
     }
 
     //KOPAI: go to emrgency screen
