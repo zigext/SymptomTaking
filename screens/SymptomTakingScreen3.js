@@ -279,6 +279,9 @@ export default class SymptomTakingScreen extends Component {
                         str = str + " " + answer.title
                     })
                     str = str.replace('อื่นๆ', '') //remove the word อื่นๆ
+                    str = str.replace('วว/ดด/ปปปป', '') 
+                    str = str.replace('วันเดือนปี', '') 
+                    str = str.replace('วันเดือน', '') 
                     allPatientAnswers.push(str)
                 })
                 console.log("all answer = ", allPatientAnswers)
