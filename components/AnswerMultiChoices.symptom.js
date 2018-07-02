@@ -57,7 +57,8 @@ export default class AnswerMultipleChoices extends Component {
                 fontFamily="Kanit-Regular"
                 rounded
                 raised
-                backgroundColor={this.state.selected ? "#80cdc0" : 'gray'}
+                color={this.state.selected ? "#FFFFFF" : "#9CD8B9"}
+                backgroundColor={this.state.selected ? "#80cdc0" : '#FFFFFF'}
                 icon={this.state.selected ? { name: 'check', type: 'evilicon' } : null} />
         )
     }
@@ -68,6 +69,8 @@ const styles = {
     button: {
         margin: 3,
         flex: 1,
+        borderColor: "#9CD8B9",
+        borderWidth: 2
         // minWidth: minItemWidth,
         // maxWidth: minItemWidth
     }
