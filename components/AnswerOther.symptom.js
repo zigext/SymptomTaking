@@ -74,8 +74,8 @@ export default class AnswerOther extends Component {
 
     }
 
-    _onChangeText = (text) => {
-        this.setState({ text })
+    _onChangeText = async (text) => {
+        await this.setState({ text })
         // this.props._setOtherPatientAnswer(text)
         this.props._setCurrentPatientAnswer(this.props.answer)
     }
@@ -129,6 +129,7 @@ export default class AnswerOther extends Component {
                         <TextInput
                             onEndEditing={this._onEndEditing}
                             onChangeText={this._onChangeText}
+                            onFocus={() => this.props._setCurrentPatientAnswer(this.props.answer)}
                             value={this.state.text}
                             placeholder={this.props.answer.title}
                             maxLength={100}
@@ -146,5 +147,7 @@ const styles = {
     button: {
         margin: 3,
         flex: 1,
+        borderColor: "#9CD8B9",
+        borderWidth: 2
     }
 }
