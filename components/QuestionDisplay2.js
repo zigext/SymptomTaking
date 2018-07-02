@@ -29,6 +29,8 @@ export default class QuestionDisplay extends Component {
             time_2: "",
             timeUnit_1: "",
             timeUnit_2: "",
+            date_1: "",
+            date_2: "",
             allPatientAnswers: [],
         }
         this.baseState = this.state
@@ -43,7 +45,7 @@ export default class QuestionDisplay extends Component {
     _callSetAnswerForThePage = async (answer, method) => {
         if (this.state.currentPatientAnswer_1.type === "T") {
             //answer type T (ระยะเวลา) with Picker
-            if (this.state.currentPatientAnswer_1.title === "ระยะเวลา") {
+            if (this.state.currentPatientAnswer_1.title === "ระยะเวลา" || this.state.currentPatientAnswer_1.title === "วันเดือนปี" || this.state.currentPatientAnswer_1.title === "วันเดือน") {
                 if (this.state.time_1 && this.state.timeUnit_1) {
                     let obj = {}
                     obj.type = this.state.currentPatientAnswer_1.type
@@ -66,15 +68,33 @@ export default class QuestionDisplay extends Component {
                 }
                 // return
             }
+
+            else if (this.state.currentPatientAnswer_1.title === "วว/ดด/ปปปป") {
+                if (this.state.date_1 !== "") {
+                    let obj = {}
+                    obj.type = this.state.currentPatientAnswer_1.type
+                    obj.question = this.state.currentPatientAnswer_1.question
+                    obj.title = `${this.state.date_1}`
+                    this.props._setAnswersForThePage(obj, method)
+                    this.setState({
+                        date_1: ""
+                    })
+                }
+            }
         }
         else if (this.state.currentPatientAnswer_1.type !== "T") {
             console.log("not T")
             if (this.state.currentPatientAnswer_1.type === "o" && this.state.otherPatientAnswer_1 !== "") {
+                console.log("type O")
                 let obj = {}
                 obj.type = this.state.currentPatientAnswer_1.type
                 obj.question = this.state.currentPatientAnswer_1.question
                 obj.title = `${this.state.otherPatientAnswer_1} `
                 this.props._setAnswersForThePage(obj, method)
+                //so, it doesn't call this again
+                this.setState({
+                    otherPatientAnswer_1: ""
+                })
                 // return
             }
             this.props._setAnswersForThePage(answer, method)
@@ -82,7 +102,7 @@ export default class QuestionDisplay extends Component {
 
         if (this.state.currentPatientAnswer_2.type === "T") {
             //answer type T (ระยะเวลา) with Picker
-            if (this.state.currentPatientAnswer_2.title === "ระยะเวลา") {
+            if (this.state.currentPatientAnswer_2.title === "ระยะเวลา" || this.state.currentPatientAnswer_2.title === "วันเดือนปี" || this.state.currentPatientAnswer_2.title === "วันเดือน") {
                 if (this.state.time_2 && this.state.timeUnit_2) {
                     let obj = {}
                     obj.type = this.state.currentPatientAnswer_2.type
@@ -97,12 +117,25 @@ export default class QuestionDisplay extends Component {
                 else {
                     //user doesn't choose both time and timeUnit
                     if ((this.state.time_2 && !this.state.timeUnit_2) || (!this.state.time_2 && this.state.timeUnit_2)) {
-                         ToastAndroid.showWithGravityAndOffset('กรุณาระบุเวลาและหน่วยเวลา', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
+                        ToastAndroid.showWithGravityAndOffset('กรุณาระบุเวลาและหน่วยเวลา', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
                         return
                     }
 
                 }
                 // return
+            }
+
+            else if (this.state.currentPatientAnswer_2.title === "วว/ดด/ปปปป") {
+                if (this.state.date_2 !== "") {
+                    let obj = {}
+                    obj.type = this.state.currentPatientAnswer_2.type
+                    obj.question = this.state.currentPatientAnswer_2.question
+                    obj.title = `${this.state.date_2}`
+                    this.props._setAnswersForThePage(obj, method)
+                    this.setState({
+                        date_2: ""
+                    })
+                }
             }
         }
         else if (this.state.currentPatientAnswer_2.type !== "T") {
@@ -114,6 +147,10 @@ export default class QuestionDisplay extends Component {
                 obj.title = `${this.state.otherPatientAnswer_2} `
                 this.props._setAnswersForThePage(obj, method)
                 // return
+                //so, it doesn't call this again
+                this.setState({
+                    otherPatientAnswer_2: ""
+                })
             }
             this.props._setAnswersForThePage(answer, method)
         }
@@ -165,7 +202,7 @@ export default class QuestionDisplay extends Component {
         //         let obj = {}
         //         obj.type = this.state.currentPatientAnswer_2.type
         //         obj.question = this.state.currentPatientAnswer_2.question
-        //         obj.title = `${this.state.otherPatientAnswer_2} `
+        //         obj.title = `${this.state.otherPatientAnswer_2} 
         //         this.props._setAnswersForThePage(obj, method)
         //         return
         //     }
@@ -218,6 +255,11 @@ export default class QuestionDisplay extends Component {
         this._callSetAnswerForThePage(timeUnit_1, ADD)
     }
 
+    _setDate1 = (date_1) => {
+        this.setState({ date_1 })
+        this._callSetAnswerForThePage(date_1, ADD)
+    }
+
     _setOtherPatientAnswer1 = async (otherPatientAnswer_1) => {
         await this.setState({ otherPatientAnswer_1 })
         this._callSetAnswerForThePage(otherPatientAnswer_1, ADD)
@@ -268,8 +310,9 @@ export default class QuestionDisplay extends Component {
         console.log("otherPatientAnswer 2 = ", this.state.otherPatientAnswer_2)
     }
 
-    _setDate = (date) => {
-        this.setState({ date })
+    _setDate2 = (date_2) => {
+        this.setState({ date_2 })
+        this._callSetAnswerForThePage(date_2, ADD)
     }
 
 
@@ -313,7 +356,7 @@ export default class QuestionDisplay extends Component {
                                         _setTime={this._setTime1}
                                         _setTimeUnit={this._setTimeUnit1}
                                         _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
-                                        _setDate={this._setDate}
+                                        _setDate={this._setDate1}
                                     />
                                 )
                             }
@@ -386,7 +429,7 @@ export default class QuestionDisplay extends Component {
                                             _setTime={this._setTime1}
                                             _setTimeUnit={this._setTimeUnit1}
                                             _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
-                                            _setDate={this._setDate}
+                                            _setDate={this._setDate1}
                                         />
                                     )
                                 }
@@ -470,7 +513,7 @@ export default class QuestionDisplay extends Component {
                                             _setTime={this._setTime2}
                                             _setTimeUnit={this._setTimeUnit2}
                                             _setCurrentPatientAnswer={this._setCurrentPatientAnswer2}
-                                            _setDate={this._setDate}
+                                            _setDate={this._setDate2}
                                         />
                                     )
                                 }
