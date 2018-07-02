@@ -95,6 +95,8 @@ export default class AnswerOther extends Component {
                     onChangeText={this._onChangeText}
                     value={this.state.text}
                     placeholder={this.props.answer.title + " (โปรดระบุ)"}
+                    selectionColor="#9CD8B9"
+                    placeholderTextColor="#9CD8B9"
                     maxLength={100}
                     multiline />
             );
@@ -115,7 +117,8 @@ export default class AnswerOther extends Component {
                                 buttonStyle={styles.button}
                                 rounded
                                 raised
-                                backgroundColor={this.state.selected ? "#80cdc0" : 'gray'}
+                                color={this.state.selected ? "#FFFFFF" : "#9CD8B9"}
+                                backgroundColor={this.state.selected ? "#9CD8B9" : '#FFFFFF'}
                                 icon={this.state.selected ? { name: 'check', type: 'evilicon' } : null}
                                 fontFamily="Kanit-Regular" />
 
@@ -124,11 +127,14 @@ export default class AnswerOther extends Component {
                     ) :
                     (
                         <TextInput
+                            onEndEditing={this._onEndEditing}
                             onChangeText={this._onChangeText}
                             value={this.state.text}
                             placeholder={this.props.answer.title}
                             maxLength={100}
-                            keyboardType={this.props.answer.category === "quantity" ? "numeric" : "default"} />
+                            keyboardType={this.props.answer.category === "quantity" ? "numeric" : "default"}
+                            selectionColor="#9CD8B9"
+                            placeholderTextColor="#9CD8B9" />
                     )
                 }
             </View>
