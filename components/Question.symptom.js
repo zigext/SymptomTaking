@@ -12,13 +12,13 @@ export default question = ({ question }) => {
 
 const styles = {
     text: {
-        color: 'black',
+        color: '#60ADA6',
         fontSize: 18,
         textAlign: 'left',
         fontFamily: 'Kanit-Regular'
     },
     subText: {
-        fontSize: 13, 
+        fontSize: 14, 
         textAlign: 'left',
         fontFamily: 'Kanit-Light',
         color: 'rgba(0, 0, 0, 0.6)', 
