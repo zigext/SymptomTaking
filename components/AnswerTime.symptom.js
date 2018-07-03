@@ -99,8 +99,8 @@ export default class AnswerTime extends Component {
                     buttonStyle={styles.button}
                     rounded
                     raised
-                    backgroundColor={this.state.selected ? "#80cdc0" : 'gray'}
-                    icon={this.state.selected ? { name: 'check', type: 'evilicon' } : null}
+                    color={this.state.selected ? "#9CD8B9" : '#FFFFFF'}
+                    backgroundColor={this.state.selected ? "#9CD8B9" : '#FFFFFF'}
                     fontFamily="Kanit-Regular" />
                 {this._renderTimePicker()}
             </View>
@@ -311,6 +311,8 @@ const styles = {
     button: {
         margin: 3,
         flex: 1,
+        borderColor: "#9CD8B9",
+        borderWidth: 2,
     },
     customStyles: {
         dateIcon: {
