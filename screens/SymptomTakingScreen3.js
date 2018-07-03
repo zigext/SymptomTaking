@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Navigator, Image, TouchableHighlight, NativeModules, ListView, TextInput, ToastAndroid, ScrollView, Picker, FlatList, Dimensions } from 'react-native';
-import { BottomNavigation, COLOR, ThemeProvider, Toolbar, Checkbox, RadioButton, Icon, IconToggle, ListItem } from 'react-native-material-ui';
+import { StyleSheet, Text, View, Navigator, Image, TouchableHighlight, NativeModules, ListView, TextInput, ToastAndroid, ImageBackground, ScrollView, Picker, FlatList, Dimensions } from 'react-native';
+import { BottomNavigation, COLOR, ThemeProvider, Icon, IconToggle, ListItem } from 'react-native-material-ui';
 import VectorIcon from 'react-native-vector-icons/MaterialIcons'
 import { Button, Avatar, Card } from 'react-native-elements'
 import Swiper from 'react-native-swiper'
@@ -8,10 +8,6 @@ import questionSource from '../UcareData/PITShow/FormQuestions4'
 import pages from '../UcareData/PITShow/Pages'
 import Question from '../components/Question.symptom'
 import AnswerGeneralChoices from '../components/AnswerGeneralChoices.symptom'
-import AnswerChoices from '../components/AnswerChoices.symptom'
-import AnswerMultiChoices from '../components/AnswerMultiChoices.symptom'
-import AnswerTime from '../components/AnswerTime.symptom'
-import AnswerOther from '../components/AnswerOther.symptom'
 import ProgressBar from '../components/ProgressBar'
 import QuestionDisplay from '../components/QuestionDisplay2'
 import User from '../UcareData/mockdata' //mock user from firebase => KOPAI
@@ -279,10 +275,10 @@ export default class SymptomTakingScreen extends Component {
                         str = str + " " + answer.title
                     })
                     str = str.replace('อื่นๆ', '') //remove the word อื่นๆ
-                    str = str.replace('วว/ดด/ปปปป', '') 
-                    str = str.replace('วันเดือนปี', '') 
-                    str = str.replace('วันเดือน', '') 
-                    str = str.replace('ถ่ายรูป', '') 
+                    str = str.replace('วว/ดด/ปปปป', '')
+                    str = str.replace('วันเดือนปี', '')
+                    str = str.replace('วันเดือน', '')
+                    str = str.replace('ถ่ายรูป', '')
                     allPatientAnswers.push(str)
                 })
                 console.log("all answer = ", allPatientAnswers)
@@ -458,62 +454,78 @@ export default class SymptomTakingScreen extends Component {
         return (
             <ThemeProvider uiTheme={uiTheme}>
                 <View style={styles.container}>
+                    <ImageBackground source={require('../assets/images/bg.png')} style={{ width: '100%', height: '100%' }}>
+                        {/*<ScrollView style={{ flex: 1, flexGrow: 1 }} >*/}
+                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginVertical: 20 }}>
+                            <View style={{borderWidth: 2, borderColor: '#FFFFFF', height: 90, width: 90, borderRadius: 45, alignItems: 'center', justifyContent: 'center'}}>
+                                <Avatar
+                                    large
+                                    rounded
+                                    source={{ uri: "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg" }} //KOPAI Change to User.photoURL
+                                    activeOpacity={0.7}
+                                    avatarStyle={{ borderColor: "#FFFFFF", borderWidth: 2 }}
+                                />
+                            </View>
 
-                    {/*<ScrollView style={{ flex: 1, flexGrow: 1 }} >*/}
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Avatar
-                            medium
+                            {/*KOPAI: Change to user real data*/}
+                            <View style={{ flexDirection: 'column' }}>
+                                <Text style={{ fontSize: 20, fontFamily: 'Kanit-Regular', color: '#FFFFFF', marginLeft: 15 }}>{`${User.name.title} ${User.name.firstName} ${User.name.lastName}`}</Text>
+                                <Text style={{ fontSize: 14, fontFamily: 'Kanit-Regular', color: '#FFFFFF', marginLeft: 15 }}>{`ID :  ${User.nationalID}`}</Text>
+                            </View>
+                        </View>
+
+
+
+                        <Swiper
+                            style={styles.wrapper}
+                            dot={<View style={{ backgroundColor: 'rgba(255,255,255,.3)', width: 13, height: 13, borderRadius: 7, marginLeft: 7, marginRight: 7 }} />}
+                            activeDot={<View style={{ backgroundColor: '#fff', width: 13, height: 13, borderRadius: 7, marginLeft: 7, marginRight: 7 }} />}
+                            paginationStyle={{ bottom: 10 }}
+                            loop={false}>
+                            <View style={styles.card}>
+                                <View style={{ margin: 10 }}>
+                                    <Question question={questionSource.chiefQuestion} />
+                                </View>
+                                <AnswerGeneralChoices
+                                    question={questionSource.chiefQuestion}
+                                    answers={this.firstHalfChiefAnswer}
+                                    currentPatientAnswer={this.state.currentPatientAnswer}
+                                    answerNumberSelected={this.state.answerNumberSelected}
+                                    _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
+                                    _setAnswerNumberSelected={this._setAnswerNumberSelected}
+                                    _setOtherPatientAnswer={this._setOtherPatientAnswer} />
+                            </View>
+
+                            <View style={styles.card}>
+                                <View style={{ margin: 10 }}>
+                                    <Question question={questionSource.chiefQuestion} />
+                                </View>
+                                <AnswerGeneralChoices
+                                    question={questionSource.chiefQuestion}
+                                    answers={this.secondHalfChiefAnswer}
+                                    currentPatientAnswer={this.state.currentPatientAnswer}
+                                    answerNumberSelected={this.state.answerNumberSelected}
+                                    _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
+                                    _setAnswerNumberSelected={this._setAnswerNumberSelected}
+                                    _setOtherPatientAnswer={this._setOtherPatientAnswer} />
+                            </View>
+
+                        </Swiper>
+
+                        <Button
+                            rightIcon={{ name: 'ios-arrow-forward-outline', type: 'ionicon', color: '#60ADA6' }}
+                            title="ถัดไป"
+                            fontFamily="Kanit-Regular"
+                            onPress={this._next}
                             rounded
-                            source={{ uri: "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg" }} //KOPAI Change to User.photoURL
-                            activeOpacity={0.7}
+                            raised
+                            color="#60ADA6"
+                            backgroundColor="#FFFFFF"
+                            buttonStyle={styles.nextButton}
+                            containerViewStyle={{ backgroundColor: 'transparent' }}
                         />
-                        {/*KOPAI: Change to user real data*/}
-                        <Text style={{ fontSize: 18, fontFamily: 'Kanit-Regular', color: 'black', marginLeft: 5 }}>{`${User.name.title} ${User.name.firstName} ${User.name.lastName}`}</Text>
-                    </View>
-
-                    <View style={{ margin: 10 }}>
-                        <Question question={questionSource.chiefQuestion} />
-                    </View>
-
-                    <Swiper
-                        style={styles.wrapper}
-                        dot={<View style={{ backgroundColor: 'rgba(255,255,255,.3)', width: 13, height: 13, borderRadius: 7, marginLeft: 7, marginRight: 7 }} />}
-                        activeDot={<View style={{ backgroundColor: '#fff', width: 13, height: 13, borderRadius: 7, marginLeft: 7, marginRight: 7 }} />}
-                        paginationStyle={{ bottom: 10 }}
-                        loop={false}>
-                        <View style={styles.card}>
-                            <AnswerGeneralChoices
-                                question={questionSource.chiefQuestion}
-                                answers={this.firstHalfChiefAnswer}
-                                currentPatientAnswer={this.state.currentPatientAnswer}
-                                answerNumberSelected={this.state.answerNumberSelected}
-                                _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
-                                _setAnswerNumberSelected={this._setAnswerNumberSelected}
-                                _setOtherPatientAnswer={this._setOtherPatientAnswer} />
-                        </View>
-
-                        <View style={styles.card}>
-                            <AnswerGeneralChoices
-                                question={questionSource.chiefQuestion}
-                                answers={this.secondHalfChiefAnswer}
-                                currentPatientAnswer={this.state.currentPatientAnswer}
-                                answerNumberSelected={this.state.answerNumberSelected}
-                                _setCurrentPatientAnswer={this._setCurrentPatientAnswer}
-                                _setAnswerNumberSelected={this._setAnswerNumberSelected}
-                                _setOtherPatientAnswer={this._setOtherPatientAnswer} />
-                        </View>
-
-                    </Swiper>
-
-                    <Button
-                        icon={{ name: 'arrow-right', type: 'material-community' }}
-                        onPress={this._next}
-                        rounded
-                        raised
-                        backgroundColor="#80cdc0"
-                        buttonStyle={styles.nextButton}
-                    />
-                    {/*</ScrollView>*/}
+                        {/*</ScrollView>*/}
+                    </ImageBackground>
                 </View>
             </ThemeProvider >
         )
@@ -539,29 +551,40 @@ export default class SymptomTakingScreen extends Component {
 
                         <View style={styles.containerButton}>
                             <Button
-                                icon={{ name: 'arrow-left', type: 'material-community' }}
+                                icon={{ name: 'ios-arrow-back-outline', type: 'ionicon', color: '#60ADA6' }}
+                                title="ย้อนกลับ"
+                                fontFamily="Kanit-Regular"
                                 onPress={this._back}
                                 rounded
                                 raised
-                                backgroundColor="#80cdc0"
-                                buttonStyle={styles.nextButton} />
+                                color="#60ADA6"
+                                backgroundColor="#FFFFFF"
+                                buttonStyle={styles.nextButton}
+                                containerViewStyle={{ backgroundColor: 'transparent' }} />
                             {
                                 //Next button
                                 this.state.currentQuestion.next !== "end" ?
                                     <Button
-                                        icon={{ name: 'arrow-right', type: 'material-community' }}
+                                        rightIcon={{ name: 'ios-arrow-forward-outline', type: 'ionicon', color: '#60ADA6' }}
+                                        title="ถัดไป"
+                                        fontFamily="Kanit-Regular"
                                         onPress={this._next}
                                         rounded
                                         raised
-                                        backgroundColor="#80cdc0"
-                                        buttonStyle={styles.nextButton} /> :
+                                        color="#60ADA6"
+                                        backgroundColor="#FFFFFF"
+                                        buttonStyle={styles.nextButton}
+                                        containerViewStyle={{ backgroundColor: 'transparent' }} /> :
                                     <Button
                                         title="     ยืนยัน    "
+                                        fontFamily="Kanit-Regular"
                                         onPress={this._next}
                                         rounded
                                         raised
-                                        backgroundColor="#80cdc0"
-                                        buttonStyle={styles.nextButton} />
+                                        color="#60ADA6"
+                                        backgroundColor="#FFFFFF"
+                                        buttonStyle={styles.nextButton}
+                                        containerViewStyle={{ backgroundColor: 'transparent' }} />
                             }
                         </View>
                     </ScrollView>
@@ -584,7 +607,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'space-around', //if space-evenly, it will look good in landscape, but in portrait the AnswerChoices will exceed the device's screen
         alignItems: "stretch", //it alignItems = center, scrollview will not expand full width
-        margin: 10,
+        // margin: 10,
 
     },
     containerSpecific: {
@@ -596,7 +619,8 @@ const styles = StyleSheet.create({
     containerButton: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'flex-end'
+        alignItems: 'flex-end',
+        backgroundColor: 'transparent'
     },
     containerProgress: {
         alignItems: 'center',
@@ -608,11 +632,13 @@ const styles = StyleSheet.create({
     },
     nextButton: {
         marginVertical: 30,
-        alignSelf: 'flex-end'
+        alignSelf: 'flex-end',
+        borderColor: '#60ADA6',
+        borderWidth: 2
     },
     card: {
         flex: 1,
-        borderRadius: 5,
+        borderRadius: 10,
         borderWidth: 1,
         borderColor: '#ddd',
         borderBottomWidth: 0,
@@ -621,6 +647,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.8,
         shadowRadius: 2,
         elevation: 1,
+        backgroundColor: "#FFFFFF",
+        margin: 10
         // marginLeft: 5,
         // marginRight: 5,
         // marginTop: 10,
