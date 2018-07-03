@@ -69,7 +69,8 @@ export default class AnswerTakePicture extends Component {
                     fontFamily="Kanit-Regular"
                     rounded
                     raised
-                    backgroundColor="#80cdc0"
+                    color="#FFFFFF"
+                    backgroundColor="#9CD8B9"
                 />
 
             </View>
@@ -83,7 +84,9 @@ const styles = {
     },
     button: {
         margin: 3,
-        flex: 1
+        flex: 1,
+        borderWidth: 2,
+        borderColor: '#9CD8B9'
     },
     image: {
         // height: 300,
