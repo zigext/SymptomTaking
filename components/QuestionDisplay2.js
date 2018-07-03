@@ -5,6 +5,7 @@ import AnswerChoices from './AnswerChoices.symptom'
 import AnswerMultiChoices from './AnswerMultiChoices.symptom'
 import AnswerTime from './AnswerTime.symptom'
 import AnswerOther from './AnswerOther.symptom'
+import AnswerTakePicture from './AnswerTakePicture.symptom'
 import AnswerVasScore from './AnswerVasScore.symptom'
 import Question from './Question.symptom'
 import User from '../UcareData/mockdata' //mock user from firebase => KOPAI
@@ -33,6 +34,9 @@ export default class QuestionDisplay extends Component {
             date_1: "",
             date_2: "",
             vas_1: "",
+            filename: "",
+            pathStorage: "",
+            timestamp: "",
             allPatientAnswers: [],
         }
         this.baseState = this.state
@@ -122,6 +126,21 @@ export default class QuestionDisplay extends Component {
                 //so, it doesn't call this again
                 this.setState({
                     vas_1: ""
+                })
+                // return
+            }
+            //take picture
+            //KOPAI: Call ucarelib to save image in firestore and get url oh that image e.x. obj.title = imageUrl
+            else if (this.state.currentPatientAnswer_1.type === "P" && this.state.filename !== ""&& this.state.pathStorage !== ""&& this.state.timestamp !== "") {
+                console.log("type P")
+                let obj = {}
+                obj.type = this.state.currentPatientAnswer_1.type
+                obj.question = this.state.currentPatientAnswer_1.question
+                obj.title = `${this.state.filename} `
+                this.props._setAnswersForThePage(obj, method)
+                //so, it doesn't call this again
+                this.setState({
+                    filename: ""
                 })
                 // return
             }
@@ -361,6 +380,10 @@ export default class QuestionDisplay extends Component {
         this._callSetAnswerForThePage(vas_1, ADD)
     }
 
+    _setImage = (pathStorage, filename, timestamp) => {
+        this.setState({ pathStorage, filename, timestamp })
+    }
+
 
     //questionSet is array length 1 or 2
     _renderOneQuestion() {
@@ -413,6 +436,16 @@ export default class QuestionDisplay extends Component {
                                         key={`${this.props.questionSet[0].title} : ${answer.title}`}
                                         _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
                                         _setVasScore={this._setVasScore}
+                                    />
+                                )
+                            }
+                            else if (answer.type === "P") {
+                                return (
+                                    <AnswerTakePicture
+                                        answer={answer}
+                                        key={`${this.props.questionSet[0].title} : ${answer.title}`}
+                                        _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
+                                        _setImage={this._setImage}
                                     />
                                 )
                             }
