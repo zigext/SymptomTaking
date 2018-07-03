@@ -39,7 +39,9 @@ export default class AnswerGeneralChoices extends Component {
                 <TextInput
                     onChangeText={this._onChangeText}
                     value={this.state.text}
-                    placeholder={"อื่นๆ (โปรดระบุ)"} />
+                    placeholder={"อื่นๆ (โปรดระบุ)"}
+                    selectionColor="#9CD8B9"
+                    placeholderTextColor="#9CD8B9" />
             );
         } else {
             return null;
@@ -149,7 +151,8 @@ export default class AnswerGeneralChoices extends Component {
                                     fontFamily="Kanit-Regular"
                                     rounded
                                     raised
-                                    backgroundColor={this.state.selected ? (this.state.choose === item.item.title ? "#80cdc0" : "gray") : 'gray'}
+                                    color={this.state.selected ? (this.state.choose === item.item.title ? "#FFFFFF" : "#9CD8B9") : '#9CD8B9'}
+                                    backgroundColor={this.state.selected ? (this.state.choose === item.item.title ? "#9CD8B9" : "#FFFFFF") : '#FFFFFF'}
                                 />
                                 {this._renderTextInput()}
                             </View>
@@ -165,7 +168,8 @@ export default class AnswerGeneralChoices extends Component {
                                 fontFamily="Kanit-Regular"
                                 rounded
                                 raised
-                                backgroundColor={this.state.selected ? (this.state.choose === item.item.title ? "#80cdc0" : "gray") : 'gray'}
+                                color={this.state.selected ? (this.state.choose === item.item.title ? "#FFFFFF" : "#9CD8B9") : '#9CD8B9'}
+                                backgroundColor={this.state.selected ? (this.state.choose === item.item.title ? "#9CD8B9" : "#FFFFFF") : '#FFFFFF'}
                             />
                         )
                     }
@@ -221,7 +225,7 @@ const styles = {
         // flexWrap: "wrap",
         minWidth: minItemWidth,
         maxWidth: minItemWidth,
-        borderColor: "#80cdc0",
+        borderColor: "#9CD8B9",
         borderWidth: 2,
     }
 }
