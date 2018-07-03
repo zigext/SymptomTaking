@@ -11,24 +11,66 @@ export default class AnswerVasScore extends Component {
     }
 
     _complete = () => {
-        // this.props._setVasScore(this.state.vas)
+        this.props._setCurrentPatientAnswer(this.props.answer)
+        this.props._setVasScore(this.state.vas)
     }
 
     _renderDescription = () => {
         let value
         value = this.state.vas
-        if (value >= 0 && value <= 1)
-            return <Text style={styles.descriptionText}>เหมือนนั่งเล่นสบายๆ</Text>
-        else if (value >= 2 && value <= 3)
-            return <Text style={styles.descriptionText}>เหนื่อยเล็กน้อย พูดคุยได้ปกติ</Text>
-        else if (value >= 4 && value <= 5)
-            return <Text style={styles.descriptionText}>เหนื่อยมากขึ้นแต่ทนได้ พูดสื่อสารได้ ใจไม่สั่น</Text>
-        else if (value >= 6 && value <= 7)
-            return <Text style={styles.descriptionText}>เหนื่อย หายใจเร็ว พูดได้เป็นคำๆ ต้องหยุดพัก</Text>
-        else if (value >= 8 && value <= 9)
-            return <Text style={styles.descriptionText}>เหนื่อย หายใจเร็ว พูดได้เป็นคำๆ ต้องหยุดพัก</Text>
-        else
-            return <Text style={styles.descriptionText}>เหนื่อยจนหอบ พูดไม่ไหว ใจสั่น</Text>
+        if (value >= 0 && value <= 1) {
+            return (
+                <View>
+                    <Text style={styles.topicText}>best</Text>
+                    <Text style={styles.descriptionText}>เหมือนนั่งเล่นสบายๆ</Text>
+                </View>
+            )
+        }
+
+        else if (value >= 2 && value <= 3) {
+            return (
+                <View>
+                    <Text style={styles.topicText}>Good</Text>
+                    <Text style={styles.descriptionText}>เหนื่อยเล็กน้อย พูดคุยได้ปกติ</Text>
+                </View>
+            )
+        }
+
+        else if (value >= 4 && value <= 5) {
+            return (
+                <View>
+                    <Text style={styles.topicText}>normal</Text>
+                    <Text style={styles.descriptionText}>เหนื่อยมากขึ้นแต่ทนได้ พูดสื่อสารได้ ใจไม่สั่น</Text>
+                </View>
+            )
+        }
+
+        else if (value >= 6 && value <= 7) {
+            return (
+                <View>
+                    <Text style={styles.topicText}>not good</Text>
+                    <Text style={styles.descriptionText}>เหนื่อย หายใจเร็ว พูดได้เป็นคำๆ ต้องหยุดพัก</Text>
+                </View>
+            )
+        }
+        else if (value >= 8 && value <= 9) {
+            return (
+                <View>
+                    <Text style={styles.topicText}>bad</Text>
+                    <Text style={styles.descriptionText}>เหนื่อย หายใจเร็ว พูดได้เป็นคำๆ ต้องหยุดพัก</Text>
+                </View>
+            )
+        }
+
+        else {
+            return (
+                <View>
+                    <Text style={styles.topicText}>very bad</Text>
+                    <Text style={styles.descriptionText}>เหนื่อยจนหอบ พูดไม่ไหว ใจสั่น</Text>
+                </View>
+            )
+        }
+
     }
 
     _renderImage = () => {
@@ -77,9 +119,9 @@ export default class AnswerVasScore extends Component {
             // </View>
             <View style={{ flex: 1, flexWrap: "wrap", justifyContent: "center" }}>
                 {this._renderImage()}
-                <Text style={styles.text}>ความรุนแรง: {this.state.vas}</Text>
                 {this._renderDescription()}
-                <View style={{marginHorizontal: 20, marginVertical: 30}}>
+                <Text style={styles.text}>ความรุนแรง: {this.state.vas}</Text>
+                <View style={{ marginHorizontal: 20, marginVertical: 30 }}>
                     <Slider
                         value={this.state.vas}
                         onValueChange={(vas) => this.setState({ vas })}
@@ -87,12 +129,13 @@ export default class AnswerVasScore extends Component {
                         minimumValue={0}
                         maximumValue={10}
                         step={1}
-                        thumbTintColor="#80cdc0"
-                        minimumTrackTintColor="#80cdc0"
-                        trackStyle={{height: 10}}
-                        thumbStyle={{height: 26, width: 26, borderRadius: 13}}
+                        thumbTintColor="#9CD8B9"
+                        minimumTrackTintColor="#9CD8B9"
+                        trackStyle={{ height: 10 }}
+                        thumbStyle={{ height: 26, width: 26, borderRadius: 13 }}
                     />
                 </View>
+                
             </View>
         )
     }
@@ -114,16 +157,40 @@ const styles = {
         alignSelf: 'center',
     },
     text: {
-        fontSize: 20,
+        fontSize: 14,
         fontFamily: "Kanit-Regular",
         color: "gray",
         textAlign: 'center',
-        marginTop: 15
+        marginTop: 7
+    },
+    topicText: {
+        fontSize: 17,
+        fontFamily: "Kanit-Regular",
+        textAlign: 'center',
+        marginTop: 30
     },
     descriptionText: {
         fontSize: 16,
         fontFamily: "Kanit-Regular",
         textAlign: 'center',
         marginTop: 30
-    }
+    },
+    // best: {
+    //     color: ""
+    // },
+    // good: {
+    //     color: ""
+    // },
+    // normal: {
+    //     color: ""
+    // },
+    // notgood: {
+    //     color: ""
+    // },
+    // bad: {
+    //     color: ""
+    // },
+    // verybad: {
+    //     color: ""
+    // },
 }
