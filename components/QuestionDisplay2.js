@@ -5,6 +5,7 @@ import AnswerChoices from './AnswerChoices.symptom'
 import AnswerMultiChoices from './AnswerMultiChoices.symptom'
 import AnswerTime from './AnswerTime.symptom'
 import AnswerOther from './AnswerOther.symptom'
+import AnswerVasScore from './AnswerVasScore.symptom'
 import Question from './Question.symptom'
 import User from '../UcareData/mockdata' //mock user from firebase => KOPAI
 
@@ -31,6 +32,7 @@ export default class QuestionDisplay extends Component {
             timeUnit_2: "",
             date_1: "",
             date_2: "",
+            vas_1: "",
             allPatientAnswers: [],
         }
         this.baseState = this.state
@@ -81,6 +83,19 @@ export default class QuestionDisplay extends Component {
                     })
                 }
             }
+
+            else if (this.state.currentPatientAnswer_1.title === "เวลา") {
+                if (this.state.time_1 !== "") {
+                    let obj = {}
+                    obj.type = this.state.currentPatientAnswer_1.type
+                    obj.question = this.state.currentPatientAnswer_1.question
+                    obj.title = `${this.state.time_1}`
+                    this.props._setAnswersForThePage(obj, method)
+                    this.setState({
+                        time_1: ""
+                    })
+                }
+            }
         }
         else if (this.state.currentPatientAnswer_1.type !== "T") {
             console.log("not T")
@@ -94,6 +109,19 @@ export default class QuestionDisplay extends Component {
                 //so, it doesn't call this again
                 this.setState({
                     otherPatientAnswer_1: ""
+                })
+                // return
+            }
+            else if (this.state.currentPatientAnswer_1.type === "V" && this.state.vas_1 !== "") {
+                console.log("type V")
+                let obj = {}
+                obj.type = this.state.currentPatientAnswer_1.type
+                obj.question = this.state.currentPatientAnswer_1.question
+                obj.title = `${this.state.vas_1} `
+                this.props._setAnswersForThePage(obj, method)
+                //so, it doesn't call this again
+                this.setState({
+                    vas_1: ""
                 })
                 // return
             }
@@ -134,6 +162,19 @@ export default class QuestionDisplay extends Component {
                     this.props._setAnswersForThePage(obj, method)
                     this.setState({
                         date_2: ""
+                    })
+                }
+            }
+
+            else if (this.state.currentPatientAnswer_2.title === "เวลา") {
+                if (this.state.time_2 !== "") {
+                    let obj = {}
+                    obj.type = this.state.currentPatientAnswer_2.type
+                    obj.question = this.state.currentPatientAnswer_2.question
+                    obj.title = `${this.state.time_2}`
+                    this.props._setAnswersForThePage(obj, method)
+                    this.setState({
+                        time_2: ""
                     })
                 }
             }
@@ -315,6 +356,11 @@ export default class QuestionDisplay extends Component {
         this._callSetAnswerForThePage(date_2, ADD)
     }
 
+    _setVasScore = (vas_1) => {
+        this.setState({ vas_1 })
+        this._callSetAnswerForThePage(vas_1, ADD)
+    }
+
 
     //questionSet is array length 1 or 2
     _renderOneQuestion() {
@@ -357,6 +403,16 @@ export default class QuestionDisplay extends Component {
                                         _setTimeUnit={this._setTimeUnit1}
                                         _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
                                         _setDate={this._setDate1}
+                                    />
+                                )
+                            }
+                            else if (answer.type === "V") {
+                                return (
+                                    <AnswerVasScore
+                                        answer={answer}
+                                        key={`${this.props.questionSet[0].title} : ${answer.title}`}
+                                        _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
+                                        _setVasScore={this._setVasScore}
                                     />
                                 )
                             }
