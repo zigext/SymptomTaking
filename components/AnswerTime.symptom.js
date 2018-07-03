@@ -179,7 +179,7 @@ export default class AnswerTime extends Component {
                                 </Picker>
                             ) : this.props.answer.title === "วันเดือนปี" ?
                                 (
-                                    <Picker selectedValue={this.state.time} onValueChange={(itemValue, itemIndex) => this._setTime(itemValue)} itemStyle={styles.picker}>
+                                    <Picker selectedValue={this.state.time} onValueChange={(itemValue, itemIndex) => this._setTime(itemValue)} style={styles.picker}>
                                         <Picker.Item label="เวลา" value="" />
                                         <Picker.Item label="1" value="1" />
                                         <Picker.Item label="2" value="2" />
@@ -215,7 +215,7 @@ export default class AnswerTime extends Component {
                                     </Picker>
                                 ) : this.props.answer.title === "วันเดือน" ?
                                     (
-                                        <Picker selectedValue={this.state.time} onValueChange={(itemValue, itemIndex) => this._setTime(itemValue)} itemStyle={styles.picker}>
+                                        <Picker selectedValue={this.state.time} onValueChange={(itemValue, itemIndex) => this._setTime(itemValue)} style={styles.picker}>
                                             <Picker.Item label="เวลา" value="" />
                                             <Picker.Item label="1" value="1" />
                                             <Picker.Item label="2" value="2" />
@@ -258,7 +258,7 @@ export default class AnswerTime extends Component {
                         (
                             <Picker
                                 selectedValue={this.state.timeUnit}
-                                onValueChange={(itemValue, itemIndex) => this._setTimeUnit(itemValue)} itemStyle={styles.picker}>
+                                onValueChange={(itemValue, itemIndex) => this._setTimeUnit(itemValue)} style={styles.picker}>
                                 <Picker.Item label="หน่วยเวลา" value="" />
                                 <Picker.Item label="นาที" value="นาที" />
                                 <Picker.Item label="ชั่วโมง" value="ชั่วโมง" />
@@ -270,7 +270,7 @@ export default class AnswerTime extends Component {
                             (
                                 <Picker
                                     selectedValue={this.state.timeUnit}
-                                    onValueChange={(itemValue, itemIndex) => this._setTimeUnit(itemValue)} itemStyle={styles.picker}>
+                                    onValueChange={(itemValue, itemIndex) => this._setTimeUnit(itemValue)} style={styles.picker}>
                                     <Picker.Item label="หน่วยเวลา" value="" />
                                     <Picker.Item label="วัน" value="วัน" />
                                     <Picker.Item label="เดือน" value="เดือน" />
@@ -280,7 +280,7 @@ export default class AnswerTime extends Component {
                                 (
                                     <Picker
                                         selectedValue={this.state.timeUnit}
-                                        onValueChange={(itemValue, itemIndex) => this._setTimeUnit(itemValue)} itemStyle={styles.picker}>
+                                        onValueChange={(itemValue, itemIndex) => this._setTimeUnit(itemValue)} style={styles.picker}>
                                         <Picker.Item label="หน่วยเวลา" value="" />
                                         <Picker.Item label="วัน" value="วัน" />
                                         <Picker.Item label="เดือน" value="เดือน" />
