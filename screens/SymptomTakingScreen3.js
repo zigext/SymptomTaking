@@ -563,7 +563,7 @@ export default class SymptomTakingScreen extends Component {
                                 containerViewStyle={{ backgroundColor: 'transparent' }} />
                             {
                                 //Next button
-                                this.state.currentQuestion.next !== "end" ?
+                                this.state.currentPage.nextNormal.next !== "end" ?
                                     <Button
                                         rightIcon={{ name: 'ios-arrow-forward-outline', type: 'ionicon', color: '#60ADA6' }}
                                         title="ถัดไป"
@@ -576,7 +576,8 @@ export default class SymptomTakingScreen extends Component {
                                         buttonStyle={styles.nextButton}
                                         containerViewStyle={{ backgroundColor: 'transparent' }} /> :
                                     <Button
-                                        title="     ยืนยัน    "
+                                    rightIcon={{ name: 'ios-arrow-forward-outline', type: 'ionicon', color: '#60ADA6' }}
+                                        title="ยืนยัน"
                                         fontFamily="Kanit-Regular"
                                         onPress={this._next}
                                         rounded
