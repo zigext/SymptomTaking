@@ -71,7 +71,7 @@ export default class AnswerTime extends Component {
     _renderTimePicker() {
         if (this.state.showTimePicker) {
             return (
-                <View style={{ flex: 1, alignItems: 'center' }}>
+                <View style={{ flex: 1, alignItems: 'center', marginVertical: 10 }}>
                     <DatePicker
                         mode='time'
                         style={{ flex: 1 }}
@@ -99,7 +99,7 @@ export default class AnswerTime extends Component {
                     buttonStyle={styles.button}
                     rounded
                     raised
-                    color={this.state.selected ? "#9CD8B9" : '#FFFFFF'}
+                    color={this.state.selected ? '#FFFFFF' : "#9CD8B9" }
                     backgroundColor={this.state.selected ? "#9CD8B9" : '#FFFFFF'}
                     fontFamily="Kanit-Regular" />
                 {this._renderTimePicker()}
