@@ -100,6 +100,29 @@ export default class QuestionDisplay extends Component {
                     })
                 }
             }
+            //frequency
+            else if (this.state.currentPatientAnswer_1.title === "เป็นช่วงๆ") {
+                if (this.state.time_1 && this.state.timeUnit_1) {
+                    let obj = {}
+                    obj.type = this.state.currentPatientAnswer_1.type
+                    obj.question = this.state.currentPatientAnswer_1.question
+                    obj.title = `${this.state.time_1} ครั้ง ต่อ ${this.state.timeUnit_1}`
+                    this.props._setAnswersForThePage(obj, method)
+                    this.setState({
+                        time_1: "",
+                        timeUnit_1: ""
+                    })
+                }
+                else {
+                    //user doesn't choose both time and timeUnit
+                    if ((this.state.time_1 && !this.state.timeUnit_1) || (!this.state.time_1 && this.state.timeUnit_1)) {
+                        ToastAndroid.showWithGravityAndOffset('กรุณาระบุเวลาและหน่วยเวลา', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
+                        return
+                    }
+
+                }
+                // return
+            }
         }
         else if (this.state.currentPatientAnswer_1.type !== "T") {
             console.log("not T")
@@ -131,7 +154,7 @@ export default class QuestionDisplay extends Component {
             }
             //take picture
             //KOPAI: Call ucarelib to save image in firestore and get url oh that image e.x. obj.title = imageUrl
-            else if (this.state.currentPatientAnswer_1.type === "P" && this.state.filename !== ""&& this.state.pathStorage !== ""&& this.state.timestamp !== "") {
+            else if (this.state.currentPatientAnswer_1.type === "P" && this.state.filename !== "" && this.state.pathStorage !== "" && this.state.timestamp !== "") {
                 console.log("type P")
                 let obj = {}
                 obj.type = this.state.currentPatientAnswer_1.type
@@ -196,6 +219,29 @@ export default class QuestionDisplay extends Component {
                         time_2: ""
                     })
                 }
+            }
+            //frequency
+            else if (this.state.currentPatientAnswer_2.title === "เป็นช่วงๆ") {
+                if (this.state.time_2 && this.state.timeUnit_2) {
+                    let obj = {}
+                    obj.type = this.state.currentPatientAnswer_2.type
+                    obj.question = this.state.currentPatientAnswer_2.question
+                    obj.title = `${this.state.time_2} ครั้ง ต่อ ${this.state.timeUnit_2}`
+                    this.props._setAnswersForThePage(obj, method)
+                    this.setState({
+                        time_2: "",
+                        timeUnit_2: ""
+                    })
+                }
+                else {
+                    //user doesn't choose both time and timeUnit
+                    if ((this.state.time_2 && !this.state.timeUnit_2) || (!this.state.time_2 && this.state.timeUnit_2)) {
+                        ToastAndroid.showWithGravityAndOffset('กรุณาระบุเวลาและหน่วยเวลา', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
+                        return
+                    }
+
+                }
+                // return
             }
         }
         else if (this.state.currentPatientAnswer_2.type !== "T") {

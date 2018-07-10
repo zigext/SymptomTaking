@@ -10,6 +10,7 @@ export default class AnswerTime extends Component {
             time: "",
             timeUnit: "",
             date: "",
+            text: "",
             showTimePicker: false,
             selected: false
         }
@@ -47,6 +48,21 @@ export default class AnswerTime extends Component {
     _onPressTimePickerButton = () => {
         this._toggleTimePicker()
         this.setState({ selected: !this.state.selected })
+    }
+
+
+    _onPressFrequencyPickerButton = () => {
+        this._toggleTimePicker()
+        this.setState({ selected: !this.state.selected })
+    }
+
+    _onChangeText = async (text) => {
+        await this.setState({ text })
+    }
+
+    _onEndEditing = () => {
+        let text = this.state.text
+        this._setTime(text)
     }
 
     _renderDatePicker() {
@@ -99,12 +115,67 @@ export default class AnswerTime extends Component {
                     buttonStyle={styles.button}
                     rounded
                     raised
-                    color={this.state.selected ? '#FFFFFF' : "#9CD8B9" }
+                    color={this.state.selected ? '#FFFFFF' : "#9CD8B9"}
                     backgroundColor={this.state.selected ? "#9CD8B9" : '#FFFFFF'}
                     fontFamily="Kanit-Regular" />
                 {this._renderTimePicker()}
             </View>
         )
+    }
+
+    _renderFrequency() {
+        return (
+            <View>
+                <Button
+                    title={this.props.answer.title}
+                    onPress={this._onPressTimePickerButton}
+                    buttonStyle={styles.button}
+                    rounded
+                    raised
+                    color={this.state.selected ? '#FFFFFF' : "#9CD8B9"}
+                    backgroundColor={this.state.selected ? "#9CD8B9" : '#FFFFFF'}
+                    fontFamily="Kanit-Regular" />
+                {this._renderFrequencyPicker()}
+            </View >
+        )
+    }
+
+    _renderFrequencyPicker() {
+        if (this.state.showTimePicker) {
+            return (
+                <View style={styles.container}>
+                    <View style={{ flex: 1 }}>
+                        <TextInput
+                            onEndEditing={this._onEndEditing}
+                            onChangeText={this._onChangeText}
+                            value={this.state.text}
+                            style={{fontSize: 16}}
+                            placeholder="จำนวนครั้ง"
+                            maxLength={100}
+                            keyboardType="numeric"
+                            selectionColor="#9CD8B9"
+                            placeholderTextColor="#60ADA6" />
+                       
+                    </View>
+                    <Text style={[styles.text, {marginTop: 15}]}> ต่อ </Text>
+                    <View style={{ flex: 1 }}>
+                        <Picker
+                            selectedValue={this.state.timeUnit}
+                            onValueChange={(itemValue, itemIndex) => this._setTimeUnit(itemValue)} style={styles.picker}>
+                            <Picker.Item label="หน่วยเวลา" value="" />
+                            <Picker.Item label="นาที" value="นาที" />
+                            <Picker.Item label="ชั่วโมง" value="ชั่วโมง" />
+                            <Picker.Item label="วัน" value="วัน" />
+                            <Picker.Item label="เดือน" value="เดือน" />
+                            <Picker.Item label="ปี" value="ปี" />
+                        </Picker>
+                    </View>
+                </View>
+            )
+        }
+        else {
+            return null
+        }
     }
 
     _renderPicker() {
@@ -258,7 +329,8 @@ export default class AnswerTime extends Component {
                         (
                             <Picker
                                 selectedValue={this.state.timeUnit}
-                                onValueChange={(itemValue, itemIndex) => this._setTimeUnit(itemValue)} style={styles.picker}>
+                                onValueChange={(itemValue, itemIndex) => this._setTimeUnit(itemValue)} 
+                                style={styles.picker}>
                                 <Picker.Item label="หน่วยเวลา" value="" />
                                 <Picker.Item label="นาที" value="นาที" />
                                 <Picker.Item label="ชั่วโมง" value="ชั่วโมง" />
@@ -270,7 +342,8 @@ export default class AnswerTime extends Component {
                             (
                                 <Picker
                                     selectedValue={this.state.timeUnit}
-                                    onValueChange={(itemValue, itemIndex) => this._setTimeUnit(itemValue)} style={styles.picker}>
+                                    onValueChange={(itemValue, itemIndex) => this._setTimeUnit(itemValue)} 
+                                    style={styles.picker}>
                                     <Picker.Item label="หน่วยเวลา" value="" />
                                     <Picker.Item label="วัน" value="วัน" />
                                     <Picker.Item label="เดือน" value="เดือน" />
@@ -280,7 +353,8 @@ export default class AnswerTime extends Component {
                                 (
                                     <Picker
                                         selectedValue={this.state.timeUnit}
-                                        onValueChange={(itemValue, itemIndex) => this._setTimeUnit(itemValue)} style={styles.picker}>
+                                        onValueChange={(itemValue, itemIndex) => this._setTimeUnit(itemValue)} 
+                                        style={styles.picker}>
                                         <Picker.Item label="หน่วยเวลา" value="" />
                                         <Picker.Item label="วัน" value="วัน" />
                                         <Picker.Item label="เดือน" value="เดือน" />
@@ -298,6 +372,8 @@ export default class AnswerTime extends Component {
             return this._renderDatePicker()
         else if (this.props.answer.title === "เวลา")
             return this._renderTimePickerButton()
+        else if (this.props.answer.title === "เป็นช่วงๆ")
+            return this._renderFrequency()
         else
             return this._renderPicker()
     }
@@ -314,6 +390,11 @@ const styles = {
         borderColor: "#9CD8B9",
         borderWidth: 2,
     },
+    text: {
+        color: "#9CD8B9",
+        fontSize: 16,
+        fontFamily: 'Kanit-Regular'
+    },
     customStyles: {
         dateIcon: {
             position: 'absolute',
@@ -327,6 +408,6 @@ const styles = {
 
     },
     picker: {
-        color: "#9CD8B9"
+        color: "#60ADA6",
     }
 };
