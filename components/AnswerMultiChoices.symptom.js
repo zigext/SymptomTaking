@@ -59,7 +59,9 @@ export default class AnswerMultipleChoices extends Component {
                 raised
                 color={this.state.selected ? "#FFFFFF" : "#9CD8B9"}
                 backgroundColor={this.state.selected ? "#80cdc0" : '#FFFFFF'}
-                icon={this.state.selected ? { name: 'check', type: 'evilicon' } : null} />
+                icon={this.state.selected ? { name: 'check', type: 'evilicon' } : null}
+                containerViewStyle={{ backgroundColor: 'transparent' }} />
+
         )
     }
 

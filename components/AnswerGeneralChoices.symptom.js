@@ -142,7 +142,7 @@ export default class AnswerGeneralChoices extends Component {
                 renderItem={(item, index) => {
                     if (item.item.type === "o") {
                         return (
-                            <View>
+                            <View  style={{ backgroundColor: 'transparent' }}>
                                 <Button
                                     title={item.item.title}
                                     onPress={() => this._onPress(item.item)}
@@ -153,6 +153,7 @@ export default class AnswerGeneralChoices extends Component {
                                     raised
                                     color={this.state.selected ? (this.state.choose === item.item.title ? "#FFFFFF" : "#9CD8B9") : '#9CD8B9'}
                                     backgroundColor={this.state.selected ? (this.state.choose === item.item.title ? "#9CD8B9" : "#FFFFFF") : '#FFFFFF'}
+                                    containerViewStyle={{ backgroundColor: 'transparent' }}
                                 />
                                 {this._renderTextInput()}
                             </View>
@@ -170,6 +171,7 @@ export default class AnswerGeneralChoices extends Component {
                                 raised
                                 color={this.state.selected ? (this.state.choose === item.item.title ? "#FFFFFF" : "#9CD8B9") : '#9CD8B9'}
                                 backgroundColor={this.state.selected ? (this.state.choose === item.item.title ? "#9CD8B9" : "#FFFFFF") : '#FFFFFF'}
+                                containerViewStyle={{ backgroundColor: 'transparent' }}
                             />
                         )
                     }
