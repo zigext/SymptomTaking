@@ -7,6 +7,7 @@ import AnswerTime from './AnswerTime.symptom'
 import AnswerOther from './AnswerOther.symptom'
 import AnswerTakePicture from './AnswerTakePicture.symptom'
 import AnswerVasScore from './AnswerVasScore.symptom'
+import AnswerPictureChoice from './AnswerPictureChoice.symptom'
 import Question from './Question.symptom'
 import User from '../UcareData/mockdata' //mock user from firebase => KOPAI
 
@@ -536,12 +537,15 @@ export default class QuestionDisplay extends Component {
 
 
     _renderTwoQuestions() {
+        console.log("X = ", this.props.questionSet[0].answer[0].type)
         return (
             <View style={styles.container}>
 
                 {/*Question no.1*/}
                 <View style={styles.questionContainer}>
                     <Question question={this.props.questionSet[0]} />
+                    {/*if scrollview horizontal, it will affect Picker component*/}
+                    <ScrollView horizontal={this.props.questionSet[0].answer[0].type === "PC" ? true : false}>
                     {
                         this.props.questionSet[0].type === "Choice" ?
                             this.props.questionSet[0].answer.map((answer, index) => {
@@ -578,7 +582,18 @@ export default class QuestionDisplay extends Component {
                                         />
                                     )
                                 }
+                                else if (answer.type === "PC") { //picture choice
+                                    return (
+                                        <View style={{ alignSelf: 'center' }} key={`${this.props.questionSet[0].title} : ${answer.title}`}>
+                                            <AnswerPictureChoice
+                                                answer={answer}
+                                                _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
+                                            />
+                                        </View>
+                                    )
+                                }
                             })
+
                             : this.props.questionSet[0].type === "MultiChoice" ?
                                 (<View style={{ flexDirection: "row", flex: 1, flexWrap: "wrap" }}>
                                     {this.props.questionSet[0].answer.map((answer, index) => {
@@ -591,6 +606,15 @@ export default class QuestionDisplay extends Component {
                                                         _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
                                                         _setOtherPatientAnswer={this._setOtherPatientAnswer1}
                                                         _setMultipleChoiceCurrentAnswer={this._setMultipleChoiceCurrentAnswer1}
+                                                    />
+                                                )
+                                            }
+                                            else if (answer.type === "PC") { //picture choice
+                                                return (
+                                                    <AnswerPictureChoice
+                                                        answer={answer}
+                                                        key={`${this.props.questionSet[0].title} : ${answer.title}`}
+                                                        _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
                                                     />
                                                 )
                                             }
@@ -611,11 +635,13 @@ export default class QuestionDisplay extends Component {
                                 </View>)
                                 : null
                     }
+                    </ScrollView>
                 </View>
 
                 {/*Question no.2*/}
                 <View style={styles.questionContainer}>
                     <Question question={this.props.questionSet[1]} />
+                    <ScrollView horizontal={this.props.questionSet[1].answer[0].type === "PC" ? true : false}>
                     {
                         this.props.questionSet[1].type === "Choice" ?
                             this.props.questionSet[1].answer.map((answer, index) => {
@@ -652,6 +678,16 @@ export default class QuestionDisplay extends Component {
                                         />
                                     )
                                 }
+                                else if (answer.type === "PC") { //picture choice
+                                    return (
+                                        <View style={{ alignSelf: 'center' }} key={`${this.props.questionSet[1].title} : ${answer.title}`}>
+                                            <AnswerPictureChoice
+                                                answer={answer}
+                                                _setCurrentPatientAnswer={this._setCurrentPatientAnswer2}
+                                            />
+                                        </View>
+                                    )
+                                }
                             })
                             : this.props.questionSet[1].type === "MultiChoice" ?
                                 (
@@ -666,6 +702,15 @@ export default class QuestionDisplay extends Component {
                                                                 key={`${this.props.questionSet[1].title} : ${answer.title}`}
                                                                 _setCurrentPatientAnswer={this._setCurrentPatientAnswer2}
                                                                 _setOtherPatientAnswer={this._setOtherPatientAnswer2}
+                                                            />
+                                                        )
+                                                    }
+                                                    else if (answer.type === "PC") { //picture choice
+                                                        return (
+                                                            <AnswerPictureChoice
+                                                                answer={answer}
+                                                                key={`${this.props.questionSet[1].title} : ${answer.title}`}
+                                                                _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
                                                             />
                                                         )
                                                     }
@@ -689,6 +734,7 @@ export default class QuestionDisplay extends Component {
                                 )
                                 : null
                     }
+                    </ScrollView>
                 </View>
             </View>
         )
