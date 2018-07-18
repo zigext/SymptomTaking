@@ -304,15 +304,65 @@ export default class SymptomTakingScreen extends Component {
                 }
                 //have next questionSet
                 else if (nextPage !== "end") {
+                    let questionBasedOnSexCount = 0
                     let nextPageObj = this.state.pagesBasedOnChiefComplaint[nextPage]
                     let nextQuestionNames = nextPageObj.questionSet
                     let nextQuestionSet = []
                     //find questions in that page
-                    nextQuestionNames.map((name) => {
+                    nextQuestionNames.map(async (name) => {
                         Object.entries(this.state.questionBasedOnChiefComplaint).forEach(
-                            ([key, value]) => {
+                            async ([key, value]) => {
                                 if (key === name) {
-                                    nextQuestionSet.push(value)
+                                    //question which specific sex
+                                    if (value.hasOwnProperty("sex")) {
+                                        //user has the right sex
+                                        if (value.sex === User.info.sex) {
+                                            nextQuestionSet.push(value)
+                                        }
+                                        //user doesn't have the right sex
+                                        //TODO: error when both question is sex specific or the last question of the symtom is sex specific
+                                        else {
+                                            // console.log("COUNT = ", questionBasedOnSexCount, nextQuestionNames.length)
+                                            // questionBasedOnSexCount++
+                                            // //if both of the question in the next page are based on sex
+                                            // if (questionBasedOnSexCount === nextQuestionNames.length) {
+                                            //     let nextPageObjAfterSkip = this.state.pagesBasedOnChiefComplaint[nextPageObj.nextNormal.next]
+                                            //     console.log("__", nextPageObjAfterSkip)
+                                            //     let nextQuestionNamesAfterSkip = nextPageObjAfterSkip.questionSet
+                                            //     let nextQuestionSetAfterSkip = []
+                                            //     nextQuestionNamesAfterSkip.map((name) => {
+                                            //         Object.entries(this.state.questionBasedOnChiefComplaint).forEach(
+                                            //             ([key, value]) => {
+                                            //                 if (key === name) {
+                                            //                     nextQuestionSetAfterSkip.push(value)
+                                            //                 }
+                                            //             }
+                                            //         )
+                                            //     })
+                                            //     let test = this.state.pagesBasedOnChiefComplaint[nextPageObj.nextNormal.next]
+                                            //     console.log("YO = ", nextQuestionSetAfterSkip, this.state.pagesBasedOnChiefComplaint[nextPageObj.nextNormal.next])
+                                            //     await this.setState({
+                                            //         questionNumber,
+                                            //         questionHistory: _.uniq(history),
+                                            //         allPatientAnswers,
+                                            //         answersForThePage: [],
+                                            //         currentQuestion: nextQuestionSetAfterSkip,
+                                            //         currentQuestionSet: nextQuestionSetAfterSkip,
+                                            //         currentPage: test,
+                                            //         otherPatientAnswer: ""
+                                            //     })
+                                            //     console.log("SKIP = ", this.state)
+                                            //     await this.refs.questionDisplay.reset()
+                                            //     this._calculateProgress()
+                                            //     return
+                                            // }
+                                            //skip this question (skip page)
+                                        }
+                                    }
+                                    //does not specific
+                                    else {
+                                        nextQuestionSet.push(value)
+                                    }
                                 }
                             }
                         )
@@ -457,7 +507,7 @@ export default class SymptomTakingScreen extends Component {
                     <ImageBackground source={require('../assets/images/bg.png')} style={{ width: '100%', height: '100%' }}>
                         {/*<ScrollView style={{ flex: 1, flexGrow: 1 }} >*/}
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginVertical: 20 }}>
-                            <View style={{borderWidth: 2, borderColor: '#FFFFFF', height: 90, width: 90, borderRadius: 45, alignItems: 'center', justifyContent: 'center'}}>
+                            <View style={{ borderWidth: 2, borderColor: '#FFFFFF', height: 90, width: 90, borderRadius: 45, alignItems: 'center', justifyContent: 'center' }}>
                                 <Avatar
                                     large
                                     rounded
@@ -576,7 +626,7 @@ export default class SymptomTakingScreen extends Component {
                                         buttonStyle={styles.nextButton}
                                         containerViewStyle={{ backgroundColor: 'transparent' }} /> :
                                     <Button
-                                    rightIcon={{ name: 'ios-arrow-forward-outline', type: 'ionicon', color: '#60ADA6' }}
+                                        rightIcon={{ name: 'ios-arrow-forward-outline', type: 'ionicon', color: '#60ADA6' }}
                                         title="ยืนยัน"
                                         fontFamily="Kanit-Regular"
                                         onPress={this._next}
