@@ -46,14 +46,46 @@ export default class AnswerTime extends Component {
     }
 
     _onPressTimePickerButton = () => {
-        this._toggleTimePicker()
-        this.setState({ selected: !this.state.selected })
+        //not select any choice
+        if (!this.props.alreadyChooseAnswer) {
+            this._toggleTimePicker()
+            this.setState({ selected: !this.state.selected })
+            this.props._toggleAlreadyChooseAnswer(true)
+        }
+        //already selected
+        else {
+            if (this.state.selected) {
+                this._toggleTimePicker()
+                this.setState({ selected: !this.state.selected })
+                this.props._toggleAlreadyChooseAnswer(false)
+            }
+            else {
+                ToastAndroid.showWithGravityAndOffset('สามารถเลือกได้เพียง 1 คำตอบ', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
+            }
+
+        }
     }
 
 
     _onPressFrequencyPickerButton = () => {
-        this._toggleTimePicker()
-        this.setState({ selected: !this.state.selected })
+        //not select any choice
+        if (!this.props.alreadyChooseAnswer) {
+            this._toggleTimePicker()
+            this.setState({ selected: !this.state.selected })
+            this.props._toggleAlreadyChooseAnswer(true)
+        }
+        //already selected
+        else {
+            if (this.state.selected) {
+                this._toggleTimePicker()
+                this.setState({ selected: !this.state.selected })
+                this.props._toggleAlreadyChooseAnswer(false)
+            }
+            else {
+                ToastAndroid.showWithGravityAndOffset('สามารถเลือกได้เพียง 1 คำตอบ', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
+            }
+
+        }
     }
 
     _onChangeText = async (text) => {
@@ -128,7 +160,7 @@ export default class AnswerTime extends Component {
             <View>
                 <Button
                     title={this.props.answer.title}
-                    onPress={this._onPressTimePickerButton}
+                    onPress={this._onPressFrequencyPickerButton}
                     buttonStyle={styles.button}
                     rounded
                     raised
@@ -149,15 +181,15 @@ export default class AnswerTime extends Component {
                             onEndEditing={this._onEndEditing}
                             onChangeText={this._onChangeText}
                             value={this.state.text}
-                            style={{fontSize: 16}}
+                            style={{ fontSize: 16 }}
                             placeholder="จำนวนครั้ง"
                             maxLength={100}
                             keyboardType="numeric"
                             selectionColor="#9CD8B9"
                             placeholderTextColor="#60ADA6" />
-                       
+
                     </View>
-                    <Text style={[styles.text, {marginTop: 15}]}> ต่อ </Text>
+                    <Text style={[styles.text, { marginTop: 15 }]}> ต่อ </Text>
                     <View style={{ flex: 1 }}>
                         <Picker
                             selectedValue={this.state.timeUnit}
@@ -329,7 +361,7 @@ export default class AnswerTime extends Component {
                         (
                             <Picker
                                 selectedValue={this.state.timeUnit}
-                                onValueChange={(itemValue, itemIndex) => this._setTimeUnit(itemValue)} 
+                                onValueChange={(itemValue, itemIndex) => this._setTimeUnit(itemValue)}
                                 style={styles.picker}>
                                 <Picker.Item label="หน่วยเวลา" value="" />
                                 <Picker.Item label="นาที" value="นาที" />
@@ -342,7 +374,7 @@ export default class AnswerTime extends Component {
                             (
                                 <Picker
                                     selectedValue={this.state.timeUnit}
-                                    onValueChange={(itemValue, itemIndex) => this._setTimeUnit(itemValue)} 
+                                    onValueChange={(itemValue, itemIndex) => this._setTimeUnit(itemValue)}
                                     style={styles.picker}>
                                     <Picker.Item label="หน่วยเวลา" value="" />
                                     <Picker.Item label="วัน" value="วัน" />
@@ -353,7 +385,7 @@ export default class AnswerTime extends Component {
                                 (
                                     <Picker
                                         selectedValue={this.state.timeUnit}
-                                        onValueChange={(itemValue, itemIndex) => this._setTimeUnit(itemValue)} 
+                                        onValueChange={(itemValue, itemIndex) => this._setTimeUnit(itemValue)}
                                         style={styles.picker}>
                                         <Picker.Item label="หน่วยเวลา" value="" />
                                         <Picker.Item label="วัน" value="วัน" />

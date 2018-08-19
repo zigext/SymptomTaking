@@ -59,16 +59,44 @@ export default class AnswerOther extends Component {
         }
         //Choice
         else {
-            await this.setState({
-                selected: !this.state.selected
-            })
-            this._toggleTextInput()
-            if (this.state.selected) {
-                this.props._setCurrentPatientAnswer(this.props.answer)
+            //not select any choice
+            if (!this.props.alreadyChooseAnswer) {
+                await this.setState({
+                    selected: !this.state.selected
+                })
+                this._toggleTextInput()
+                if (this.state.selected) {
+                    this.props._setCurrentPatientAnswer(this.props.answer)
+                    this.props._toggleAlreadyChooseAnswer(true)
+                }
+                else {
+
+                }
             }
+            //already select => disselect the button
             else {
-                this.props._setCurrentPatientAnswer("")
+                ToastAndroid.showWithGravityAndOffset('สามารถเลือกได้เพียง 1 คำตอบ', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
+                if (this.state.selected) {
+                    await this.setState({
+                        selected: !this.state.selected
+                    })
+                    this._toggleTextInput()
+                    this.props._setCurrentPatientAnswer("")
+                    this.props._toggleAlreadyChooseAnswer(false)
+                }
+
+
             }
+            // await this.setState({
+            //     selected: !this.state.selected
+            // })
+            // this._toggleTextInput()
+            // if (this.state.selected) {
+            //     this.props._setCurrentPatientAnswer(this.props.answer)
+            // }
+            // else {
+            //     this.props._setCurrentPatientAnswer("")
+            // }
         }
 
 
@@ -82,7 +110,6 @@ export default class AnswerOther extends Component {
 
     _onEndEditing = () => {
         let text = this.state.text
-        console.log("text = ", text)
         this.props._setOtherPatientAnswer(text)
     }
 

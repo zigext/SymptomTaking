@@ -39,6 +39,8 @@ export default class QuestionDisplay extends Component {
             pathStorage: "",
             timestamp: "",
             allPatientAnswers: [],
+            alreadyChooseAnswer_1: false, //for 1 choice answer
+            alreadyChooseAnswer_2: false
         }
         this.baseState = this.state
     }
@@ -67,7 +69,6 @@ export default class QuestionDisplay extends Component {
                 else {
                     //user doesn't choose both time and timeUnit
                     if ((this.state.time_1 && !this.state.timeUnit_1) || (!this.state.time_1 && this.state.timeUnit_1)) {
-                        console.log("return")
                         ToastAndroid.showWithGravityAndOffset('กรุณาระบุเวลาและหน่วยเวลา', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
                         return
                     }
@@ -128,7 +129,6 @@ export default class QuestionDisplay extends Component {
         else if (this.state.currentPatientAnswer_1.type !== "T") {
             console.log("not T")
             if (this.state.currentPatientAnswer_1.type === "o" && this.state.otherPatientAnswer_1 !== "") {
-                console.log("type O")
                 let obj = {}
                 obj.type = this.state.currentPatientAnswer_1.type
                 obj.question = this.state.currentPatientAnswer_1.question
@@ -262,7 +262,7 @@ export default class QuestionDisplay extends Component {
             this.props._setAnswersForThePage(answer, method)
         }
 
-        console.log("outside", answer)
+
         // this.props._setAnswersForThePage(answer, method)
 
         // this.props._setAnswersForThePage(answer, method)
@@ -318,11 +318,46 @@ export default class QuestionDisplay extends Component {
         // }
     }
 
+    _toggleAlreadyChooseAnswer1 = async (value) => {
+        await this.setState({ alreadyChooseAnswer_1: value })
+    }
+
+    _toggleAlreadyChooseAnswer2 = async (value) => {
+        await this.setState({ alreadyChooseAnswer_2: value })
+    }
+
     _setCurrentPatientAnswer1 = async (currentPatientAnswer_1) => {
         await this.setState({ currentPatientAnswer_1 })
         this._callSetAnswerForThePage(currentPatientAnswer_1, ADD)
 
+
         console.log("current answer 1 = ", this.state.currentPatientAnswer_1)
+    }
+
+    //use this.state.multipleChoiceCurrentAnswer so it can add and delete answer each
+    _setChoiceCurrentAnswer1 = async (answer, method) => {
+        //user click new answer
+        if (method === "add") {
+            let tmpAnswer = this.state.multipleChoiceCurrentAnswer_1
+            tmpAnswer.push(answer)
+            await this.setState({
+                multipleChoiceCurrentAnswer_1: _.uniq(tmpAnswer),
+                currentPatientAnswer_1: answer
+            })
+            this._callSetAnswerForThePage(answer, ADD)
+        }
+        //user click already selected answer
+        else if (method === "delete") {
+            let tmpAnswer = this.state.multipleChoiceCurrentAnswer_1
+            removedTmpAnswer = tmpAnswer.filter((selectedAnswer) => {
+                return selectedAnswer.title !== answer.title
+            })
+            await this.setState({
+                multipleChoiceCurrentAnswer_1: removedTmpAnswer,
+                currentPatientAnswer_1: ""
+            })
+            this._callSetAnswerForThePage(answer, DELETE)
+        }
     }
 
     _setMultipleChoiceCurrentAnswer1 = async (answer, method) => {
@@ -376,7 +411,34 @@ export default class QuestionDisplay extends Component {
     _setCurrentPatientAnswer2 = async (currentPatientAnswer_2) => {
         await this.setState({ currentPatientAnswer_2 })
         this._callSetAnswerForThePage(currentPatientAnswer_2, ADD)
+
         console.log("current answer 2 = ", this.state.currentPatientAnswer_2)
+    }
+
+    //use this.state.multipleChoiceCurrentAnswer so it can add and delete answer each
+    _setChoiceCurrentAnswer2 = async (answer, method) => {
+        //user click new answer
+        if (method === "add") {
+            let tmpAnswer = this.state.multipleChoiceCurrentAnswer_2
+            tmpAnswer.push(answer)
+            await this.setState({
+                multipleChoiceCurrentAnswer_2: _.uniq(tmpAnswer),
+                currentPatientAnswer_2: answer
+            })
+            this._callSetAnswerForThePage(answer, ADD)
+        }
+        //user click already selected answer
+        else if (method === "delete") {
+            let tmpAnswer = this.state.multipleChoiceCurrentAnswer_2
+            removedTmpAnswer = tmpAnswer.filter((selectedAnswer) => {
+                return selectedAnswer.title !== answer.title
+            })
+            await this.setState({
+                multipleChoiceCurrentAnswer_2: removedTmpAnswer,
+                currentPatientAnswer_2: ""
+            })
+            this._callSetAnswerForThePage(answer, DELETE)
+        }
     }
 
     _setMultipleChoiceCurrentAnswer2 = async (answer, method) => {
@@ -446,8 +508,11 @@ export default class QuestionDisplay extends Component {
                                         answer={answer}
                                         key={`${this.props.questionSet[0].title} : ${answer.title}`}
                                         currentPatientAnswer={this.state.currentPatientAnswer_1}
+                                        alreadyChooseAnswer={this.state.alreadyChooseAnswer_1}
                                         _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
                                         _setOtherPatientAnswer={this._setOtherPatientAnswer1}
+                                        _setChoiceCurrentAnswer={this._setChoiceCurrentAnswer1}
+                                        _toggleAlreadyChooseAnswer={this._toggleAlreadyChooseAnswer1}
                                     />
                                 )
 
@@ -458,9 +523,11 @@ export default class QuestionDisplay extends Component {
                                         answer={answer}
                                         key={`${this.props.questionSet[0].title} : ${answer.title}`}
                                         currentPatientAnswer={this.state.currentPatientAnswer_1}
+                                        alreadyChooseAnswer={this.state.alreadyChooseAnswer_1}
                                         _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
                                         _setMultipleChoiceCurrentAnswer={this._setMultipleChoiceCurrentAnswer1}
                                         _setOtherPatientAnswer={this._setOtherPatientAnswer1}
+                                        _toggleAlreadyChooseAnswer={this._toggleAlreadyChooseAnswer1}
                                     />
                                 )
                             }
@@ -469,10 +536,12 @@ export default class QuestionDisplay extends Component {
                                     <AnswerTime
                                         answer={answer}
                                         key={`${this.props.questionSet[0].title} : ${answer.title}`}
+                                        alreadyChooseAnswer={this.state.alreadyChooseAnswer_1}
                                         _setTime={this._setTime1}
                                         _setTimeUnit={this._setTimeUnit1}
                                         _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
                                         _setDate={this._setDate1}
+                                        _toggleAlreadyChooseAnswer={this._toggleAlreadyChooseAnswer1}
                                     />
                                 )
                             }
@@ -537,7 +606,6 @@ export default class QuestionDisplay extends Component {
 
 
     _renderTwoQuestions() {
-        console.log("X = ", this.props.questionSet[0].answer[0].type)
         return (
             <View style={styles.container}>
 
@@ -546,95 +614,108 @@ export default class QuestionDisplay extends Component {
                     <Question question={this.props.questionSet[0]} />
                     {/*if scrollview horizontal, it will affect Picker component*/}
                     <ScrollView horizontal={this.props.questionSet[0].answer[0].type === "PC" ? true : false}>
-                    {
-                        this.props.questionSet[0].type === "Choice" ?
-                            this.props.questionSet[0].answer.map((answer, index) => {
-                                if (answer.type === "c" || answer.type === "E" || answer.type === "U" || (answer.type === User.info.sex)) {
-                                    return (
-                                        <AnswerChoices
-                                            answer={answer}
-                                            key={`${this.props.questionSet[0].title} : ${answer.title}`}
-                                            currentPatientAnswer={this.state.currentPatientAnswer_1}
-                                            _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
-                                            _setOtherPatientAnswer={this._setOtherPatientAnswer1}
-                                        />
-                                    )
-                                }
-                                else if (answer.type === "T") {
-                                    return (
-                                        <AnswerTime
-                                            answer={answer}
-                                            key={`${this.props.questionSet[0].title} : ${answer.title}`}
-                                            _setTime={this._setTime1}
-                                            _setTimeUnit={this._setTimeUnit1}
-                                            _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
-                                            _setDate={this._setDate1}
-                                        />
-                                    )
-                                }
-                                else if (answer.type === "o") {
-                                    return (
-                                        <AnswerOther
-                                            answer={answer}
-                                            key={`${this.props.questionSet[0].title} : ${answer.title}`}
-                                            _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
-                                            _setOtherPatientAnswer={this._setOtherPatientAnswer1}
-                                        />
-                                    )
-                                }
-                                else if (answer.type === "PC") { //picture choice
-                                    return (
-                                        <View style={{ alignSelf: 'center' }} key={`${this.props.questionSet[0].title} : ${answer.title}`}>
-                                            <AnswerPictureChoice
+                        {
+                            this.props.questionSet[0].type === "Choice" ?
+                                this.props.questionSet[0].answer.map((answer, index) => {
+                                    if (answer.type === "c" || answer.type === "E" || answer.type === "U" || (answer.type === User.info.sex)) {
+                                        return (
+                                            <AnswerChoices
                                                 answer={answer}
+                                                key={`${this.props.questionSet[0].title} : ${answer.title}`}
+                                                currentPatientAnswer={this.state.currentPatientAnswer_1}
+                                                alreadyChooseAnswer={this.state.alreadyChooseAnswer_1}
                                                 _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
+                                                _setOtherPatientAnswer={this._setOtherPatientAnswer1}
+                                                _setChoiceCurrentAnswer={this._setChoiceCurrentAnswer1}
+                                                _toggleAlreadyChooseAnswer={this._toggleAlreadyChooseAnswer1}
                                             />
-                                        </View>
-                                    )
-                                }
-                            })
+                                        )
+                                    }
+                                    else if (answer.type === "T") {
+                                        return (
+                                            <AnswerTime
+                                                answer={answer}
+                                                key={`${this.props.questionSet[0].title} : ${answer.title}`}
+                                                alreadyChooseAnswer={this.state.alreadyChooseAnswer_1}
+                                                _setTime={this._setTime1}
+                                                _setTimeUnit={this._setTimeUnit1}
+                                                _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
+                                                _setDate={this._setDate1}
+                                                _toggleAlreadyChooseAnswer={this._toggleAlreadyChooseAnswer1}
+                                            />
+                                        )
+                                    }
+                                    else if (answer.type === "o") {
+                                        return (
+                                            <AnswerOther
+                                                answer={answer}
+                                                key={`${this.props.questionSet[0].title} : ${answer.title}`}
+                                                alreadyChooseAnswer={this.state.alreadyChooseAnswer_1}
+                                                _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
+                                                _setOtherPatientAnswer={this._setOtherPatientAnswer1}
+                                                _toggleAlreadyChooseAnswer={this._toggleAlreadyChooseAnswer1}
+                                            />
+                                        )
+                                    }
+                                    else if (answer.type === "PC") { //picture choice
+                                        return (
+                                            <View style={{ alignSelf: 'center' }} key={`${this.props.questionSet[0].title} : ${answer.title}`}>
+                                                <AnswerPictureChoice
+                                                    answer={answer}
+                                                    alreadyChooseAnswer={this.state.alreadyChooseAnswer_1}
+                                                    _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
+                                                    _setChoiceCurrentAnswer={this._setChoiceCurrentAnswer1}
+                                                    _toggleAlreadyChooseAnswer={this._toggleAlreadyChooseAnswer1}
+                                                />
+                                            </View>
+                                        )
+                                    }
+                                })
 
-                            : this.props.questionSet[0].type === "MultiChoice" ?
-                                (<View style={{ flexDirection: "row", flex: 1, flexWrap: "wrap" }}>
-                                    {this.props.questionSet[0].answer.map((answer, index) => {
-                                        if (answer.type === "c" || answer.type === "E" || answer.type === "U" || (answer.type === User.info.sex) || (answer.type === "o")) {
-                                            if (answer.type === "o") {
-                                                return (
-                                                    <AnswerOther
-                                                        answer={answer}
-                                                        key={`${this.props.questionSet[0].title} : ${answer.title}`}
-                                                        _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
-                                                        _setOtherPatientAnswer={this._setOtherPatientAnswer1}
-                                                        _setMultipleChoiceCurrentAnswer={this._setMultipleChoiceCurrentAnswer1}
-                                                    />
-                                                )
+                                : this.props.questionSet[0].type === "MultiChoice" ?
+                                    (<View style={{ flexDirection: "row", flex: 1, flexWrap: "wrap" }}>
+                                        {this.props.questionSet[0].answer.map((answer, index) => {
+                                            if (answer.type === "c" || answer.type === "E" || answer.type === "U" || (answer.type === User.info.sex) || (answer.type === "o")) {
+                                                if (answer.type === "o") {
+                                                    return (
+                                                        <AnswerOther
+                                                            answer={answer}
+                                                            key={`${this.props.questionSet[0].title} : ${answer.title}`}
+                                                            _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
+                                                            _setOtherPatientAnswer={this._setOtherPatientAnswer1}
+                                                            _setMultipleChoiceCurrentAnswer={this._setMultipleChoiceCurrentAnswer1}
+                                                        />
+                                                    )
+                                                }
+                                                else if (answer.type === "PC") { //picture choice
+                                                    return (
+                                                        <AnswerPictureChoice
+                                                            answer={answer}
+                                                            alreadyChooseAnswer={this.state.alreadyChooseAnswer_1}
+                                                            key={`${this.props.questionSet[0].title} : ${answer.title}`}
+                                                            _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
+                                                            _setChoiceCurrentAnswer={this._setChoiceCurrentAnswer1}
+                                                            _toggleAlreadyChooseAnswer={this._toggleAlreadyChooseAnswer1}
+                                                        />
+                                                    )
+                                                }
+                                                else {
+                                                    return (
+                                                        <AnswerMultiChoices
+                                                            answer={answer}
+                                                            key={`${this.props.questionSet[0].title} : ${answer.title}`}
+                                                            currentPatientAnswer={this.state.currentPatientAnswer_1}
+                                                            multipleChoiceCurrentAnswer={this.state.multipleChoiceCurrentAnswer_1}
+                                                            _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
+                                                            _setMultipleChoiceCurrentAnswer={this._setMultipleChoiceCurrentAnswer1}
+                                                        />
+                                                    )
+                                                }
                                             }
-                                            else if (answer.type === "PC") { //picture choice
-                                                return (
-                                                    <AnswerPictureChoice
-                                                        answer={answer}
-                                                        key={`${this.props.questionSet[0].title} : ${answer.title}`}
-                                                        _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
-                                                    />
-                                                )
-                                            }
-                                            else {
-                                                return (
-                                                    <AnswerMultiChoices
-                                                        answer={answer}
-                                                        key={`${this.props.questionSet[0].title} : ${answer.title}`}
-                                                        currentPatientAnswer={this.state.currentPatientAnswer_1}
-                                                        multipleChoiceCurrentAnswer={this.state.multipleChoiceCurrentAnswer_1}
-                                                        _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
-                                                        _setMultipleChoiceCurrentAnswer={this._setMultipleChoiceCurrentAnswer1}
-                                                    />
-                                                )
-                                            }
-                                        }
-                                    })}
-                                </View>)
-                                : null
-                    }
+                                        })}
+                                    </View>)
+                                    : null
+                        }
                     </ScrollView>
                 </View>
 
@@ -642,98 +723,112 @@ export default class QuestionDisplay extends Component {
                 <View style={styles.questionContainer}>
                     <Question question={this.props.questionSet[1]} />
                     <ScrollView horizontal={this.props.questionSet[1].answer[0].type === "PC" ? true : false}>
-                    {
-                        this.props.questionSet[1].type === "Choice" ?
-                            this.props.questionSet[1].answer.map((answer, index) => {
-                                if (answer.type === "c" || answer.type === "E" || answer.type === "U" || (answer.type === User.info.sex)) {
-                                    return (
-                                        <AnswerChoices
-                                            answer={answer}
-                                            key={`${this.props.questionSet[1].title} : ${answer.title}`}
-                                            currentPatientAnswer={this.state.currentPatientAnswer_2}
-                                            _setCurrentPatientAnswer={this._setCurrentPatientAnswer2}
-                                            _setOtherPatientAnswer={this._setOtherPatientAnswer2}
-                                        />
-                                    )
-                                }
-                                else if (answer.type === "o") {
-                                    return (
-                                        <AnswerOther
-                                            answer={answer}
-                                            key={`${this.props.questionSet[1].title} : ${answer.title}`}
-                                            _setCurrentPatientAnswer={this._setCurrentPatientAnswer2}
-                                            _setOtherPatientAnswer={this._setOtherPatientAnswer2}
-                                        />
-                                    )
-                                }
-                                else if (answer.type === "T") {
-                                    return (
-                                        <AnswerTime
-                                            answer={answer}
-                                            key={`${this.props.questionSet[1].title} : ${answer.title}`}
-                                            _setTime={this._setTime2}
-                                            _setTimeUnit={this._setTimeUnit2}
-                                            _setCurrentPatientAnswer={this._setCurrentPatientAnswer2}
-                                            _setDate={this._setDate2}
-                                        />
-                                    )
-                                }
-                                else if (answer.type === "PC") { //picture choice
-                                    return (
-                                        <View style={{ alignSelf: 'center' }} key={`${this.props.questionSet[1].title} : ${answer.title}`}>
-                                            <AnswerPictureChoice
+                        {
+                            this.props.questionSet[1].type === "Choice" ?
+                                this.props.questionSet[1].answer.map((answer, index) => {
+                                    if (answer.type === "c" || answer.type === "E" || answer.type === "U" || (answer.type === User.info.sex)) {
+                                        return (
+                                            <AnswerChoices
                                                 answer={answer}
+                                                key={`${this.props.questionSet[1].title} : ${answer.title}`}
+                                                currentPatientAnswer={this.state.currentPatientAnswer_2}
+                                                alreadyChooseAnswer={this.state.alreadyChooseAnswer_2}
                                                 _setCurrentPatientAnswer={this._setCurrentPatientAnswer2}
+                                                _setOtherPatientAnswer={this._setOtherPatientAnswer2}
+                                                _setChoiceCurrentAnswer={this._setChoiceCurrentAnswer2}
+                                                _toggleAlreadyChooseAnswer={this._toggleAlreadyChooseAnswer2}
                                             />
-                                        </View>
-                                    )
-                                }
-                            })
-                            : this.props.questionSet[1].type === "MultiChoice" ?
-                                (
-                                    <View style={{ flexDirection: "row", flex: 1, flexWrap: "wrap" }}>
-                                        {
-                                            this.props.questionSet[1].answer.map((answer, index) => {
-                                                if (answer.type === "c" || answer.type === "E" || answer.type === "U" || (answer.type === User.info.sex) || (answer.type === "o")) {
-                                                    if (answer.type === "o") {
-                                                        return (
-                                                            <AnswerOther
-                                                                answer={answer}
-                                                                key={`${this.props.questionSet[1].title} : ${answer.title}`}
-                                                                _setCurrentPatientAnswer={this._setCurrentPatientAnswer2}
-                                                                _setOtherPatientAnswer={this._setOtherPatientAnswer2}
-                                                            />
-                                                        )
-                                                    }
-                                                    else if (answer.type === "PC") { //picture choice
-                                                        return (
-                                                            <AnswerPictureChoice
-                                                                answer={answer}
-                                                                key={`${this.props.questionSet[1].title} : ${answer.title}`}
-                                                                _setCurrentPatientAnswer={this._setCurrentPatientAnswer1}
-                                                            />
-                                                        )
-                                                    }
-                                                    else {
-                                                        return (
-                                                            <AnswerMultiChoices
-                                                                answer={answer}
-                                                                key={`${this.props.questionSet[1].title} : ${answer.title}`}
-                                                                currentPatientAnswer={this.state.currentPatientAnswer_2}
-                                                                multipleChoiceCurrentAnswer={this.state.multipleChoiceCurrentAnswer_2}
-                                                                _setCurrentPatientAnswer={this._setCurrentPatientAnswer2}
-                                                                _setMultipleChoiceCurrentAnswer={this._setMultipleChoiceCurrentAnswer2}
-                                                            />
-                                                        )
+                                        )
+                                    }
+                                    else if (answer.type === "o") {
+                                        return (
+                                            <AnswerOther
+                                                answer={answer}
+                                                key={`${this.props.questionSet[1].title} : ${answer.title}`}
+                                                alreadyChooseAnswer={this.state.alreadyChooseAnswer_2}
+                                                _setCurrentPatientAnswer={this._setCurrentPatientAnswer2}
+                                                _setOtherPatientAnswer={this._setOtherPatientAnswer2}
+                                                _toggleAlreadyChooseAnswer={this._toggleAlreadyChooseAnswer2}
+                                            />
+                                        )
+                                    }
+                                    else if (answer.type === "T") {
+                                        return (
+                                            <AnswerTime
+                                                answer={answer}
+                                                key={`${this.props.questionSet[1].title} : ${answer.title}`}
+                                                alreadyChooseAnswer={this.state.alreadyChooseAnswer_2}
+                                                _setTime={this._setTime2}
+                                                _setTimeUnit={this._setTimeUnit2}
+                                                _setCurrentPatientAnswer={this._setCurrentPatientAnswer2}
+                                                _setDate={this._setDate2}
+                                                _toggleAlreadyChooseAnswer={this._toggleAlreadyChooseAnswer2}
+                                            />
+                                        )
+                                    }
+                                    else if (answer.type === "PC") { //picture choice
+                                        return (
+                                            <View style={{ alignSelf: 'center' }} key={`${this.props.questionSet[1].title} : ${answer.title}`}>
+                                                <AnswerPictureChoice
+                                                    answer={answer}
+                                                    alreadyChooseAnswer={this.state.alreadyChooseAnswer_2}
+                                                    _setCurrentPatientAnswer={this._setCurrentPatientAnswer2}
+                                                    _setChoiceCurrentAnswer={this._setChoiceCurrentAnswer2}
+                                                    _toggleAlreadyChooseAnswer={this._toggleAlreadyChooseAnswer2}
+                                                />
+                                            </View>
+                                        )
+                                    }
+                                })
+                                : this.props.questionSet[1].type === "MultiChoice" ?
+                                    (
+                                        <View style={{ flexDirection: "row", flex: 1, flexWrap: "wrap" }}>
+                                            {
+                                                this.props.questionSet[1].answer.map((answer, index) => {
+                                                    if (answer.type === "c" || answer.type === "E" || answer.type === "U" || (answer.type === User.info.sex) || (answer.type === "o")) {
+                                                        if (answer.type === "o") {
+                                                            return (
+                                                                <AnswerOther
+                                                                    answer={answer}
+                                                                    key={`${this.props.questionSet[1].title} : ${answer.title}`}
+                                                                    _setCurrentPatientAnswer={this._setCurrentPatientAnswer2}
+                                                                    _setOtherPatientAnswer={this._setOtherPatientAnswer2}
+                                                                    _setMultipleChoiceCurrentAnswer={this._setMultipleChoiceCurrentAnswer2}
+                                                                />
+                                                            )
+                                                        }
+                                                        else if (answer.type === "PC") { //picture choice
+                                                            return (
+                                                                <AnswerPictureChoice
+                                                                    answer={answer}
+                                                                    alreadyChooseAnswer={this.state.alreadyChooseAnswer_2}
+                                                                    key={`${this.props.questionSet[1].title} : ${answer.title}`}
+                                                                    _setCurrentPatientAnswer={this._setCurrentPatientAnswer2}
+                                                                    _setChoiceCurrentAnswer={this._setChoiceCurrentAnswer2}
+                                                                    _toggleAlreadyChooseAnswer={this._toggleAlreadyChooseAnswer2}
+                                                                />
+                                                            )
+                                                        }
+                                                        else {
+                                                            return (
+                                                                <AnswerMultiChoices
+                                                                    answer={answer}
+                                                                    key={`${this.props.questionSet[1].title} : ${answer.title}`}
+                                                                    currentPatientAnswer={this.state.currentPatientAnswer_2}
+                                                                    multipleChoiceCurrentAnswer={this.state.multipleChoiceCurrentAnswer_2}
+                                                                    _setCurrentPatientAnswer={this._setCurrentPatientAnswer2}
+                                                                    _setMultipleChoiceCurrentAnswer={this._setMultipleChoiceCurrentAnswer2}
+                                                                />
+                                                            )
+                                                        }
                                                     }
                                                 }
+                                                )
                                             }
-                                            )
-                                        }
-                                    </View>
-                                )
-                                : null
-                    }
+                                        </View>
+                                    )
+                                    : null
+                        }
                     </ScrollView>
                 </View>
             </View>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ListView, ToastAndroid, ScrollView, Dimensions, TouchableHighlight, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ToastAndroid, ScrollView, Dimensions, TouchableHighlight, Image, TouchableOpacity } from 'react-native';
 import { Button, Icon } from 'react-native-elements'
 
 //อื่นๆ button and textInput
@@ -12,10 +12,30 @@ export default class AnswerPictureChoice extends Component {
     }
 
     _onPress = () => {
-        this.setState({
-            selected: !this.state.selected
-        })
-        this.props._setCurrentPatientAnswer(this.props.answer)
+        console.log("already = ", this.props.alreadyChooseAnswer)
+        //not select any choice
+        if (!this.props.alreadyChooseAnswer) {
+            this.setState({
+                selected: !this.state.selected
+            })
+            // this.props._setCurrentPatientAnswer(this.props.answer)
+            this.props._setChoiceCurrentAnswer(this.props.answer, "add")
+            this.props._toggleAlreadyChooseAnswer(true)
+        }
+        //already selected
+        else {
+            if (this.state.selected) {
+                this.setState({
+                    selected: !this.state.selected
+                })
+                // this.props._setCurrentPatientAnswer("")
+                this.props._setChoiceCurrentAnswer(this.props.answer, "delete")
+                this.props._toggleAlreadyChooseAnswer(false)
+            }
+            else {
+                ToastAndroid.showWithGravityAndOffset('สามารถเลือกได้เพียง 1 คำตอบ', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
+            }
+        }
     }
 
     render() {
@@ -51,7 +71,7 @@ const styles = {
         // flex: 1,
         // borderColor: "#9CD8B9",
         // borderWidth: 2,
-        backgroundColor: '#80cdc0',
+        backgroundColor: '#9CD8B9',
         borderRadius: 20,
         padding: 10,
         marginBottom: 20,

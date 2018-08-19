@@ -18,29 +18,47 @@ export default class AnswerChoices extends Component {
 
     _onPress = async () => {
         if (this.props.currentPatientAnswer.title !== this.props.answer.title) {
-            //Press on same answer
+            console.log('different choice, click = ', this.props.currentPatientAnswer.title)
+            //Press already selected answer
             if (this.state.selected === true) {
+                ToastAndroid.showWithGravityAndOffset('เลือกซ้ำที่ไม่ล่าสุด', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
                 this.setState({
                     selected: !this.state.selected
                 })
                 this.props._setCurrentPatientAnswer("")
             }
             else {
-                this.setState({
-                    selected: !this.state.selected
-                })
-                this.props._setCurrentPatientAnswer(this.props.answer)
+                ToastAndroid.showWithGravityAndOffset('ยังไม่เลือก', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
+                //not select any choice
+                if (!this.props.alreadyChooseAnswer) {
+                    if (!this.props.currentPatientAnswer.title) {
+                        ToastAndroid.showWithGravityAndOffset('เลือกข้อแรก', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
+                        this.setState({
+                            selected: !this.state.selected
+                        })
+                        this.props._setChoiceCurrentAnswer(this.props.answer, "add")
+                        this.props._toggleAlreadyChooseAnswer(true)
+                    }
+
+                }
+                else {
+                    //already select
+                    ToastAndroid.showWithGravityAndOffset('สามารถเลือกได้เพียง 1 คำตอบ', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
+                }
             }
 
         }
         //Press on same answer
         //It will delete only if the previous answer equals to pressed answer
         else {
+            ToastAndroid.showWithGravityAndOffset('คำตอบล่าสุดคืออันนี้', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
+            console.log('same choice')
             this.setState({
                 selected: !this.state.selected
             })
-            this.props._setCurrentPatientAnswer("")
-
+            this.props._setChoiceCurrentAnswer(this.props.answer, "delete")
+            this.props._toggleAlreadyChooseAnswer(false)
+            //have to delete in answer for the page
         }
 
     }
@@ -55,7 +73,7 @@ export default class AnswerChoices extends Component {
                 rounded
                 raised
                 color={this.state.selected ? "#FFFFFF" : "#9CD8B9"}
-                backgroundColor={this.state.selected ? "#80cdc0" : '#FFFFFF'}
+                backgroundColor={this.state.selected ? "#9CD8B9" : '#FFFFFF'}
                 icon={this.state.selected ? { name: 'check', type: 'evilicon' } : null}
                 containerViewStyle={{ backgroundColor: 'transparent' }} />
         )
