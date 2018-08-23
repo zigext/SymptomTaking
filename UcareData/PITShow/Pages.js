@@ -470,7 +470,110 @@ const pages = {
             questionSet: ['question_10'],
             nextNormal: { next: 'end' },
         },
-    }
+    },
+
+    //ปวดข้อ
+    jointPainQuestions: {
+        page_1: {
+            questionSet: ['question_1', 'question_2'],
+            nextNormal: { next: 'page_2' }
+        },
+        page_2: {
+            questionSet: ['question_3', 'question_4'],
+            nextNormal: { next: 'page_3' }
+        },
+        page_3: {
+            questionSet: ['question_5', 'question_6'],
+            nextNormal: { next: 'end' }
+        },
+    },
+
+    //บวม
+    swollenQuestions: {
+        page_1: {
+            questionSet: ['question_1'],
+            nextNormal: { next: 'page_2' }
+        },
+        page_2: {
+            questionSet: ['question_2'],
+            nextNormal: { next: 'page_3' }
+        },
+        page_3: {
+            questionSet: ['question_3', 'question_4'],
+            nextNormal: { next: 'page_4' }
+        },
+        page_4: {
+            questionSet: ['question_5', 'question_6'],
+            nextNormal: { next: 'page_5' }
+        },
+        page_5: {
+            questionSet: ['question_7'],
+            nextNormal: { next: 'end' }
+        },
+    },
+
+    //ถ่ายเป็นเลือดสด
+    bloodyDiarrheaQuestions: {
+        page_1: {
+            questionSet: ['question_1'],
+            nextNormal: { next: 'page_2' }
+        },
+        page_2: {
+            questionSet: ['question_2'],
+            nextNormal: { next: 'page_3' }
+        },
+        page_3: {
+            questionSet: ['question_3', 'question_4'],
+            nextNormal: { next: 'page_4' }
+        },
+        page_4: {
+            questionSet: ['question_5', 'question_6'],
+            nextNormal: { next: 'page_5' }
+        },
+        page_5: {
+            questionSet: ['question_7', 'question_8'],
+            nextNormal: { next: 'page_6' }
+        },
+        page_6: {
+            questionSet: ['question_9'],
+            nextNormal: { next: 'end' }
+        },
+    },
+
+    //ท้องเสีย
+    diarrheaQuestions: {
+        page_1: {
+            questionSet: ['question_1'],
+            nextNormal: { next: 'page_2' }
+        },
+        page_2: {
+            questionSet: ['question_2'],
+            nextNormal: { next: 'page_3' }
+        },
+        page_3: {
+            questionSet: ['question_3'],
+            nextNormal: { next: 'page_4' },
+            nextSpecial: [
+                { title: 'มากกว่า 2 อาทิตย์', next: 'page_6' }
+            ]
+        },
+        page_4: {
+            questionSet: ['question_4', 'question_5'],
+            nextNormal: { next: 'page_5' }
+        },
+        page_5: {
+            questionSet: ['question_6'],
+            nextNormal: { next: 'end' }
+        },
+        page_6: {
+            questionSet: ['question_7', 'question_8'],
+            nextNormal: { next: 'page_7' }
+        },
+        page_7: {
+            questionSet: ['question_5', 'question_6'],
+            nextNormal: { next: 'end' }
+        },
+    },
 }
 
 export default pages

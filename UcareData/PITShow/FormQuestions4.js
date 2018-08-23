@@ -14,7 +14,6 @@
 const questionSource = {
     chiefQuestion: {
         title: "อาการสำคัญ",
-        next: "end",
         emergency: false,
         question: "โปรดระบุอาการสำคัญ",
         type: 'Choice',
@@ -41,11 +40,11 @@ const questionSource = {
             { type: "c", title: "ปวดท้อง", next: "stomachAcheQuestions", sex: "MF" },
             { type: "c", title: "ปวดหลัง", next: "backPainQuestions", sex: "MF" },
             { type: "c", title: "ปวดคอ", next: "neckPainQuestions", sex: "MF" },
-            { type: "c", title: "ปวดข้อ", next: 148, sex: "MF" },
-            { type: "c", title: "บวม", next: 154, sex: "MF" },
-            { type: "c", title: "ถ่ายเป็นเลือดสด", next: 161, sex: "MF" },
-            { type: "c", title: "ท้องเสีย", next: 170, sex: "MF" },
-            { type: "c", title: "ตาแดง", next: 178, sex: "MF" },
+            { type: "c", title: "ปวดข้อ", next: "jointPainQuestions", sex: "MF" },
+            { type: "c", title: "บวม", next: "swollenQuestions", sex: "MF" },
+            { type: "c", title: "ถ่ายเป็นเลือดสด", next: "bloodyDiarrheaQuestions", sex: "MF" },
+            { type: "c", title: "ท้องเสีย", next: "diarrheaQuestions", sex: "MF" },
+            { type: "c", title: "ตาแดง", next: "redEyesQuestions", sex: "MF" },
             { type: "c", title: "ตัวเหลือง/ตาเหลือง", next: 183, sex: "MF" },
             { type: "c", title: "ตกขาว", next: 189, sex: "F" },
             { type: "c", title: "ซีด", next: 202, sex: "MF" },
@@ -60,7 +59,7 @@ const questionSource = {
             { type: "c", title: "ก้อนที่ท้องน้อย", next: 267, sex: "F" },
             { type: "c", title: "ก้อนที่คอ", next: 281, sex: "MF" },
             { type: "c", title: "กล้ามเนื้ออ่อนแรง ", next: 288, sex: "MF" },
-            { type: "o", title: "อื่นๆ", next: "end", sex: "MF", category: "description" },
+            { type: "o", title: "อื่นๆ", question: "อาการร่วม", sex: "MF", category: "description" },
 
         ]
     },
@@ -1140,7 +1139,7 @@ const questionSource = {
             question: "test",
             type: 'Choice',
             answer: [
-                // { type: "T", title: "วว/ดด/ปปปป", next: "end" } //TODO:
+                // { type: "T", title: "วว/ดด/ปปปป", question: "อาการร่วม" } //TODO:
             ]
         }
     },
@@ -2132,18 +2131,18 @@ const questionSource = {
             question: "อาการปวดร้าวไหม?",
             type: "Choice",
             answer: [
-                { type: "c", title: "ร้าวลงแขน",  question: "อาการปวดร้าวไหม?" },
-                { type: "c", title: "ร้าวเป็นแถบ ๆ",  question: "อาการปวดร้าวไหม?" },
-                { type: "c", title: "ร้าวเป็นแถบ ๆ",  question: "อาการปวดร้าวไหม?" },
-                { type: "o", title: "อื่นๆ",  question: "อาการปวดร้าวไหม?" },
-                { type: "c", title: "ไม่มี",  question: "อาการปวดร้าวไหม?" }
+                { type: "c", title: "ร้าวลงแขน", question: "อาการปวดร้าวไหม?" },
+                { type: "c", title: "ร้าวเป็นแถบ ๆ", question: "อาการปวดร้าวไหม?" },
+                { type: "c", title: "ร้าวเป็นแถบ ๆ", question: "อาการปวดร้าวไหม?" },
+                { type: "o", title: "อื่นๆ", question: "อาการปวดร้าวไหม?" },
+                { type: "c", title: "ไม่มี", question: "อาการปวดร้าวไหม?" }
             ]
         },
         question_8: {
             title: "ปัจจัยที่ทำให้ดีขึ้น",
             emergency: false,
             question: "ปัจจัยที่ทำให้ดีขึ้น",
-            type: "MultiChoice", 
+            type: "MultiChoice",
             answer: [
                 { type: "c", title: "พักการใช้งาน", question: "ปัจจัยที่ทำให้ดีขึ้น" },
                 { type: "c", title: "เคลื่อนไหว", question: "ปัจจัยที่ทำให้ดีขึ้น" },
@@ -2168,7 +2167,7 @@ const questionSource = {
             title: "อาการร่วม",
             emergency: false,
             question: "อาการร่วม",
-            type: "MultiChoice", 
+            type: "MultiChoice",
             answer: [
                 { type: "c", title: "ไข้", question: "อาการร่วม" },
                 { type: "c", title: "เบื่ออาหาร/น้ำหนักลด", question: "อาการร่วม" },
@@ -2182,6 +2181,438 @@ const questionSource = {
         },
     },
 
+    //ปวดข้อ
+    jointPainQuestions: {
+        question_1: {
+            title: "ตำแหน่งที่เป็น",
+            emergency: false,
+            question: "ตำแหน่งที่เป็น",
+            type: 'Choice',
+            answer: [
+                { type: "PC", title: "1", img: require("../../assets/images/borg_good.png"), question: "ตำแหน่งที่เป็น" },
+                { type: "PC", title: "2", img: require("../../assets/images/borg_great.png"), question: "ตำแหน่งที่เป็น" },
+                { type: "PC", title: "3", img: require("../../assets/images/borg_bad.png"), question: "ตำแหน่งที่เป็น" }
+            ]
+        },
+        question_2: {
+            title: "ระยะเวลาที่ปวด",
+            emergency: false,
+            question: "ระยะเวลาที่ปวด",
+            type: "Choice",
+            answer: [
+                { type: "T", title: "ระยะเวลา", question: "ระยะเวลาที่ปวด" },
+            ]
+        },
+        question_3: {
+            title: "จำนวนข้อที่ปวด",
+            emergency: false,
+            question: "จำนวนข้อที่ปวด",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "1 ข้อ", question: "จำนวนข้อที่ปวด" },
+                { type: "c", title: "2-3ข้อ", question: "จำนวนข้อที่ปวด" },
+                { type: "c", title: "หลายข้อ", question: "จำนวนข้อที่ปวด" },
+            ]
+        },
+        question_4: {
+            title: "ลักษณะการปวด",
+            emergency: false,
+            question: "ลักษณะการปวด",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "ปวดเป็น ๆ หาย ๆ ", question: "ลักษณะการปวด" },
+                { type: "c", title: "ปวดแบบย้ายที่", question: "ลักษณะการปวด" },
+                { type: "c", title: "ปวดแบบคงที่ไม่ลดลง", question: "ลักษณะการปวด" },
+                { type: "c", title: "ใช้งานแล้วดีขึ้น", question: "ลักษณะการปวด" },
+                { type: "c", title: "ใช้งานแล้วแย่ลง", question: "ลักษณะการปวด" },
+                { type: "c", title: "ไม่แน่ใจ", question: "ลักษณะการปวด" }
+            ]
+        },
+        question_5: {
+            title: "อาการร่วม",
+            emergency: false,
+            question: "อาการร่วม",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "ไข้", question: "อาการร่วม" },
+                { type: "c", title: "หนาวสั่น", question: "อาการร่วม" },
+                { type: "c", title: "บวม/แดง/ร้อน", question: "อาการร่วม" },
+                { type: "c", title: "ตาแดง", question: "อาการร่วม" },
+                { type: "c", title: "ปัสสาวะแสบขัด", question: "อาการร่วม" },
+                { type: "c", title: "หนองใน", question: "อาการร่วม" },
+                { type: "c", title: "มีตุ่ม/ผื่นขึ้นที่ผิวหนัง", question: "อาการร่วม" },
+                { type: "c", title: "การเคลื่อนไหวผิดปกติคล้ายฟ้อนรำ", question: "อาการร่วม" },
+                { type: "c", title: "ข้อฝืดตอนเช้า", question: "อาการร่วม" },
+                { type: "c", title: "เคลื่อนไหวข้อลดลงทุกทิศทาง", question: "อาการร่วม" },
+                { type: "o", title: "อื่นๆ", question: "อาการร่วม", category: "description" },
+                { type: "c", title: "ไม่มี", question: "อาการร่วม" }
+            ]
+        },
+        question_6: {
+            title: "ประวัติในอดีต",
+            emergency: false,
+            question: "ประวัติในอดีต",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "ข้อส่วนนั้นกระแทก", question: "ประวัติในอดีต" },
+                { type: "c", title: "เลือดออกง่าย", question: "ประวัติในอดีต" },
+                { type: "c", title: "เคยมีลิ้นหัวใจอักเสบ", question: "ประวัติในอดีต" },
+                { type: "c", title: "กระดูกที่ยึดเกาะเส้นเอ็นอักเสบ", question: "ประวัติในอดีต" },
+                { type: "c", title: "โรคพุ่มพวง/ภูมิแพ้ตัวเอง/SLE", question: "ประวัติในอดีต" },
+                { type: "c", title: "ไม่มี", question: "ประวัติในอดีต" }
+            ]
+        },
+    },
+
+    //บวม
+    swollenQuestions: {
+        question_1: {
+            title: "บริเวณที่มีอาการบวม",
+            emergency: false,
+            question: "บริเวณที่มีอาการบวม",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "บวมทั่ว ๆ", question: "บริเวณที่มีอาการบวม" },
+                { type: "c", title: "บวมเฉพาะที่", question: "บริเวณที่มีอาการบวม" },
+            ]
+        },
+        question_2: {
+            title: "มีอาการเหล่านี้หรือไม่",
+            emergency: true,
+            question: "อาการฉุกเฉิน",
+            type: "MultiChoice",
+            answer: [
+                { type: "E", title: "หายใจเร็วมากขึ้น ", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "เจ็บหน้าอกร่วมด้วย", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "ลุกแล้ววูบ/เวียนศีรษะ ", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "ปัสสาวะไม่ออกมากกว่า 8 ชั่วโมง ", question: "อาการฉุกเฉิน" },
+                { type: "c", title: "ไม่มี", question: "อาการฉุกเฉิน" }
+            ]
+        },
+        question_3: {
+            title: "มีอาการหอบเหนื่อย/นอนราบไม่ได้/นอนแล้วต้องลุกขึ้นมาหอบกลางคืน",
+            emergency: false,
+            question: "มีอาการหอบเหนื่อย/นอนราบไม่ได้/นอนแล้วต้องลุกขึ้นมาหอบกลางคืน",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "ใช่", question: "มีอาการหอบเหนื่อย/นอนราบไม่ได้/นอนแล้วต้องลุกขึ้นมาหอบกลางคืน" },
+                { type: "c", title: "ไม่ใช่", question: "มีอาการหอบเหนื่อย/นอนราบไม่ได้/นอนแล้วต้องลุกขึ้นมาหอบกลางคืน" }
+            ]
+        },
+        question_4: {
+            title: "ตื่นมามีหนังตาบวมตอนเช้า",
+            emergency: false,
+            question: "ตื่นมามีหนังตาบวมตอนเช้า",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "ใช่", question: "ตื่นมามีหนังตาบวมตอนเช้า" },
+                { type: "c", title: "ไม่ใช่", question: "ตื่นมามีหนังตาบวมตอนเช้า" }
+            ]
+        },
+        question_5: {
+            title: "ระหว่างวันบวมที่ขามากขึ้น",
+            emergency: false,
+            question: "ระหว่างวันบวมที่ขามากขึ้น",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "ใช่", question: "ระหว่างวันบวมที่ขามากขึ้น" },
+                { type: "c", title: "ไม่ใช่", question: "ระหว่างวันบวมที่ขามากขึ้น" }
+            ]
+        },
+        question_6: {
+            title: "อาการร่วม",
+            emergency: false,
+            question: "อาการร่วม",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "ผื่น", question: "อาการร่วม" },
+                { type: "c", title: "ผมร่วง", question: "อาการร่วม" },
+                { type: "c", title: "แพ้แสง", question: "อาการร่วม" },
+                { type: "c", title: "ท้องโต", question: "อาการร่วม" },
+                { type: "c", title: "ท้องอืด", question: "อาการร่วม" },
+                { type: "c", title: "ท้องผูก", question: "อาการร่วม" },
+                { type: "c", title: "กดแล้วบุ๋ม", question: "อาการร่วม" },
+                { type: "c", title: "น้ำหนักเพิ่ม", question: "อาการร่วม" },
+                { type: "c", title: "ปัสสาวะลดลง", question: "อาการร่วม" },
+                { type: "c", title: "ปัสสาวะเป็นฟอง", question: "อาการร่วม" },
+                { type: "c", title: "ปัสสาวะเป็นเลือด ", question: "อาการร่วม" },
+                { type: "c", title: "บวมที่ขาทั้งสองข้าง", question: "อาการร่วม" },
+                { type: "c", title: "ตัวเหลือง/ตาเหลือง", question: "อาการร่วม" },
+                { type: "c", title: "หอบเหนื่อยเวลาออกแรง", question: "อาการร่วม" },
+                { type: "c", title: "ถ่ายเหลวเรื้อรัง", question: "อาการร่วม" },
+                { type: "o", title: "อื่นๆ", question: "อาการร่วม", category: "description" },
+                { type: "c", title: "ไม่มี", question: "อาการร่วม" }
+            ]
+        },
+        question_7: {
+            title: "ประวัติในอดีต",
+            emergency: false,
+            question: "ประวัติในอดีต",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "เคยเป็นโรคไต", question: "ประวัติในอดีต" },
+                { type: "c", title: "เคยเป็นโรคตับ", question: "ประวัติในอดีต" },
+                { type: "c", title: "เคยเป็นโรคหัวใจ", question: "ประวัติในอดีต" },
+                { type: "c", title: "ไม่มี", question: "ประวัติในอดีต" }
+            ]
+        },
+    },
+
+    //ถ่ายเป็นเลือดสด
+    bloodyDiarrheaQuestions: {
+        question_1: {
+            title: "ระยะเวลาที่เป็น",
+            emergency: false,
+            question: "ระยะเวลาที่เป็น",
+            type: "Choice",
+            answer: [
+                { type: "T", title: "ระยะเวลา", question: "ระยะเวลาที่เป็น" }
+            ]
+        },
+        question_2: {
+            title: "มีอาการเหล่านี้หรือไม่",
+            emergency: true,
+            question: "อาการฉุกเฉิน",
+            type: "MultiChoice",
+            answer: [
+                { type: "E", title: "อาเจียนเป็นเลือด", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "หน้ามืดคล้ายเป็นลม", question: "อาการฉุกเฉิน" },
+                { type: "U", title: "ไข้", question: "อาการฉุกเฉิน" },
+                { type: "U", title: "ท้องเสีย", question: "อาการฉุกเฉิน" },
+                { type: "U", title: "ท้องผูกสลับท้องเสีย", question: "อาการฉุกเฉิน" },
+                { type: "U", title: "ปวดท้อง/ท้องอืด", question: "อาการฉุกเฉิน" },
+                { type: "U", title: "เบื่ออาหาร/น้ำหนักลด", question: "อาการฉุกเฉิน" },
+                { type: "c", title: "ไม่มี", question: "อาการฉุกเฉิน" }
+            ]
+        },
+        question_3: {
+            title: "สีของอุจจาระ",
+            emergency: false,
+            question: "สีของอุจจาระ",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "สีแดงสด", question: "สีของอุจจาระ" },
+                { type: "c", title: "สีดำแดง", question: "สีของอุจจาระ" },
+                { type: "c", title: "สีดำเหมือนยางมะตอย", question: "สีของอุจจาระ" },
+                { type: "o", title: "อื่นๆ", question: "สีของอุจจาระ", category: "description" },
+                { type: "c", title: "ไม่แน่ใจ", question: "สีของอุจจาระ" }
+            ]
+        },
+        question_4: {
+            title: "ลักษณะของอุจจาระ",
+            emergency: false,
+            question: "ลักษณะของอุจจาระ",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "เลือดสดเลือดปนอุจจาระ", question: "ลักษณะของอุจจาระ" },
+                { type: "c", title: "เลือดเคลือบอุจจาระ", question: "ลักษณะของอุจจาระ" },
+                { type: "c", title: "เลือดสดหยดหลังถ่าย", question: "ลักษณะของอุจจาระ" },
+                { type: "o", title: "อื่นๆ", question: "ลักษณะของอุจจาระ", category: "description" },
+                { type: "c", title: "ไม่แน่ใจ", question: "ลักษณะของอุจจาระ" }
+            ]
+        },
+        question_5: {
+            title: "อุจจาระมีมูกเลือดปน/มีกลิ่นอุจจาระเปลี่ยนแปลงไปจากเดิม",
+            emergency: false,
+            question: "อุจจาระมีมูกเลือดปน/มีกลิ่นอุจจาระเปลี่ยนแปลงไปจากเดิม",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "ใช่", question: "อุจจาระมีมูกเลือดปน/มีกลิ่นอุจจาระเปลี่ยนแปลงไปจากเดิม" },
+                { type: "c", title: "ไม่ใช่", question: "อุจจาระมีมูกเลือดปน/มีกลิ่นอุจจาระเปลี่ยนแปลงไปจากเดิม" }
+            ]
+        },
+        question_6: {
+            title: "เคยถ่ายเป็นเลือดมาก่อน",
+            emergency: false,
+            question: "เคยถ่ายเป็นเลือดมาก่อน",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "ใช่", question: "เคยถ่ายเป็นเลือดมาก่อน" },
+                { type: "c", title: "ไม่ใช่", question: "เคยถ่ายเป็นเลือดมาก่อน" }
+            ]
+        },
+        question_7: {
+            title: "ลำอุจจาระมีขนาดเล็กลง",
+            emergency: false,
+            question: "ลำอุจจาระมีขนาดเล็กลง",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "ใช่", question: "ลำอุจจาระมีขนาดเล็กลง" },
+                { type: "c", title: "ไม่ใช่", question: "ลำอุจจาระมีขนาดเล็กลง" }
+            ]
+        },
+        question_8: {
+            title: "บริเวณรอบทวารหนัก",
+            emergency: false,
+            question: "บริเวณรอบทวารหนัก",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "มีอาการปวดแสบ", question: "บริเวณรอบทวารหนัก" },
+                { type: "c", title: "มีก้อนเนื้อออกมาดันกลับได้", question: "บริเวณรอบทวารหนัก" },
+                { type: "c", title: "มีก้อนยื่นออกมาดันกลับไม่ได้", question: "บริเวณรอบทวารหนัก" },
+                { type: "o", title: "อื่นๆ", question: "บริเวณรอบทวารหนัก", category: "description" },
+                { type: "c", title: "ไม่มี", question: "บริเวณรอบทวารหนัก" }
+            ]
+        },
+        question_9: {
+            title: "ประวัติในอดีต",
+            emergency: false,
+            question: "ประวัติในอดีต",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "เป็นโรคตับมาก่อน", question: "ประวัติในอดีต" },
+                { type: "c", title: "เคยมีเลือดออกง่าย", question: "ประวัติในอดีต" },
+                { type: "c", title: "เคยมีจ้ำเลือดตามตัว", question: "ประวัติในอดีต" },
+                { type: "c", title: "ชอบทานอาหารสุกๆดิบๆ", question: "ประวัติในอดีต" },
+                { type: "c", title: "ทานยาแก้ปวดกล้ามเนื้อ/ปวดข้อ ", question: "ประวัติในอดีต" },
+                { type: "c", title: "ใช้ยาต้านการแข็งตัวของเลือด (warfarin)", question: "ประวัติในอดีต" },
+                { type: "c", title: "ใช้ยาต้านการจับตัวของเกร็ดเลือด (aspirin)  ", question: "ประวัติในอดีต" },
+                { type: "c", title: "เคยได้รับบาดเจ็บบริเวณรูทวาร", question: "ประวัติในอดีต" },
+                { type: "c", title: "เคยได้รับบาดเจ็บบริเวณช่องท้อง", question: "ประวัติในอดีต" },
+                { type: "c", title: "โรคมะเร็งลำไส้ใหญ่และทวารหนักในครอบครัว", question: "ประวัติในอดีต" },
+                { type: "c", title: "ไม่มี", question: "ประวัติในอดีต" }
+            ]
+        },
+    },
+
+    //ท้องเสีย //TEST
+    diarrheaQuestions: {
+        question_1: {
+            title: "มีอาการเหล่านี้ไหม",
+            emergency: true,
+            question: "อาการฉุกเฉิน",
+            type: "MultiChoice",
+            answer: [
+                { type: "E", title: "ซึมลง/ไม่รู้สึกตัว ", question: "มีอาการเหล่านี้ไหม" },
+                { type: "E", title: "ลุกนั่งแล้วเวียนศีรษะ", question: "มีอาการเหล่านี้ไหม" },
+                { type: "U", title: "ไม่ปัสสาวะนาน 8 ชม", question: "มีอาการเหล่านี้ไหม" },
+                { type: "U", title: "ปลายมือ/ปลายเท้าเย็น", question: "มีอาการเหล่านี้ไหม" },
+                { type: "c", title: "ไม่มี", question: "มีอาการเหล่านี้ไหม" }
+            ]
+        },
+        question_2: {
+            title: "ลักษณะอุจจาระเป็นแบบไหน",
+            emergency: false,
+            question: "ลักษณะอุจจาระเป็นแบบไหน",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "น้ำอย่างเดียว", question: "ลักษณะอุจจาระเป็นแบบไหน" },
+                { type: "c", title: "เป็นเลือดสดปริมาณมาก", question: "ลักษณะอุจจาระเป็นแบบไหน" },
+                { type: "c", title: "เนื้อมากกว่าน้ำ", question: "ลักษณะอุจจาระเป็นแบบไหน" },
+                { type: "c", title: "น้ำมากกว่าเนื้อ", question: "ลักษณะอุจจาระเป็นแบบไหน" },
+                { type: "c", title: "เป็นมูก มีเลือด", question: "ลักษณะอุจจาระเป็นแบบไหน" },
+                { type: "c", title: "เป็นมูก ไม่มีเลือด", question: "ลักษณะอุจจาระเป็นแบบไหน" },
+                { type: "c", title: "สีดำแดงเหมือนเลือดหมู", question: "ลักษณะอุจจาระเป็นแบบไหน" },
+                { type: "c", title: "เลือดเคลือบอุจจาระหรือเลือดหยดตามหลังถ่าย", question: "ลักษณะอุจจาระเป็นแบบไหน" },
+                { type: "c", title: "เลือดหยดเวลาถ่าย", question: "ลักษณะอุจจาระเป็นแบบไหน" },
+                { type: "o", title: "อื่น", question: "ลักษณะอุจจาระเป็นแบบไหน", category: "description" },
+                { type: "c", title: "ไม่แน่ใจ", question: "ลักษณะอุจจาระเป็นแบบไหน" }
+            ]
+        },
+        question_3: {
+            title: "ระยะเวลาที่ถ่ายเหลวนานเท่าไหร่",
+            emergency: false,
+            question: "ระยะเวลาที่ถ่ายเหลวนานเท่าไหร่",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "น้อยกว่า 2 อาทิตย์", question: "ระยะเวลาที่ถ่ายเหลวนานเท่าไหร่" },
+                { type: "c", title: "มากกว่า 2 อาทิตย์", question: "ระยะเวลาที่ถ่ายเหลวนานเท่าไหร่" }
+            ]
+        },
+        question_4: {
+            title: "อาการร่วม",
+            emergency: false,
+            question: "อาการร่วม",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "ไข้", question: "อาการร่วม" },
+                { type: "c", title: "ปวดท้องบิดๆ", question: "อาการร่วม" },
+                { type: "c", title: "ปวดท้องทั่วๆ รู้สึกถ่ายไม่สุด ", question: "อาการร่วม" },
+                { type: "c", title: "คลื่นไส้/อาเจียนมีกลิ่นเหม็นเน่า", question: "อาการร่วม" },
+                { type: "c", title: "มีประวัติทานอาหารไม่สะอาด", question: "อาการร่วม" },
+                { type: "c", title: "มีประวัติทานมายองเนส/คัสตาร์ด", question: "อาการร่วม" },
+                { type: "c", title: "มีประวัติทานอาหารทะเล", question: "อาการร่วม" },
+                { type: "c", title: "มีประวัติทานอาหารกล่อง", question: "อาการร่วม" },
+                { type: "c", title: "มีประวัติทานเค้กขนมปังแยม", question: "อาการร่วม" },
+                { type: "c", title: "มีประวัติทานอาหารนำมาอุ่นใหม่", question: "อาการร่วม" },
+                { type: "c", title: "ไม่มี", question: "อาการร่วม" }
+            ]
+        },
+        question_5: {
+            title: "ประวัติในอดีต",
+            emergency: false,
+            question: "ประวัติในอดีต",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "เคยเป็นวัณโรค", question: "ประวัติในอดีต" },
+                { type: "c", title: "เคยมีประวัติฉายรังสีบริเวณท้อง", question: "ประวัติในอดีต" },
+                { type: "c", title: "เคยมีประวัติผ่าตัดช่องท้องมาก่อน", question: "ประวัติในอดีต" },
+                { type: "c", title: "ครอบครัวมีประวัติมะเร็งลำไส้", question: "ประวัติในอดีต" },
+                { type: "c", title: "มีเพศสัมพันธ์ที่ไม่ปลอดภัย", question: "ประวัติในอดีต" },
+                { type: "c", title: "ฉีดสารเสพติดเข้าเส้นเลือดดำ", question: "ประวัติในอดีต" },
+                { type: "c", title: "ชอบทานอาหารสุกสุกดิบดิบ", question: "ประวัติในอดีต" },
+                { type: "c", title: "ทานยาต้มยาหม้อยาสมุนไพร", question: "ประวัติในอดีต" },
+                { type: "c", title: "ยาลูกกลอน", question: "ประวัติในอดีต" },
+                { type: "c", title: "เคยมีอาการแบบนี้มาก่อน", question: "ประวัติในอดีต" },
+                { type: "c", title: "อยู่ในระหว่างการเดินทาง/เพิ่งกลับจากการเดินทางไปต่างถิ่น", question: "ประวัติในอดีต" },
+                { type: "c", title: "ไม่มี", question: "ประวัติในอดีต" }
+            ]
+        },
+        question_6: {
+            title: "อาการร่วม",
+            emergency: false,
+            question: "อาการร่วม",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "ผื่น", question: "อาการร่วม" },
+                { type: "c", title: "บวม", question: "อาการร่วม" },
+                { type: "c", title: "ปวดข้อ", question: "อาการร่วม" },
+                { type: "c", title: "ใจสั่น", question: "อาการร่วม" },
+                { type: "c", title: "ปวดตา", question: "อาการร่วม" },
+                { type: "c", title: "ท้องผูกสลับท้องเสีย", question: "อาการร่วม" },
+                { type: "c", title: "ท้องอืด", question: "อาการร่วม" },
+                { type: "c", title: "ปวดบิด", question: "อาการร่วม" },
+                { type: "c", title: "อ่อนเพลีย", question: "อาการร่วม" },
+                { type: "c", title: "ถ่ายติดขัด", question: "อาการร่วม" },
+                { type: "c", title: "แผลในปาก", question: "อาการร่วม" },
+                { type: "c", title: "ปัสสาวะบ่อย", question: "อาการร่วม" },
+                { type: "c", title: "ปวดทวารหนัก", question: "อาการร่วม" },
+                { type: "c", title: "มีเลือดออกตามตัว", question: "อาการร่วม" },
+                { type: "c", title: "เหนื่อยง่าย/หงุดหงิด/ขี้ร้อน", question: "อาการร่วม" },
+                { type: "c", title: "ถ่ายแล้วดีขึ้น", question: "อาการร่วม" },
+                { type: "c", title: "ไม่มี", question: "อาการร่วม" }
+            ]
+        },
+        question_7: {
+            title: "อาการร่วม",
+            emergency: false,
+            question: "อาการร่วม",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "ไข้ต่ำๆ", question: "อาการร่วม" },
+                { type: "c", title: "ซีดลง", question: "อาการร่วม" },
+                { type: "c", title: "เพลียมากขึ้น", question: "อาการร่วม" },
+                { type: "c", title: "ปวดท้องเรื้อรัง", question: "อาการร่วม" },
+                { type: "c", title: "คลำได้ก้อนที่ท้อง", question: "อาการร่วม" },
+                { type: "c", title: "เบื่ออาหาร/น้ำหนักลด	", question: "อาการร่วม" },
+                { type: "c", title: "ไม่มี", question: "อาการร่วม" }
+            ]
+        },
+        question_8: {
+            title: "ประวัติการทาน",
+            emergency: false,
+            question: "ประวัติการทาน",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "อาหารไม่สะอาด", question: "ประวัติการทาน" },
+                { type: "c", title: "อาหารทะเล", question: "ประวัติการทาน" },
+                { type: "c", title: "อาหารกล่องเค้กขนมปังแยม", question: "ประวัติการทาน" },
+                { type: "c", title: "อาหารนำมาอุ่นใหม่", question: "ประวัติการทาน" },
+                { type: "c", title: "มายองเนส/คัสตาร์ด", question: "ประวัติการทาน" },
+                { type: "c", title: "ไม่มี", question: "ประวัติการทาน" }
+            ]
+        },
+    },
 }
 
 
@@ -2205,7 +2636,7 @@ const questionSource = {
 // const questionSource = {
 //     chiefQuestion: {
 //         title: "อาการสำคัญ",
-//         next: "end",
+//         question: "อาการร่วม",
 //         emergency: false,
 //         question: "โปรดระบุอาการสำคัญ",
 //         type: 'Choice',
@@ -2249,7 +2680,7 @@ const questionSource = {
 //             { type: "c", title: "ก้อนที่ท้องน้อย", next: 267, sex: "F" },
 //             { type: "c", title: "ก้อนที่คอ", next: 281, sex: "MF" },
 //             { type: "c", title: "กล้ามเนื้ออ่อนแรง ", next: 288, sex: "MF" },
-//             { type: "o", title: "อื่นๆ", next: "end", sex: "MF" },
+//             { type: "o", title: "อื่นๆ", question: "อาการร่วม", sex: "MF" },
 
 //         ]
 //     },
@@ -2305,22 +2736,22 @@ const questionSource = {
 //         question_4: [
 //             {
 //                 title: "ประวัติในอดีต",
-//                 next: "end",
+//                 question: "อาการร่วม",
 //                 emergency: false,
 //                 question: "ประวัติในอดีต",
 //                 type: 'MultiChoice',
 //                 answer: [
-//                     { type: "c", title: "มีเลือดออกง่าย", next: "end" },
-//                     { type: "c", title: "ประวัติโรคเลือด", next: "end" },
-//                     { type: "c", title: "เคยเป็นวัณโรคมาก่อน", next: "end" },
-//                     { type: "c", title: "มะเร็งปอดในครอบครัว", next: "end" },
-//                     { type: "c", title: "ได้รับบาดเจ็บบริเวณทรวงอก", next: "end" },
-//                     { type: "c", title: "ทานยาแก้ปวดกล้ามเนื้อ/ปวดข้อ", next: "end" },
-//                     { type: "c", title: "ใช้ยาต้านการแข็งตัวของเลือด (warfarin)", next: "end" },
-//                     { type: "c", title: "ใช้ยาต้านการจับตัวของเกร็ดเลือด (aspirin)", next: "end" },
-//                     { type: "c", title: "เคยส่องกล้องในทางเดินหายใจ", next: "end" },
-//                     { type: "F", title: "ใช้ยาคุมกำเนิด ", next: "end" },
-//                     { type: "c", title: "ไม่มี", next: "end" },
+//                     { type: "c", title: "มีเลือดออกง่าย", question: "อาการร่วม" },
+//                     { type: "c", title: "ประวัติโรคเลือด", question: "อาการร่วม" },
+//                     { type: "c", title: "เคยเป็นวัณโรคมาก่อน", question: "อาการร่วม" },
+//                     { type: "c", title: "มะเร็งปอดในครอบครัว", question: "อาการร่วม" },
+//                     { type: "c", title: "ได้รับบาดเจ็บบริเวณทรวงอก", question: "อาการร่วม" },
+//                     { type: "c", title: "ทานยาแก้ปวดกล้ามเนื้อ/ปวดข้อ", question: "อาการร่วม" },
+//                     { type: "c", title: "ใช้ยาต้านการแข็งตัวของเลือด (warfarin)", question: "อาการร่วม" },
+//                     { type: "c", title: "ใช้ยาต้านการจับตัวของเกร็ดเลือด (aspirin)", question: "อาการร่วม" },
+//                     { type: "c", title: "เคยส่องกล้องในทางเดินหายใจ", question: "อาการร่วม" },
+//                     { type: "F", title: "ใช้ยาคุมกำเนิด ", question: "อาการร่วม" },
+//                     { type: "c", title: "ไม่มี", question: "อาการร่วม" },
 
 //                 ]
 //             }
@@ -2341,10 +2772,10 @@ const questionSource = {
 //         question: "มีอาการเหล่านี้หรือไม่",
 //         type: 'MultiChoice',
 //         answer: [
-//             { type: "E", title: "หายใจเร็วขึ้น", next: "end" },
-//             { type: "E", title: "สำลัก ", next: "end" },
-//             { type: "E", title: "ตัวเขียว/ปากเขียว ", next: "end" },
-//             { type: "E", title: "แน่นหน้าอกเฉียบพลัน", next: "end" },
+//             { type: "E", title: "หายใจเร็วขึ้น", question: "อาการร่วม" },
+//             { type: "E", title: "สำลัก ", question: "อาการร่วม" },
+//             { type: "E", title: "ตัวเขียว/ปากเขียว ", question: "อาการร่วม" },
+//             { type: "E", title: "แน่นหน้าอกเฉียบพลัน", question: "อาการร่วม" },
 //             { type: "c", title: "ไม่มี", next: "question_2" }
 //         ]
 //     },
@@ -2446,20 +2877,20 @@ const questionSource = {
 //     },
 //     question_8: {
 //         title: "ประวัติในอดีต",
-//         next: "end",
+//         question: "อาการร่วม",
 //         emergency: false,
 //         question: "ประวัติในอดีต",
 //         type: 'MultiChoice',
 //         answer: [
-//             { type: "c", title: "โรคหอบหืด", next: "end" },
-//             { type: "c", title: "โรคถุงลมโป่งพอง", next: "end" },
-//             { type: "c", title: "มีประวัติภูมิแพ้ของตัวเอง/ครอบครัว", next: "end" },
-//             { type: "c", title: "ประวัติโรคกระเพาะ/กรดไหลย้อน", next: "end" },
-//             { type: "c", title: "ประวัติวัณโรคของตัวเอง/ครอบครัว", next: "end" },
-//             { type: "c", title: "กำลังทานยาลดความดัน ", next: "end" },
-//             { type: "c", title: "สูบบุหรี่", next: "end" },
-//             { type: "c", title: "หัวใจล้มเหลว", next: "end" },
-//             { type: "c", title: "ไม่มี", next: "end" }
+//             { type: "c", title: "โรคหอบหืด", question: "อาการร่วม" },
+//             { type: "c", title: "โรคถุงลมโป่งพอง", question: "อาการร่วม" },
+//             { type: "c", title: "มีประวัติภูมิแพ้ของตัวเอง/ครอบครัว", question: "อาการร่วม" },
+//             { type: "c", title: "ประวัติโรคกระเพาะ/กรดไหลย้อน", question: "อาการร่วม" },
+//             { type: "c", title: "ประวัติวัณโรคของตัวเอง/ครอบครัว", question: "อาการร่วม" },
+//             { type: "c", title: "กำลังทานยาลดความดัน ", question: "อาการร่วม" },
+//             { type: "c", title: "สูบบุหรี่", question: "อาการร่วม" },
+//             { type: "c", title: "หัวใจล้มเหลว", question: "อาการร่วม" },
+//             { type: "c", title: "ไม่มี", question: "อาการร่วม" }
 //         ]
 //     }
 // }
@@ -2541,21 +2972,21 @@ const questionSource = {
 //     },
 //     question_6: {
 //         title: "ประวัติในอดีต",
-//         next: "end",
+//         question: "อาการร่วม",
 //         emergency: false,
 //         question: "เคยมีอาการในอดีตเหล่านี้หรือไม่",
 //         type: 'MultiChoice',
 //         answer: [
-//             { type: "c", title: "เป็นโรคตับ", next: "end" },
-//             { type: "c", title: "เคยเป็นโรคกระเพาะ", next: "end" },
-//             { type: "c", title: "เคยผ่าตัดหลอดเลือดใหญ่", next: "end" },
-//             { type: "c", title: "มีประวัติมะเร็งในครอบครัว", next: "end" },
-//             { type: "c", title: "ทานยาแก้ปวดกล้ามเนื้อ/ปวดข้อ ", next: "end" },
-//             { type: "c", title: "มีประวัติเลือดออกง่าย หยุดยาก", next: "end" },
-//             { type: "c", title: "ใช้ยาต้านการแข็งตัวของเลือด (warfarin)", next: "end" },
-//             { type: "c", title: "เป็นเส้นเลือดหลอดอาหารโป่งพอง", next: "end" },
-//             { type: "c", title: "ใช้ยาต้านการจับตัวของเกร็ดเลือด (aspirin)", next: "end" },
-//             { type: "c", title: "ไม่มี", next: "end" }
+//             { type: "c", title: "เป็นโรคตับ", question: "อาการร่วม" },
+//             { type: "c", title: "เคยเป็นโรคกระเพาะ", question: "อาการร่วม" },
+//             { type: "c", title: "เคยผ่าตัดหลอดเลือดใหญ่", question: "อาการร่วม" },
+//             { type: "c", title: "มีประวัติมะเร็งในครอบครัว", question: "อาการร่วม" },
+//             { type: "c", title: "ทานยาแก้ปวดกล้ามเนื้อ/ปวดข้อ ", question: "อาการร่วม" },
+//             { type: "c", title: "มีประวัติเลือดออกง่าย หยุดยาก", question: "อาการร่วม" },
+//             { type: "c", title: "ใช้ยาต้านการแข็งตัวของเลือด (warfarin)", question: "อาการร่วม" },
+//             { type: "c", title: "เป็นเส้นเลือดหลอดอาหารโป่งพอง", question: "อาการร่วม" },
+//             { type: "c", title: "ใช้ยาต้านการจับตัวของเกร็ดเลือด (aspirin)", question: "อาการร่วม" },
+//             { type: "c", title: "ไม่มี", question: "อาการร่วม" }
 //         ]
 //     }
 // },
@@ -2578,11 +3009,11 @@ const questionSource = {
 //         question: "มีอาการเหล่านี้ไหม",
 //         type: 'MultiChoice',
 //         answer: [
-//             { type: "E", title: "ซึมลง", next: "end" },
-//             { type: "E", title: "เกิดขึ้นทันทีทันใด", next: "end" },
-//             { type: "E", title: "ตัวเขียว/ปากเขียว", next: "end" },
-//             { type: "E", title: "หายใจเร็ว/หายใจไม่ออก", next: "end" },
-//             { type: "E", title: "มีประวัติสำลักสิ่งแปลกปลอม", next: "end" },
+//             { type: "E", title: "ซึมลง", question: "อาการร่วม" },
+//             { type: "E", title: "เกิดขึ้นทันทีทันใด", question: "อาการร่วม" },
+//             { type: "E", title: "ตัวเขียว/ปากเขียว", question: "อาการร่วม" },
+//             { type: "E", title: "หายใจเร็ว/หายใจไม่ออก", question: "อาการร่วม" },
+//             { type: "E", title: "มีประวัติสำลักสิ่งแปลกปลอม", question: "อาการร่วม" },
 //             { type: "c", title: "ไม่มี", next: "question_3" }
 //         ]
 //     },
@@ -2673,14 +3104,14 @@ const questionSource = {
 //     },
 //     question_8: {
 //         title: "ประวัติในอดีต",
-//         next: "end",
+//         question: "อาการร่วม",
 //         emergency: false,
 //         question: "ประวัติในอดีต",
 //         type: 'MultiChoice',
 //         answer: [
-//             { type: "c", title: "นอนอยู่กับที่นานๆ", next: "end" },
-//             { type: "c", title: "เคยได้รับบาดเจ็บบริเวณทรวงอก", next: "end" },
-//             { type: "c", title: "ไม่มี", next: "end" },
+//             { type: "c", title: "นอนอยู่กับที่นานๆ", question: "อาการร่วม" },
+//             { type: "c", title: "เคยได้รับบาดเจ็บบริเวณทรวงอก", question: "อาการร่วม" },
+//             { type: "c", title: "ไม่มี", question: "อาการร่วม" },
 //         ]
 //     }
 // },
@@ -2688,21 +3119,21 @@ const questionSource = {
 // heartBurnQuestions: {
 //     question_1: {
 //         title: "อาการร่วม",
-//         next: "end",
+//         question: "อาการร่วม",
 //         emergency: false,
 //         question: "อาการร่วม",
 //         type: 'MultiChoice',
 //         answer: [
-//             { type: "c", title: "อาเจียนหรือถ่ายเป็นเลือด", next: "end" },
-//             { type: "c", title: "น้ำหนักลดโดยไม่ทราบสาเหตุ", next: "end" },
-//             { type: "c", title: "กลืนลำบาก", next: "end" },
-//             { type: "c", title: "อาเจียนต่อเนื่อง", next: "end" },
-//             { type: "c", title: "จุกแน่นบริเวณลำคอ", next: "end" },
-//             { type: "c", title: "เรอเปรี้ยว", next: "end" },
-//             { type: "c", title: "เสียงแหบ", next: "end" },
-//             { type: "c", title: "ไอแห้ง", next: "end" },
-//             { type: "c", title: "มีอาการเจ็บหน้าอก", next: "end" },
-//             { type: "o", title: "อื่นๆ", next: "end", category: "description" },
+//             { type: "c", title: "อาเจียนหรือถ่ายเป็นเลือด", question: "อาการร่วม" },
+//             { type: "c", title: "น้ำหนักลดโดยไม่ทราบสาเหตุ", question: "อาการร่วม" },
+//             { type: "c", title: "กลืนลำบาก", question: "อาการร่วม" },
+//             { type: "c", title: "อาเจียนต่อเนื่อง", question: "อาการร่วม" },
+//             { type: "c", title: "จุกแน่นบริเวณลำคอ", question: "อาการร่วม" },
+//             { type: "c", title: "เรอเปรี้ยว", question: "อาการร่วม" },
+//             { type: "c", title: "เสียงแหบ", question: "อาการร่วม" },
+//             { type: "c", title: "ไอแห้ง", question: "อาการร่วม" },
+//             { type: "c", title: "มีอาการเจ็บหน้าอก", question: "อาการร่วม" },
+//             { type: "o", title: "อื่นๆ", question: "อาการร่วม", category: "description" },
 //         ]
 //     }
 // },
@@ -2725,9 +3156,9 @@ const questionSource = {
 //         question: "มีอาการเหล่านี้ไหม",
 //         type: 'MultiChoice',
 //         answer: [
-//             { type: "E", title: "ปวดศรีษะรุนแรง", next: "end" },
-//             { type: "E", title: "คลื่นไส้/อาเจียน", next: "end" },
-//             { type: "E", title: "อาการเกิดขึ้นทันที", next: "end" },
+//             { type: "E", title: "ปวดศรีษะรุนแรง", question: "อาการร่วม" },
+//             { type: "E", title: "คลื่นไส้/อาเจียน", question: "อาการร่วม" },
+//             { type: "E", title: "อาการเกิดขึ้นทันที", question: "อาการร่วม" },
 //             { type: "c", title: "ไม่มี", next: "question_3" }
 //         ]
 //     },
@@ -2784,22 +3215,22 @@ const questionSource = {
 //     },
 //     question_6: {
 //         title: "ปัจจัยที่ทำให้แย่ลง",
-//         next: "end",
+//         question: "อาการร่วม",
 //         emergency: false,
 //         question: "อาการร่วม",
 //         type: 'สื่งที่ทำให้แย่ลง',
 //         answer: [
-//             { type: "c", title: "เมื่อเปลี่ยนท่าทาง", next: "end" },
-//             { type: "c", title: "ก้มหน้า", next: "end" },
-//             { type: "c", title: "เงยหน้า", next: "end" },
-//             { type: "c", title: "ล้มตัวลงนอน", next: "end" },
-//             { type: "c", title: "หันหน้าไปด้านใดด้านหนึ่ง", next: "end" },
-//             { type: "c", title: "ไอ/จาม/เบ่ง", next: "end" },
-//             { type: "c", title: "ขึ้นเครื่องบิน", next: "end" },
-//             { type: "c", title: "ทานอาหารเค็ม", next: "end" },
-//             { type: "c", title: "เปลี่ยนแว่นตาใหม่", next: "end" },
-//             { type: "c", title: "ไม่มี", next: "end" },
-//             { type: "o", title: "อื่นๆ", next: "end", category: "description" }
+//             { type: "c", title: "เมื่อเปลี่ยนท่าทาง", question: "อาการร่วม" },
+//             { type: "c", title: "ก้มหน้า", question: "อาการร่วม" },
+//             { type: "c", title: "เงยหน้า", question: "อาการร่วม" },
+//             { type: "c", title: "ล้มตัวลงนอน", question: "อาการร่วม" },
+//             { type: "c", title: "หันหน้าไปด้านใดด้านหนึ่ง", question: "อาการร่วม" },
+//             { type: "c", title: "ไอ/จาม/เบ่ง", question: "อาการร่วม" },
+//             { type: "c", title: "ขึ้นเครื่องบิน", question: "อาการร่วม" },
+//             { type: "c", title: "ทานอาหารเค็ม", question: "อาการร่วม" },
+//             { type: "c", title: "เปลี่ยนแว่นตาใหม่", question: "อาการร่วม" },
+//             { type: "c", title: "ไม่มี", question: "อาการร่วม" },
+//             { type: "o", title: "อื่นๆ", question: "อาการร่วม", category: "description" }
 //         ]
 //     }
 // },
@@ -2822,9 +3253,9 @@ const questionSource = {
 //         question: "มีอาการเหล่านี้ร่วมด้วยหรือไม่",
 //         type: 'MultiChoice',
 //         answer: [
-//             { type: "E", title: "ซึมลง", next: "end" },
-//             { type: "E", title: "เลือดไหลออกไม่หยุด", next: "end" },
-//             { type: "E", title: "หน้ามืดวิงเวียนโดยเฉพาะตอนลุกนั่ง", next: "end" },
+//             { type: "E", title: "ซึมลง", question: "อาการร่วม" },
+//             { type: "E", title: "เลือดไหลออกไม่หยุด", question: "อาการร่วม" },
+//             { type: "E", title: "หน้ามืดวิงเวียนโดยเฉพาะตอนลุกนั่ง", question: "อาการร่วม" },
 //             { type: "c", title: "ไม่มี", next: "question_3" }
 //         ]
 //     },
@@ -2861,20 +3292,20 @@ const questionSource = {
 //     },
 //     question_5: {
 //         title: "ประวัติในอดีต",
-//         next: "end",
+//         question: "อาการร่วม",
 //         emergency: false,
 //         question: "ประวัติในอดีต",
 //         type: 'MultiChoice',
 //         answer: [
-//             { type: "c", title: "เคยเป็นโรคตับ", next: "end" },
-//             { type: "c", title: "เคยเป็นโรคไต", next: "end" },
-//             { type: "c", title: "มีโรคหัวใจอยู่เดิม", next: "end" },
-//             { type: "c", title: "ทานยาแก้ปวดกล้ามเนื้อ/ปวดข้อ", next: "end" },
-//             { type: "c", title: "มีประวัติเลือดหยุดยากในครอบครัว", next: "end" },
-//             { type: "c", title: "บริเวณที่พักอาศัยมีคนเป็นไข้เลือดออก", next: "end" },
-//             { type: "c", title: "ใช้ยาต้านการแข็งตัวของเลือด (warfarin)", next: "end" },
-//             { type: "c", title: "ใช้ยาต้านการจับตัวของเกร็ดเลือด (aspirin)", next: "end" },
-//             { type: "c", title: "ไม่มี", next: "end" },
+//             { type: "c", title: "เคยเป็นโรคตับ", question: "อาการร่วม" },
+//             { type: "c", title: "เคยเป็นโรคไต", question: "อาการร่วม" },
+//             { type: "c", title: "มีโรคหัวใจอยู่เดิม", question: "อาการร่วม" },
+//             { type: "c", title: "ทานยาแก้ปวดกล้ามเนื้อ/ปวดข้อ", question: "อาการร่วม" },
+//             { type: "c", title: "มีประวัติเลือดหยุดยากในครอบครัว", question: "อาการร่วม" },
+//             { type: "c", title: "บริเวณที่พักอาศัยมีคนเป็นไข้เลือดออก", question: "อาการร่วม" },
+//             { type: "c", title: "ใช้ยาต้านการแข็งตัวของเลือด (warfarin)", question: "อาการร่วม" },
+//             { type: "c", title: "ใช้ยาต้านการจับตัวของเกร็ดเลือด (aspirin)", question: "อาการร่วม" },
+//             { type: "c", title: "ไม่มี", question: "อาการร่วม" },
 //         ]
 //     }
 // },
@@ -2913,19 +3344,19 @@ const questionSource = {
 //         question: "มีอาการเหล่านี้ไหม",
 //         type: 'MultiChoice',
 //         answer: [
-//             { type: "U", title: "ไข้", next: "end" },
-//             { type: "U", title: "ปวดประจำเดือน", next: "end" },
-//             { type: "U", title: "ปวดท้อง", next: "end" },
-//             { type: "U", title: "ตกขาว", next: "end" },
-//             { type: "U", title: "เจ็บเวลามีเพศสัมพันธ์ ", next: "end" },
-//             { type: "U", title: "เลือดออกหลังมีเพศสัมพันธ์ ", next: "end" },
-//             { type: "U", title: "ตึงคัดเต้านม", next: "end" },
-//             { type: "U", title: "คลำได้ก้อน", next: "end" },
-//             { type: "U", title: "ท้องโตขึ้น", next: "end" },
-//             { type: "U", title: "เบื่ออาหาร", next: "end" },
-//             { type: "U", title: "อุจจาระหรือปัสสาวะผิดปกติ", next: "end" },
-//             { type: "U", title: "น้ำหนักลด", next: "end" },
-//             { type: "U", title: "คลื่นไส้/อาเจียน", next: "end" },
+//             { type: "U", title: "ไข้", question: "อาการร่วม" },
+//             { type: "U", title: "ปวดประจำเดือน", question: "อาการร่วม" },
+//             { type: "U", title: "ปวดท้อง", question: "อาการร่วม" },
+//             { type: "U", title: "ตกขาว", question: "อาการร่วม" },
+//             { type: "U", title: "เจ็บเวลามีเพศสัมพันธ์ ", question: "อาการร่วม" },
+//             { type: "U", title: "เลือดออกหลังมีเพศสัมพันธ์ ", question: "อาการร่วม" },
+//             { type: "U", title: "ตึงคัดเต้านม", question: "อาการร่วม" },
+//             { type: "U", title: "คลำได้ก้อน", question: "อาการร่วม" },
+//             { type: "U", title: "ท้องโตขึ้น", question: "อาการร่วม" },
+//             { type: "U", title: "เบื่ออาหาร", question: "อาการร่วม" },
+//             { type: "U", title: "อุจจาระหรือปัสสาวะผิดปกติ", question: "อาการร่วม" },
+//             { type: "U", title: "น้ำหนักลด", question: "อาการร่วม" },
+//             { type: "U", title: "คลื่นไส้/อาเจียน", question: "อาการร่วม" },
 //             { type: "c", title: "ไม่มี", next: "question_4" }
 //         ]
 //     },
@@ -3015,9 +3446,9 @@ const questionSource = {
 //         type: 'Choice',
 //         answer: [
 //             { type: "c", title: "มาปกติ", next: "question_11" },
-//             { type: "c", title: "มามากกว่าปกติ", next: "end" },
-//             { type: "c", title: "ประจำเดือนหมดแล้ว", next: "end" },
-//             { type: "c", title: "ไม่แน่ใจ", next: "end" },
+//             { type: "c", title: "มามากกว่าปกติ", question: "อาการร่วม" },
+//             { type: "c", title: "ประจำเดือนหมดแล้ว", question: "อาการร่วม" },
+//             { type: "c", title: "ไม่แน่ใจ", question: "อาการร่วม" },
 //         ]
 //     },
 //     question_11: {
@@ -3052,12 +3483,12 @@ const questionSource = {
 //     },
 //     question_14: {
 //         title: "ประจำเดือนล่าสุด",
-//         next: "end",
+//         question: "อาการร่วม",
 //         emergency: false,
 //         question: "ประจำเดือนล่าสุด",
 //         type: 'Choice',
 //         answer: [
-//             { type: "T", title: "วว/ดด/ปปปป", next: "end" }
+//             { type: "T", title: "วว/ดด/ปปปป", question: "อาการร่วม" }
 //         ]
 //     }
 // },
@@ -3071,7 +3502,7 @@ const questionSource = {
 //         question: "test",
 //         type: 'Choice',
 //         answer: [
-//             { type: "T", title: "วว/ดด/ปปปป", next: "end" }
+//             { type: "T", title: "วว/ดด/ปปปป", question: "อาการร่วม" }
 //         ]
 //     }
 
