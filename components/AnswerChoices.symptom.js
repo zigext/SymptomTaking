@@ -18,7 +18,6 @@ export default class AnswerChoices extends Component {
 
     _onPress = async () => {
         if (this.props.currentPatientAnswer.title !== this.props.answer.title) {
-            console.log('different choice, click = ', this.props.currentPatientAnswer.title)
             //Press already selected answer
             if (this.state.selected === true) {
                 ToastAndroid.showWithGravityAndOffset('เลือกซ้ำที่ไม่ล่าสุด', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
@@ -28,7 +27,6 @@ export default class AnswerChoices extends Component {
                 this.props._setCurrentPatientAnswer("")
             }
             else {
-                ToastAndroid.showWithGravityAndOffset('ยังไม่เลือก', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
                 //not select any choice
                 if (!this.props.alreadyChooseAnswer) {
                     if (!this.props.currentPatientAnswer.title) {
@@ -51,8 +49,6 @@ export default class AnswerChoices extends Component {
         //Press on same answer
         //It will delete only if the previous answer equals to pressed answer
         else {
-            ToastAndroid.showWithGravityAndOffset('คำตอบล่าสุดคืออันนี้', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
-            console.log('same choice')
             this.setState({
                 selected: !this.state.selected
             })
