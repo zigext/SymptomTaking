@@ -674,6 +674,110 @@ const pages = {
             nextNormal: { next: 'end' }
         },
     },
+
+       //ใจสั่น
+    palpitationQuestions: {
+        page_1: {
+            questionSet: ['question_1'],
+            nextNormal: { next: 'page_2' }
+        },
+        page_2: {
+            questionSet: ['question_2', 'question_3'],
+            nextNormal: { next: 'page_3' }
+        },
+        page_3: {
+            questionSet: ['question_4', 'question_5'],
+            nextNormal: { next: 'page_4' }
+        },
+        page_4: {
+            questionSet: ['question_6'],
+            nextNormal: { next: 'end' }
+        },
+    },
+
+     //แน่นหน้าอก
+    chestBurnQuestions: {
+        page_1: {
+            questionSet: ['question_1'],
+            nextNormal: { next: 'page_2' }
+        },
+        page_2: {
+            questionSet: ['question_2', 'question_3'],
+            nextNormal: { next: 'page_3' }
+        },
+        page_3: {
+            questionSet: ['question_4', 'question_5'],
+            nextNormal: { next: 'page_4' }
+        },
+        page_4: {
+            questionSet: ['question_6', 'question_7'],
+            nextNormal: { next: 'page_5' }
+        },
+        page_5: {
+            questionSet: ['question_8', 'question_9'],
+            nextNormal: { next: 'page_6' }
+        },
+        page_6: {
+            questionSet: ['question_10', 'question_11'],
+            nextNormal: { next: 'end' }
+        },
+    },
+
+    //เจ็บคอ
+    soreThroatQuestions: {
+        page_1: {
+            questionSet: ['question_1', 'question_2'],
+            nextNormal: { next: 'end' }
+        },
+    },
+
+    //จุกเสียดใต้ลิ้นปี่
+    epigastricQuestions: {
+        page_1: {
+            questionSet: ['question_1', 'question_2'],
+            nextNormal: { next: 'page_2' }
+        },
+          page_2: {
+            questionSet: ['question_3', 'question_4'],
+            nextNormal: { next: 'end' }
+        },
+    },
+
+    //คลื่นไส้ อาเจียน
+    nauseaQuestions: {
+        page_1: {
+            questionSet: ['question_1'],
+            nextNormal: { next: 'page_2' }
+        },
+        page_2: {
+            questionSet: ['question_2', 'question_3'],
+            nextNormal: { next: 'page_3' }
+        },
+        page_3: {
+            questionSet: ['question_4', 'question_5'],
+            nextNormal: { next: 'page_4' }
+        },
+        page_4: {
+            questionSet: ['question_6'],
+            nextNormal: { next: 'page_5' }
+        },
+        page_5: {
+            questionSet: ['question_7'],
+            nextNormal: { next: 'page_7' },
+             nextSpecial: [
+                { title: 'ใช่', next: 'page_6' }
+            ]
+        },
+        page_6: {
+            questionSet: ['question_8'],
+            nextNormal: { next: 'page_7' }
+        },
+        page_7: {
+            questionSet: ['question_9', 'question_10'],
+            nextNormal: { next: 'end' }
+        },
+    },
+
 }
 
 export default pages

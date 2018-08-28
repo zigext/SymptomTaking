@@ -49,12 +49,12 @@ const questionSource = {
             { type: "c", title: "ซีด", next: "anemiaQuestions", sex: "MF" },
             { type: "c", title: "ชัก", next: "seizuresQuestions", sex: "MF" },
             { type: "c", title: "ใจสั่น", next: "palpitationQuestions", sex: "MF" },
-            { type: "c", title: "เจ็บแน่นหน้าอก", next: 221, sex: "MF" },
-            { type: "c", title: "เจ็บคอ", next: 232, sex: "MF" },
-            { type: "c", title: "จุกเสียดใต้ลิ้นปี่", next: 234, sex: "MF" },
-            { type: "c", title: "คลื่นไส้ อาเจียน", next: 238, sex: "MF" },
+            { type: "c", title: "เจ็บแน่นหน้าอก", next: "chestBurnQuestions", sex: "MF" },
+            { type: "c", title: "เจ็บคอ", next: "soreThroatQuestions", sex: "MF" },
+            { type: "c", title: "จุกเสียดใต้ลิ้นปี่", next: "epigastricQuestions", sex: "MF" },
+            { type: "c", title: "คลื่นไส้ อาเจียน", next: "nauseaQuestions", sex: "MF" },
             { type: "c", title: "ไข้", next: 248, sex: "MF" },
-            { type: "c", title: "นอนหลับผิดปกติ", next: "question_7", sex: "MF" },
+            { type: "c", title: "นอนหลับผิดปกติ", next: 1, sex: "MF" },
             { type: "c", title: "ก้อนที่ท้องน้อย", next: 267, sex: "F" },
             { type: "c", title: "ก้อนที่คอ", next: 281, sex: "MF" },
             { type: "c", title: "กล้ามเนื้ออ่อนแรง ", next: 288, sex: "MF" },
@@ -1129,7 +1129,7 @@ const questionSource = {
             ]
         }
     },
-   //ปวดท้อง
+    //ปวดท้อง
     stomachAcheQuestions: {
         question_1: {
             title: "อาการฉุกเฉิน",
@@ -3050,7 +3050,7 @@ const questionSource = {
             question: "จำนวนครั้งที่เป็น",
             type: "Choice",
             answer: [
-                { type: "o", title: "จำนวนครั้ง", question: "จำนวนครั้งที่เป็น" },
+                { type: "o", title: "จำนวนครั้ง", question: "จำนวนครั้งที่เป็น", category: "quantity" },
             ]
         },
         question_6: {
@@ -3085,7 +3085,7 @@ const questionSource = {
         },
         question_8: {
             title: "มีประวัติโรคลมชักในครอบครัว",
-            next: "end",
+            question: "อาการฉุกเฉิน",
             emergency: false,
             question: "มีประวัติโรคลมชักในครอบครัว",
             type: "Choice",
@@ -3094,6 +3094,435 @@ const questionSource = {
                 { type: "c", title: "ไม่ใช่", question: "มีประวัติโรคลมชักในครอบครัว" }
             ]
         }
+    },
+
+    //ใจสั่น
+    palpitationQuestions: {
+        question_1: {
+            title: "มีอาการเหล่านี้หรือไม่",
+            emergency: true,
+            question: "อาการฉุกเฉิน",
+            type: "MultiChoice",
+            answer: [
+                { type: "E", title: "ใจสั่นนานและไม่หาย", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "หน้ามืดเป็นลม", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "มีโรคหัวใจขาดเลือด ", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "เจ็บแน่นหน้าอก", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "หอบเหนื่อย", question: "อาการฉุกเฉิน" },
+                { type: "c", title: "ไม่มี", question: "อาการฉุกเฉิน" }
+            ]
+        },
+        question_2: {
+            title: "การดำเนินของอาการ",
+            emergency: false,
+            question: "การดำเนินของอาการ",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "เกิดทันทีและหายทันที", question: "การดำเนินของอาการ" },
+                { type: "c", title: "เป็นอยู่สักพักจึงหาย", question: "การดำเนินของอาการ" },
+            ]
+        },
+        question_3: {
+            title: "ลักษณะการสั่น",
+            emergency: false,
+            question: "ลักษณะการสั่น",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "สะดุด", question: "ลักษณะการสั่น" },
+                { type: "c", title: "ใจเต้นแรงบางจังหวะ", question: "ลักษณะการสั่น" },
+                { type: "c", title: "ใจเต้นเร็วสม่ำเสมอ", question: "ลักษณะการสั่น" },
+                { type: "c", title: "ใจเต้นเร็วไม่สม่ำเสมอ", question: "ลักษณะการสั่น" },
+                { type: "c", title: "ใจเต้นแรงและเร็วเวลาออกกำลังกายหรือใช้แรงพอพักแล้วหายไป", question: "ลักษณะการสั่น" },
+                { type: "c", title: "ใจสั่นเกิดขึ้นทันทีและหายทันทีหลังจากไอ/จาม/เบ่ง", question: "ลักษณะการสั่น" },
+                { type: "c", title: "ไม่แน่ใจ", question: "ลักษณะการสั่น" },
+            ]
+        },
+        question_4: {
+            title: "อาการร่วม",
+            emergency: false,
+            question: "อาการร่วม",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "น้ำหนักลด", question: "อาการร่วม" },
+                { type: "c", title: "ขี้ร้อน", question: "อาการร่วม" },
+                { type: "c", title: "มีประวัติหัวใจพิการแต่กำเนิด", question: "อาการร่วม" },
+                { type: "o", title: "อื่นๆ", question: "อาการร่วม", category: "description" },
+                { type: "c", title: "ข้าม", question: "อาการร่วม" }
+            ]
+        },
+        question_5: {
+            title: "ความถี่ของอาการ",
+            emergency: false,
+            question: "ความถี่ของอาการ",
+            type: 'Choice',
+            answer: [
+                { type: "c", title: "ตลอดเวลา", question: "ความถี่ของอาการ" },
+                { type: "T", title: "เป็นช่วงๆ", question: "ความถี่ของอาการ" },
+            ]
+        },
+        question_6: {
+            title: "ประวัติครอบครัว",
+            emergency: false,
+            question: "ประวัติครอบครัว",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "มีคนเป็นโรคหัวใจ", question: "ประวัติครอบครัว" },
+                { type: "c", title: "มีคนเสียชีวิตตั้งแต่อายุยังน้อย", question: "ประวัติครอบครัว" },
+                { type: "c", title: "ไม่มี", question: "ประวัติครอบครัว" }
+            ]
+        },
+    },
+
+    //แน่นหน้าอก
+    chestBurnQuestions: {
+        question_1: {
+            title: "มีอาการเหล่านี้หรือไม่",
+            emergency: true,
+            question: "อาการฉุกเฉิน",
+            type: "MultiChoice",
+            answer: [
+                { type: "E", title: "หอบเหนื่อย", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "วูบหรือหมด ", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "เคยมีประวัติโรคหัวใจมาก่อน", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "อมยาใต้ดินแล้วไม่ดีขึ้น(ถ้ามี) ", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "ปวดเหมือนฉีกขาดร้าวทะลุหลัง ", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "ใจสั่น", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "เหงื่อแตก", question: "อาการฉุกเฉิน" },
+                { type: "U", title: "เกิดขึ้นทันที ", question: "อาการฉุกเฉิน" },
+                { type: "U", title: "ร้าวไปยังไหล่ซ้าย/กราม", question: "อาการฉุกเฉิน" },
+                { type: "U", title: "ปวดนานกว่า 30 นาทีแล้วไม่หาย", question: "อาการฉุกเฉิน" },
+                { type: "c", title: "ไม่มี", question: "อาการฉุกเฉิน" }
+            ]
+        },
+        question_2: {
+            title: "ตำแหน่งที่เป็น",
+            emergency: false,
+            question: "ตำแหน่งที่เป็น",
+            type: 'Choice',
+            answer: [
+                { type: "PC", title: "ตำแหน่ง1", img: require("../../assets/images/borg_good.png"), question: "ตำแหน่งที่เป็น" },
+                { type: "PC", title: "ตำแหน่ง2", img: require("../../assets/images/borg_great.png"), question: "ตำแหน่งที่เป็น" },
+                { type: "PC", title: "ตำแหน่ง3", img: require("../../assets/images/borg_bad.png"), question: "ตำแหน่งที่เป็น" },
+                { type: "PC", title: "ตำแหน่ง4", img: require("../../assets/images/borg_good.png"), question: "ตำแหน่งที่เป็น" },
+            ]
+        },
+        question_3: {
+            title: "ระยะเวลาของอาการ",
+            emergency: false,
+            question: "ระยะเวลาของอาการ",
+            type: 'Choice',
+            answer: [
+                { type: "T", title: "ระยะเวลา", question: "ระยะเวลาของอาการ" }
+            ]
+        },
+        question_4: {
+            title: "เวลาที่เริ่มเจ็บแน่นหน้าอก",
+            emergency: false,
+            question: "เวลาที่เริ่มเจ็บแน่นหน้าอก",
+            type: "Choice",
+            answer: [
+                { type: "T", title: "เวลา", question: 'เวลาที่เริ่มเจ็บแน่นหน้าอก' },
+            ]
+        },
+        question_5: {
+            title: "จำนวนครั้งที่เป็น",
+            emergency: false,
+            question: "จำนวนครั้งที่เป็น",
+            type: "Choice",
+            answer: [
+                { type: "o", title: "จำนวนครั้ง", question: "จำนวนครั้งที่เป็น", category: "quantity" }
+            ]
+        },
+        question_6: {
+            title: "ลักษณะการเจ็บ",
+            emergency: false,
+            question: "ลักษณะการเจ็บ",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "เจ็บเหมือนถูกบีบรัดหนัก ๆ", question: "ลักษณะการเจ็บ" },
+                { type: "c", title: "ปวดแสบร้อนยอดอก", question: "ลักษณะการเจ็บ" },
+                { type: "c", title: "เจ็บเหมือนของแหลมแทง", question: "ลักษณะการเจ็บ" },
+                { type: "c", title: "เจ็บตามการหายใจเข้าลึกๆ", question: "ลักษณะการเจ็บ" },
+                { type: "o", title: "อื่นๆ", question: "ลักษณะการเจ็บ", category: "description" },
+                { type: "c", title: "ไม่แน่ใจ", question: "ลักษณะการเจ็บ" }
+            ]
+        },
+        question_7: {
+            title: "มีอาการร้าวไปที่ใด",
+            emergency: false,
+            question: "มีอาการร้าวไปที่ใด",
+            type: 'Choice',
+            answer: [
+                { type: "PC", title: "ตำแหน่ง1", img: require("../../assets/images/borg_good.png"), question: "มีอาการร้าวไปที่ใด" },
+                { type: "PC", title: "ตำแหน่ง2", img: require("../../assets/images/borg_great.png"), question: "มีอาการร้าวไปที่ใด" },
+                { type: "PC", title: "ตำแหน่ง3", img: require("../../assets/images/borg_bad.png"), question: "มีอาการร้าวไปที่ใด" },
+                { type: "PC", title: "ตำแหน่ง4", img: require("../../assets/images/borg_good.png"), question: "มีอาการร้าวไปที่ใด" },
+            ]
+        },
+        question_8: {
+            title: "ขณะปวดกำลัง",
+            emergency: false,
+            question: "ขณะปวดกำลังทำอะไร",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "พัก", question: "ขณะปวดกำลังทำอะไร" },
+                { type: "c", title: "ออกแรง", question: "ขณะปวดกำลังทำอะไร" },
+                { type: "o", title: "อื่นๆ", question: "ขณะปวดกำลังทำอะไร", category: "description" },
+                { type: "c", title: "ข้าม", question: "ขณะปวดกำลังทำอะไร" }
+            ]
+        },
+        question_9: {
+            title: "อาการบรรเทาเมื่อ",
+            emergency: false,
+            question: "อาการบรรเทาได้อย่างไร",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "หายเอง", question: "อาการบรรเทาได้อย่างไร" },
+                { type: "c", title: "นั่งพัก/นอนนิ่งๆ	", question: "อาการบรรเทาได้อย่างไร" },
+                { type: "c", title: "หลังจากรับประทานอาหาร/ยาลดกรด", question: "อาการบรรเทาได้อย่างไร" },
+                { type: "o", title: "อื่นๆ", question: "อาการบรรเทาได้อย่างไร", category: "description" },
+                { type: "c", title: "ไม่บรรเทา", question: "อาการบรรเทาได้อย่างไร" },
+            ]
+        },
+        question_10: {
+            title: "อาการร่วม",
+            emergency: false,
+            question: "มีอาการเหล่านี้หรือไม่",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "ไอมีเสมหะ", question: "อาการร่วม" },
+                { type: "c", title: "ผื่นบริเวณอก", question: "อาการร่วม" },
+                { type: "c", title: "ไข้/ตัวร้อน", question: "อาการร่วม" },
+                { type: "c", title: "เรอเปรี้ยว", question: "อาการร่วม" },
+                { type: "o", title: "อื่นๆ", question: "อาการร่วม", category: "description" },
+                { type: "c", title: "ไม่มี", question: "อาการร่วม" },
+            ]
+        },
+        question_11: {
+            title: "ประวัติในอดีต",
+            emergency: false,
+            question: "ประวัติในอดีต",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "โรคหัวใจ", question: "ประวัติในอดีต" },
+                { type: "c", title: "โรคปอด", question: "ประวัติในอดีต" },
+                { type: "c", title: "โรคเบาหวาน", question: "ประวัติในอดีต" },
+                { type: "c", title: "โรคไขมัน", question: "ประวัติในอดีต" },
+                { type: "c", title: "โรคความดัน", question: "ประวัติในอดีต" },
+                { type: "c", title: "โรคหัวใจในครอบครัว", question: "ประวัติในอดีต" },
+                { type: "c", title: "ไม่มี", question: "ประวัติในอดีต" },
+            ]
+        },
+    },
+
+    //เจ็บคอ
+    soreThroatQuestions: {
+        question_1: {
+            title: "อาการร่วม",
+            emergency: false,
+            question: "อาการร่วม",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "ไอ", question: "อาการร่วม" },
+                { type: "c", title: "ไข้", question: "อาการร่วม" },
+                { type: "c", title: "น้ำมูก", question: "อาการร่วม" },
+                { type: "c", title: "เสมหะ", question: "อาการร่วม" },
+                { type: "o", title: "อื่นๆ", question: "อาการร่วม" },
+                { type: "c", title: "ไม่มี", question: "อาการร่วม" }
+            ]
+        },
+        question_2: {
+            title: "กิจกรรมที่ทำก่อนจะมีอาการ",
+            emergency: false,
+            question: "กิจกรรมที่ทำก่อนจะมีอาการ",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "พักผ่อนน้อย", question: "กิจกรรมที่ทำก่อนจะมีอาการ" },
+                { type: "c", title: "ใช้เสียงมาก", question: "กิจกรรมที่ทำก่อนจะมีอาการ" },
+                { type: "c", title: "ทานของทอด", question: "กิจกรรมที่ทำก่อนจะมีอาการ" },
+                { type: "o", title: "อื่นๆ", question: "กิจกรรมที่ทำก่อนจะมีอาการ", category: 'description' },
+                { type: "c", title: "ข้าม", question: "กิจกรรมที่ทำก่อนจะมีอาการ" }
+            ]
+        },
+    },
+
+    //จุกเสียดใต้ลิ้นปี่
+    epigastricQuestions: {
+        question_1: {
+            title: "อาการร่วม",
+            emergency: false,
+            question: "อาการร่วม",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "อาเจียนหรือถ่ายเป็นเลือด ", question: "อาการร่วม" },
+                { type: "c", title: "มีคนทักว่าซีด", question: "อาการร่วม" },
+                { type: "c", title: "น้ำหนักลดโดยไม่ทราบสาเหตุ", question: "อาการร่วม" },
+                { type: "c", title: "กลืนลำบาก", question: "อาการร่วม" },
+                { type: "c", title: "อาเจียนต่อเนื่อง", question: "อาการร่วม" },
+                { type: "c", title: "ไม่มี", question: "อาการร่วม" }
+            ]
+        },
+        question_2: {
+            title: "การดำเนินชีวิต",
+            emergency: false,
+            question: "การดำเนินชีวิต",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "ชอบทานของเผ็ดจัด,เปรี้ยวจัด,น้ำอัดลม", question: "การดำเนินชีวิต" },
+                { type: "c", title: "เข้านอนทันทีหลังทานอาหารอิ่มใหม่ ๆ ไม่เกิน 2 ชั่วโมง", question: "การดำเนินชีวิต" },
+                { type: "c", title: "ใส่กางเกงที่รัดแน่น", question: "การดำเนินชีวิต" },
+                { type: "c", title: "ทานอาหารมัน", question: "การดำเนินชีวิต" },
+                { type: "c", title: "มีความเครียด", question: "การดำเนินชีวิต" },
+                { type: "c", title: "ไม่ส่งผลกระทบ", question: "การดำเนินชีวิต" }
+            ]
+        },
+        question_3: {
+            title: "อาการเด่น",
+            emergency: false,
+            question: "อาการเด่น",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "แสบร้อน หรือ ปวดลิ้นปี่", question: "อาการเด่น" },
+                { type: "c", title: "อืดแน่นหลังทานอาหาร หรือ อิ่มเร็วกว่าปกติ", question: "อาการเด่น" },
+                { type: "c", title: "ข้าม", question: "อาการเด่น" }
+            ]
+        },
+        question_4: {
+            title: "ประวัติในอดีต",
+            emergency: false,
+            question: "ประวัติในอดีต",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "ทานยาแก้ปวดกล้ามเนื้อ/ปวดข้อ", question: "ประวัติในอดีต" },
+                { type: "c", title: "ใช้ยาต้านการแข็งตัวของเลือด (warfarin)", question: "ประวัติในอดีต" },
+                { type: "c", title: "ช้ยาต้านการจับตัวของเกร็ดเลือด (aspirin)", question: "ประวัติในอดีต" },
+                { type: "c", title: "ไม่มี", question: "ประวัติในอดีต" }
+            ]
+        },
+    },
+
+    //คลื่นไส้ อาเจียน  test
+    nauseaQuestions: {
+        question_1: {
+            title: "มีอาการเหล่านี้หรือไม่",
+            emergency: true,
+            question: "มีอาการเหล่านี้หรือไม่",
+            type: "MultiChoice",
+            answer: [
+                { type: "E", title: "ปวดท้องรุนแรง", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "ปวดหัวรุนแรง", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "เจ็บแน่นหน้าอก", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "ไม่ถ่ายไม่ผายลม", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "หน้ามืด/หมดสติ", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "มีอุบัติเหตุรุนแรงที่ศีรษะ", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "ตามัว", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "อาเจียนเป็นเลือดสดปริมาณมาก", question: "อาการฉุกเฉิน" },
+                { type: "c", title: "ไม่มี", question: "อาการฉุกเฉิน" }
+            ]
+        },
+        question_2: {
+            title: "ระยะเวลาที่เป็น",
+            emergency: false,
+            question: "ระยะเวลาที่เป็น",
+            type: "Choice",
+            answer: [
+                { type: "T", title: "เวลา", question: "ระยะเวลาที่เป็น" },
+            ]
+        },
+        question_3: {
+            title: "ความถี่ของอาการ",
+            emergency: false,
+            question: "ความถี่ของอาการ",
+            type: "Choice",
+            answer: [
+                { type: "o", title: "จำนวนครั้ง/หน่วยเวลา", question: "ความถี่ของอาการ" },
+
+            ]
+        },
+        question_4: {
+            title: "ลักษณะของอาเจียน",
+            emergency: false,
+            question: "ลักษณะของอาเจียน",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "น้ำลาย", question: "ลักษณะของอาเจียน" },
+                { type: "c", title: "สีกาแฟ", question: "ลักษณะของอาเจียน" },
+                { type: "c", title: "เลือดสด มีอุจจาระปนอาหารหรือน้ำ", question: "ลักษณะของอาเจียน" },
+                { type: "o", title: "อื่นๆ", question: "ลักษณะของอาเจียน", category: "description" },
+                { type: "c", title: "ไม่แน่ใจ", question: "ลักษณะของอาเจียน" }
+            ]
+        },
+        question_5: {
+            title: "การดำเนินของอาการ",
+            emergency: false,
+            question: "การแสดงอาการ",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "เฉียบพลัน", question: "การแสดงอาการ" },
+                { type: "c", title: "ค่อยๆเป็น", question: "การแสดงอาการ" },
+                { type: "c", title: "เป็นๆหายๆ", question: "การแสดงอาการ" },
+                { type: "o", title: "อื่นๆ", question: "การแสดงอาการ", category: "description" },
+                { type: "c", title: "ข้าม", question: "การแสดงอาการ" }
+            ]
+        },
+        question_6: {
+            title: "ช่วงเวลาที่มักเป็น",
+            emergency: false,
+            question: "ช่วงเวลาที่มักเป็น", /////////////////////////check test
+            type: "Choice",
+            answer: [
+                { type: "c", title: "กลางวัน", question: "ช่วงเวลาที่มักเป็น" },
+                { type: "c", title: "กลางคืน", question: "ช่วงเวลาที่มักเป็น" },
+                { type: "T", title: "เวลา", question: "ช่วงเวลาที่มักเป็น" },
+                { type: "c", title: "ข้าม", question: "ช่วงเวลาที่มักเป็น" }
+            ]
+        },
+        question_7: {
+            title: "สัมพันธ์กับการรับประทานอาหาร", //check test
+            emergency: false,
+            question: "คาดว่าเกิดจากอาหารที่ทานหรือไม่",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "ใช่", question: "คาดว่าเกิดจากอาหารที่ทานหรือไม่", sex: "F" },
+                { type: "c", title: "ไม่ใช่", question: "คาดว่าเกิดจากอาหารที่ทานหรือไม่" }
+            ]
+        },
+        question_8: { //test
+            title: "เกิดหลังรับประทานอาหารนานเท่าไหร่",
+            emergency: false,
+            question: "เกิดหลังรับประทานอาหารนานเท่าไหร่",
+            type: "Choice",
+            answer: [
+                { type: "T", title: "เวลา", question: "เกิดหลังรับประทานอาหารนานเท่าไหร่" },
+                { type: "c", title: "ข้าม", question: "เกิดหลังรับประทานอาหารนานเท่าไหร่" }
+            ]
+        },
+        question_9: { //test
+            title: "ประจำเดือนครั้งสุดท้าย",
+            emergency: false,
+            question: "ประจำเดือนครั้งสุดท้าย",
+            type: "Choice",//////////////////////////////////////check
+            sex: "F",
+            answer: [
+                { type: "T", title: "วว/ดด/ปปปป", question: "ประจำเดือนครั้งสุดท้าย" },
+            ]
+        },
+        question_10: {
+            title: "อาการร่วมอื่นๆ",
+            emergency: false,
+            question: "อาการร่วมอื่นๆ",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "ไข้", question: "อาการร่วมอื่นๆ" },
+                { type: "c", title: "อิ่มง่าย", question: "อาการร่วมอื่นๆ" },
+                { type: "c", title: "แน่นท้อง", question: "อาการร่วมอื่นๆ" },
+                { type: "c", title: "อาเจียนพุ่ง", question: "อาการร่วมอื่นๆ" },
+                { type: "c", title: "ท้องเสีย/ถ่ายเหลว", question: "อาการร่วมอื่นๆ" },
+                { type: "c", title: "เวียนศีรษะ/บ้านหมุน", question: "อาการร่วมอื่นๆ" },
+                { type: "o", title: "อื่นๆ", question: "อาการร่วมอื่นๆ", category: "description" },
+                { type: "c", title: "ไม่มี", question: "อาการร่วมอื่นๆ" }
+            ]
+        },
     },
 }
 
