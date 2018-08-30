@@ -778,6 +778,72 @@ const pages = {
         },
     },
 
+     //ไข้
+    coldQuestions: {
+        page_1: {
+            questionSet: ['question_1'],
+            nextNormal: { next: 'page_2' }
+        },
+        page_2: {
+            questionSet: ['question_2'],
+            nextNormal: { next: 'page_3' }
+        },
+        page_3: {
+            questionSet: ['question_3'],
+            nextNormal: { next: 'page_4' },
+            nextSpecial: [
+                { title: 'มากกว่า 24 ชั่วโมง', next: 'page_5' }
+            ]
+        },
+        page_4: {
+            questionSet: ['question_4'],
+            nextNormal: { next: 'page_6' }
+        },
+        page_5: {
+            questionSet: ['question_5'],
+            nextNormal: { next: 'page_6' },
+        },
+        page_6: {
+            questionSet: ['question_6', 'question_7'],
+            nextNormal: { next: 'end' }
+        },
+    },
+
+    //การนอนหลับผิดปกติ
+    insomniaQuestions: {
+        page_1: {
+            questionSet: ['question_1', 'question_2'],
+            nextNormal: { next: 'page_2' }
+        },
+        page_2: {
+            questionSet: ['question_3', 'question_4'],
+            nextNormal: { next: 'page_3' }
+        },
+        page_3: {
+            questionSet: ['question_5', 'question_6'],
+            nextNormal: { next: 'page_4' }
+        },
+        page_4: {
+            questionSet: ['question_7'],
+            nextNormal: { next: 'page_5' },
+            nextSpecial: [
+                { title: 'ไม่ใช่', next: 'page_6' }
+            ]
+        },
+        page_5: {
+            questionSet: ['question_8'],
+            nextNormal: { next: 'page_6' },
+        },
+        page_6: {
+            questionSet: ['question_9', 'question_10'],
+            nextNormal: { next: 'page_7' }
+        },
+        page_7: {
+            questionSet: ['question_11', 'question_12'],
+            nextNormal: { next: 'end' }
+        },
+    },
+
 }
 
 export default pages

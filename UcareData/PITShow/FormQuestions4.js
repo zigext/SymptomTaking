@@ -6,6 +6,7 @@
 //- o (Other) => user input, ปุ่มอื่นๆ
 //- T (Time) => ระยะเวลา, วว/ดด/ปป (DatePicker) , เวลา(TimePicker), วันเดือน (Picker) , วันเดือนปี (Picker), เป็นช่วงๆ(frequency)
 //- PC (Picture choice)
+//- P (Picture) => ถ่ายรูป
 //- V (Vas score)
 
 
@@ -53,8 +54,8 @@ const questionSource = {
             { type: "c", title: "เจ็บคอ", next: "soreThroatQuestions", sex: "MF" },
             { type: "c", title: "จุกเสียดใต้ลิ้นปี่", next: "epigastricQuestions", sex: "MF" },
             { type: "c", title: "คลื่นไส้ อาเจียน", next: "nauseaQuestions", sex: "MF" },
-            { type: "c", title: "ไข้", next: 248, sex: "MF" },
-            { type: "c", title: "นอนหลับผิดปกติ", next: 1, sex: "MF" },
+            { type: "c", title: "ไข้", next: "coldQuestions", sex: "MF" },
+            { type: "c", title: "นอนหลับผิดปกติ", next: "insomniaQuestions", sex: "MF" },
             { type: "c", title: "ก้อนที่ท้องน้อย", next: 267, sex: "F" },
             { type: "c", title: "ก้อนที่คอ", next: 281, sex: "MF" },
             { type: "c", title: "กล้ามเนื้ออ่อนแรง ", next: 288, sex: "MF" },
@@ -1463,9 +1464,9 @@ const questionSource = {
     // ปัสสาวะเป็นเลือด
     hematuriaQuestions: {
         question_1: {
-            title: "มีอาการเหล่านี้ไหม",
+            title: "อาการฉุกเฉิน",
             emergency: true,
-            question: "อาการฉุกเฉิน",
+            question: "มีอาการเหล่านี้ไหม",
             type: 'MultiChoice',
             answer: [
                 { type: "E", title: "ไข้", question: "อาการฉุกเฉิน" },
@@ -1544,14 +1545,14 @@ const questionSource = {
             ]
         },
         question_2: {
-            title: "มีอาการเหล่านี้ไหม",
+            title: "อาการฉุกเฉิน",
             emergency: true,
-            question: "อาการฉุกเฉิน",
+            question: "มีอาการเหล่านี้ไหม",
             type: 'MultiChoice',
             answer: [
                 { type: "E", title: "ชักเกร็ง", question: "อาการฉุกเฉิน" },
                 { type: "E", title: "อาเจียนพุ่ง", question: "อาการฉุกเฉิน" },
-                { type: "E", title: "กำลังตั้งครรภ์", question: "อาการฉุกเฉิน", sex: "F" },
+                { type: "EF", title: "กำลังตั้งครรภ์", question: "อาการฉุกเฉิน", sex: "F" },
                 { type: "E", title: "ซึมลงไม่รู้สึกตัว", question: "อาการฉุกเฉิน" },
                 { type: "E", title: "อาเจียนตลอดเวลา", question: "อาการฉุกเฉิน" },
                 { type: "E", title: "มีแขนขาอ่อนแรง", question: "อาการฉุกเฉิน" },
@@ -2043,7 +2044,7 @@ const questionSource = {
         question_1: {
             title: "อาการฉุกเฉิน",
             emergency: true,
-            question: "อาการฉุกเฉิน",
+            question: "มีอาการเหล่านี้ไหม",
             type: 'MultiChoice',
             answer: [
                 { type: "E", title: "ได้รับอุบัติเหตุบริเวณคอเมื่อไม่นาน", question: "อาการฉุกเฉิน" },
@@ -2264,9 +2265,9 @@ const questionSource = {
             ]
         },
         question_2: {
-            title: "มีอาการเหล่านี้หรือไม่",
+            title: "อาการฉุกเฉิน",
             emergency: true,
-            question: "อาการฉุกเฉิน",
+            question: "มีอาการเหล่านี้ไหม",
             type: "MultiChoice",
             answer: [
                 { type: "E", title: "หายใจเร็วมากขึ้น ", question: "อาการฉุกเฉิน" },
@@ -2357,9 +2358,9 @@ const questionSource = {
             ]
         },
         question_2: {
-            title: "มีอาการเหล่านี้หรือไม่",
+            title: "อาการฉุกเฉิน",
             emergency: true,
-            question: "อาการฉุกเฉิน",
+            question: "มีอาการเหล่านี้ไหม",
             type: "MultiChoice",
             answer: [
                 { type: "E", title: "อาเจียนเป็นเลือด", question: "อาการฉุกเฉิน" },
@@ -2462,12 +2463,12 @@ const questionSource = {
         },
     },
 
-    //ท้องเสีย //TEST check
+    //ท้องเสีย
     diarrheaQuestions: {
         question_1: {
-            title: "มีอาการเหล่านี้ไหม",
+            title: "อาการฉุกเฉิน",
             emergency: true,
-            question: "อาการฉุกเฉิน",
+            question: "มีอาการเหล่านี้ไหม",
             type: "MultiChoice",
             answer: [
                 { type: "E", title: "ซึมลง/ไม่รู้สึกตัว ", question: "อาการฉุกเฉิน" },
@@ -2492,7 +2493,7 @@ const questionSource = {
                 { type: "c", title: "สีดำแดงเหมือนเลือดหมู", question: "ลักษณะอุจจาระเป็นแบบไหน" },
                 { type: "c", title: "เลือดเคลือบอุจจาระหรือเลือดหยดตามหลังถ่าย", question: "ลักษณะอุจจาระเป็นแบบไหน" },
                 { type: "c", title: "เลือดหยดเวลาถ่าย", question: "ลักษณะอุจจาระเป็นแบบไหน" },
-                { type: "o", title: "อื่น", question: "ลักษณะอุจจาระเป็นแบบไหน", category: "description" },
+                { type: "o", title: "อื่นๆ", question: "ลักษณะอุจจาระเป็นแบบไหน", category: "description" },
                 { type: "c", title: "ไม่แน่ใจ", question: "ลักษณะอุจจาระเป็นแบบไหน" }
             ]
         },
@@ -2539,7 +2540,7 @@ const questionSource = {
                 { type: "c", title: "ฉีดสารเสพติดเข้าเส้นเลือดดำ", question: "ประวัติในอดีต" },
                 { type: "c", title: "ชอบทานอาหารสุกสุกดิบดิบ", question: "ประวัติในอดีต" },
                 { type: "c", title: "ทานยาต้มยาหม้อยาสมุนไพร", question: "ประวัติในอดีต" },
-                { type: "c", title: "ยาลูกกลอน", question: "ประวัติในอดีต" },
+                { type: "c", title: "ทานยาลูกกลอน", question: "ประวัติในอดีต" },
                 { type: "c", title: "เคยมีอาการแบบนี้มาก่อน", question: "ประวัติในอดีต" },
                 { type: "c", title: "อยู่ในระหว่างการเดินทาง/เพิ่งกลับจากการเดินทางไปต่างถิ่น", question: "ประวัติในอดีต" },
                 { type: "c", title: "ไม่มี", question: "ประวัติในอดีต" }
@@ -2604,9 +2605,9 @@ const questionSource = {
     //ตาแดง
     redEyesQuestions: {
         question_1: {
-            title: "มีอาการเหล่านี้ไหม",
+            title: "อาการฉุกเฉิน",
             emergency: true,
-            question: "อาการฉุกเฉิน",
+            question: "มีอาการเหล่านี้ไหม",
             type: "MultiChoice",
             answer: [
                 { type: "E", title: "มีแผลที่ลูกตา หรือลูกตาฉีกขาด ", question: "อาการฉุกเฉิน" },
@@ -2694,9 +2695,9 @@ const questionSource = {
             ]
         },
         question_2: {
-            title: "มีอาการเหล่านี้หรือไม่",
+            title: "อาการฉุกเฉิน",
             emergency: true,
-            question: "อาการฉุกเฉิน",
+            question: "มีอาการเหล่านี้ไหม",
             type: "MultiChoice",
             answer: [
                 { type: "E", title: "หายใจเร็วขึ้น", question: "อาการฉุกเฉิน" },
@@ -2923,9 +2924,9 @@ const questionSource = {
     //ซีด
     anemiaQuestions: {
         question_1: {
-            title: "มีอาการเหล่านี้หรือไม่",
+            title: "อาการฉุกเฉิน",
             emergency: true,
-            question: "อาการฉุกเฉิน",
+            question: "มีอาการเหล่านี้ไหม",
             type: "MultiChoice",
             answer: [
                 { type: "E", title: "อาเจียนหรือถ่ายเป็นเลือด", question: "อาการฉุกเฉิน" },
@@ -2954,7 +2955,7 @@ const questionSource = {
             answer: [
                 { type: "c", title: "ตัวเหลืองตาเหลือง", question: "อาการร่วม" },
                 { type: "c", title: "ปัสสาวะสีเข้ม", question: "อาการร่วม" },
-                { type: "c", title: "ประจำเดือนออกมากผิดปกติ", question: "อาการร่วม", sex: "F" },
+                { type: "F", title: "ประจำเดือนออกมากผิดปกติ", question: "อาการร่วม", sex: "F" },
                 { type: "c", title: "จุดเลือดออกตามตัว", question: "อาการร่วม" },
                 { type: "c", title: "เบื่ออาหาร/น้ำหนักลด", question: "อาการร่วม" },
                 { type: "c", title: "ไม่มี", question: "อาการร่วม" }
@@ -3078,14 +3079,13 @@ const questionSource = {
                 { type: "c", title: "เคยได้รับบาดเจ็บบริเวณศีรษะ", question: "ประวัติในอดีต" },
                 { type: "c", title: "ชอบรับประทานอาหารสุก ๆ ดิบ ๆ", question: "ประวัติในอดีต" },
                 { type: "c", title: "โรคหลอดเลือดสมอง", question: "ประวัติในอดีต" },
-                { type: "c", title: "เคยมีความผิดปกติขณะตั้งครรภ์หรือคลอด", question: "ประวัติในอดีต", sex: "F" },
+                { type: "F", title: "เคยมีความผิดปกติขณะตั้งครรภ์หรือคลอด", question: "ประวัติในอดีต", sex: "F" },
                 { type: "c", title: "เคยติดเชื้อในสมอง", question: "ประวัติในอดีต" },
                 { type: "c", title: "ไม่มี", question: "ประวัติในอดีต" }
             ]
         },
         question_8: {
             title: "มีประวัติโรคลมชักในครอบครัว",
-            question: "อาการฉุกเฉิน",
             emergency: false,
             question: "มีประวัติโรคลมชักในครอบครัว",
             type: "Choice",
@@ -3099,9 +3099,9 @@ const questionSource = {
     //ใจสั่น
     palpitationQuestions: {
         question_1: {
-            title: "มีอาการเหล่านี้หรือไม่",
+            title: "อาการฉุกเฉิน",
             emergency: true,
-            question: "อาการฉุกเฉิน",
+            question: "มีอาการเหล่านี้ไหม",
             type: "MultiChoice",
             answer: [
                 { type: "E", title: "ใจสั่นนานและไม่หาย", question: "อาการฉุกเฉิน" },
@@ -3176,9 +3176,9 @@ const questionSource = {
     //แน่นหน้าอก
     chestBurnQuestions: {
         question_1: {
-            title: "มีอาการเหล่านี้หรือไม่",
+            title: "อาการฉุกเฉิน",
             emergency: true,
-            question: "อาการฉุกเฉิน",
+            question: "มีอาการเหล่านี้ไหม",
             type: "MultiChoice",
             answer: [
                 { type: "E", title: "หอบเหนื่อย", question: "อาการฉุกเฉิน" },
@@ -3401,10 +3401,10 @@ const questionSource = {
         },
     },
 
-    //คลื่นไส้ อาเจียน  test
+    //คลื่นไส้ อาเจียน
     nauseaQuestions: {
         question_1: {
-            title: "มีอาการเหล่านี้หรือไม่",
+            title: "อาการฉุกเฉิน",
             emergency: true,
             question: "มีอาการเหล่านี้หรือไม่",
             type: "MultiChoice",
@@ -3426,7 +3426,7 @@ const questionSource = {
             question: "ระยะเวลาที่เป็น",
             type: "Choice",
             answer: [
-                { type: "T", title: "เวลา", question: "ระยะเวลาที่เป็น" },
+                { type: "T", title: "ระยะเวลา", question: "ระยะเวลาที่เป็น" },
             ]
         },
         question_3: {
@@ -3468,7 +3468,7 @@ const questionSource = {
         question_6: {
             title: "ช่วงเวลาที่มักเป็น",
             emergency: false,
-            question: "ช่วงเวลาที่มักเป็น", /////////////////////////check test
+            question: "ช่วงเวลาที่มักเป็น",
             type: "Choice",
             answer: [
                 { type: "c", title: "กลางวัน", question: "ช่วงเวลาที่มักเป็น" },
@@ -3478,16 +3478,16 @@ const questionSource = {
             ]
         },
         question_7: {
-            title: "สัมพันธ์กับการรับประทานอาหาร", //check test
+            title: "สัมพันธ์กับการรับประทานอาหาร",
             emergency: false,
             question: "คาดว่าเกิดจากอาหารที่ทานหรือไม่",
             type: "Choice",
             answer: [
-                { type: "c", title: "ใช่", question: "คาดว่าเกิดจากอาหารที่ทานหรือไม่", sex: "F" },
+                { type: "F", title: "ใช่", question: "คาดว่าเกิดจากอาหารที่ทานหรือไม่", sex: "F" },
                 { type: "c", title: "ไม่ใช่", question: "คาดว่าเกิดจากอาหารที่ทานหรือไม่" }
             ]
         },
-        question_8: { //test
+        question_8: { 
             title: "เกิดหลังรับประทานอาหารนานเท่าไหร่",
             emergency: false,
             question: "เกิดหลังรับประทานอาหารนานเท่าไหร่",
@@ -3497,11 +3497,11 @@ const questionSource = {
                 { type: "c", title: "ข้าม", question: "เกิดหลังรับประทานอาหารนานเท่าไหร่" }
             ]
         },
-        question_9: { //test
+        question_9: { 
             title: "ประจำเดือนครั้งสุดท้าย",
             emergency: false,
             question: "ประจำเดือนครั้งสุดท้าย",
-            type: "Choice",//////////////////////////////////////check
+            type: "Choice",
             sex: "F",
             answer: [
                 { type: "T", title: "วว/ดด/ปปปป", question: "ประจำเดือนครั้งสุดท้าย" },
@@ -3521,6 +3521,256 @@ const questionSource = {
                 { type: "c", title: "เวียนศีรษะ/บ้านหมุน", question: "อาการร่วมอื่นๆ" },
                 { type: "o", title: "อื่นๆ", question: "อาการร่วมอื่นๆ", category: "description" },
                 { type: "c", title: "ไม่มี", question: "อาการร่วมอื่นๆ" }
+            ]
+        },
+    },
+
+    //ไข้
+    coldQuestions: {
+        question_1: {
+            title: "อาการฉุกเฉิน",
+            emergency: true,
+            question: "มีอาการเหล่านี้หรือไม่",
+            type: "MultiChoice",
+            answer: [
+                { type: "E", title: "หมดสติ", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "แขนขาอ่อนแรง", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "ซึมลง/ไม่รู้สึกตัว", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "ปลายมือ/ปลายเท้าเย็น", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "ลุก/นั่งแล้วมีอาการเวียนศีรษะ/วูบ", question: "อาการฉุกเฉิน" },
+                { type: "c", title: "ไม่มี", question: "อาการฉุกเฉิน" }
+            ]
+        },
+        question_2: {
+            title: "ลักษณะไข้",
+            emergency: false,
+            question: "ลักษณะไข้",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "ไข้สูงลอย", question: "ลักษณะไข้" },
+                { type: "c", title: "ไข้เป็นๆหายๆ", question: "ลักษณะไข้" },
+                { type: "c", title: "ไข้ต่ำทั้งวัน", question: "ลักษณะไข้" },
+                { type: "c", title: "ไข้วันเว้นวัน", question: "ลักษณะไข้" },
+                { type: "o", title: "อื่นๆ", question: "ลักษณะไข้", category: "description" },
+                { type: "c", title: "ไม่แน่ใจ", question: "ลักษณะไข้" }
+            ]
+        },
+        question_3: {
+            title: "ไข้",
+            emergency: false,
+            question: "เป็นไข้มาแล้ว",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "น้อยกว่า 24 ชั่วโมง", question: "เป็นไข้มาแล้ว" },
+                { type: "c", title: "มากกว่า 24 ชั่วโมง", question: "เป็นไข้มาแล้ว" }
+            ]
+        },
+        question_4: {
+            title: "อาการร่วม",
+            emergency: true,
+            question: "อาการร่วม",
+            type: "MultiChoice",
+            answer: [
+                { type: "E", title: "น้ำมูก", question: "อาการร่วม" },
+                { type: "E", title: "ผื่นขึ้นตามตัว", question: "อาการร่วม" },
+                { type: "E", title: "ปวดตามหูหรือเจ็บหู", question: "อาการร่วม" },
+                { type: "E", title: "มีเสมหะ", question: "อาการร่วม" },
+                { type: "E", title: "ปัสสาวะแสบขัด หรือสีขุ่น", question: "อาการร่วม" },
+                { type: "E", title: "ไอ/เจ็บคอ", question: "อาการร่วม" },
+                { type: "E", title: "ท้องเสีย", question: "อาการร่วม" },
+                { type: "E", title: "คลื่นไส้/อาเจียน", question: "อาการร่วม" },
+                { type: "E", title: "ตัวเหลือง/ตาเหลือง", question: "อาการร่วม" },
+                { type: "E", title: "ปวดท้อง", question: "อาการร่วม" },
+                { type: "E", title: "ปวดหลัง หรือ ปวดบั้นเอว", question: "อาการร่วม" },
+                { type: "E", title: "ปัสสาวะเปลี่ยนสี", question: "อาการร่วม" },
+                { type: "E", title: "ตาพร่ามัว", question: "อาการร่วม" },
+                { type: "E", title: "คลำก้อนได้ตามตัว", question: "อาการร่วม" },
+                { type: "E", title: "ปวดศีรษะ", question: "อาการร่วม" },
+                { type: "E", title: "หอบเหนื่อย", question: "อาการร่วม" },
+                { type: "E", title: "ปวดต้นคอ/คอแข็ง", question: "อาการร่วม" },
+                { type: "E", title: "เบื่ออาหาร/น้ำหนักลด", question: "อาการร่วม" },
+                { type: "E", title: "ปวดตามข้อ", question: "อาการร่วม" },
+                { type: "c", title: "ไม่มี", question: "อาการร่วม" }
+            ]
+        },
+        question_5: {
+            title: "อาการร่วม",
+            emergency: true,
+            question: "อาการร่วม",
+            type: "MultiChoice",
+            answer: [
+                { type: "U", title: "มีอาการหนาวสั่น", question: "อาการร่วม" },
+                { type: "U", title: "ผมร่วง", question: "อาการร่วม" },
+                { type: "U", title: "ซีดลง", question: "อาการร่วม" },
+                { type: "U", title: "ไอเรื้อรัง", question: "อาการร่วม" },
+                { type: "U", title: "แผลในปาก", question: "อาการร่วม" },
+                { type: "U", title: "ฝ้าขาวในปาก", question: "อาการร่วม" },
+                { type: "U", title: "ท้องเสียเรื้อรัง", question: "อาการร่วม" },
+                { type: "U", title: "ปวดท้อง", question: "อาการร่วม" },
+                { type: "U", title: "คลำก้อนได้ตามตัว", question: "อาการร่วม" },
+                { type: "U", title: "ผื่นบริเวณใบหน้า", question: "อาการร่วม" },
+                { type: "U", title: "ปวดตามข้อต่างๆ", question: "อาการร่วม" },
+                { type: "U", title: "เบื่ออาหาร/น้ำหนักลด", question: "อาการร่วม" },
+                { type: "U", title: "เคยได้รับการวินิจฉัยว่าเป็นมะเร็ง/เอดส์", question: "อาการร่วม" },
+                { type: "U", title: "ผื่นผิดปกติหรือแผลหนองตามตัว/แขน/ขา", question: "อาการร่วม" },
+                { type: "UF", title: "ตกขาวผิดปกติ", question: "อาการร่วม", sex: "F" },
+                { type: "c", title: "ไม่มี", question: "อาการร่วม" }
+            ]
+        },
+        question_6: {
+            title: "ปัจจัยเสี่ยง",
+            emergency: false,
+            question: "มีปัจจัยเสี่ยงเหล่านี้หรือไม่",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "สัตว์กัด", question: "ปัจจัยเสี่ยง" },
+                { type: "c", title: "มีเพศสัมพันธ์ในกลุ่มเสี่ยงโดยไม่ได้ป้องกัน", question: "ปัจจัยเสี่ยง" },
+                { type: "c", title: "สัมผัสคนที่มีไข้", question: "ปัจจัยเสี่ยง" },
+                { type: "c", title: "เข้าป่า/ย่ำน้ำมาเร็วๆนี้", question: "ปัจจัยเสี่ยง" },
+                { type: "c", title: "เดินทางในพื้นที่ที่มีโรคระบาด", question: "ปัจจัยเสี่ยง" },
+                { type: "c", title: "ไม่มี", question: "ปัจจัยเสี่ยง" }
+            ]
+        },
+        question_7: {
+            title: "ประวัติในอดีต",
+            emergency: false,
+            question: "ประวัติในอดีต",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "เคยใช้สารเสพติด", question: "ประวัติในอดีต" },
+                { type: "c", title: "มีเพศสัมพันธ์ที่ไม่ปลอดภัย", question: "ประวัติในอดีต" },
+                { type: "c", title: "เคยใช้ยาหม้อ ยาต้ม ยาลูกกลอน", question: "ประวัติในอดีต" },
+                { type: "c", title: "เคยมีประวัติโรคติดเชื้อ", question: "ประวัติในอดีต" },
+                { type: "c", title: "ประวัติมะเร็งในครอบครัว", question: "ประวัติในอดีต" },
+                { type: "c", title: "ไม่มี", question: "ประวัติในอดีต" }
+            ]
+        },
+    },
+
+    //การนอนหลับผิดปกติ //TEST check
+    insomniaQuestions: {
+        question_1: {
+            title: "ความถี่",
+            emergency: false,
+            question: "ความถี่",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "เป็นๆหายๆ", question: "ความถี่" },
+                { type: "c", title: "เป็นทุกวัน", question: "ความถี่" },
+            ]
+        },
+        question_2: {
+            title: "อาการขณะนอน",
+            emergency: false,
+            question: "อาการขณะนอน",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "กรน", question: "อาการขณะนอน" },
+                { type: "c", title: "หยุดหายใจ", question: "อาการขณะนอน" },
+                { type: "o", title: "อื่นๆ", question: "อาการขณะนอน", category: "description" },
+            ]
+        },
+        question_3: {
+            title: "ปัจจัยที่ทำให้แย่ลง",
+            emergency: false,
+            question: "ปัจจัยที่ทำให้แย่ลง",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "ความเครียด", question: "ปัจจัยที่ทำให้แย่ลง" },
+                { type: "o", title: "อื่นๆ", question: "ปัจจัยที่ทำให้แย่ลง", category: "description" },
+                { type: "c", title: "ไม่มี", question: "ปัจจัยที่ทำให้แย่ลง" },
+            ]
+        },
+        question_4: {
+            title: "ปัจจัยที่ทำใหดีขึ้น",
+            emergency: false,
+            question: "ปัจจัยที่ทำใหดีขึ้น",
+            type: "MultiChoice",
+            answer: [
+                { type: "o", title: "ทานยา", question: "ปัจจัยที่ทำให้ดีขึ้น", category: "description" },
+                { type: "o", title: "อื่นๆ", question: "ปัจจัยที่ทำให้ดีขึ้น", category: "description" },
+                { type: "c", title: "ไม่มี", question: "ปัจจัยที่ทำให้ดีขึ้น" }
+            ]
+        },
+        question_5: {
+            title: "เวลาเข้านอน",
+            emergency: false,
+            question: "เวลาเข้านอน",
+            type: "Choice",
+            answer: [
+                { type: "T", title: "เวลา", question: "เวลาเข้านอน" },
+            ]
+        },
+        question_6: {
+            title: "ระยะเวลาตั้งแต่ล้มตัวนอนจนถึงนอนหลับ",
+            emergency: false,
+            question: "ระยะเวลาตั้งแต่ล้มตัวนอนจนถึงนอนหลับ",
+            type: "Choice",
+            answer: [
+                { type: "o", title: "เวลา (หน่วย)", question: "ระยะเวลาตั้งแต่ล้มตัวนอนจนถึงนอนหลับ", category: "description" },
+            ]
+        },
+        question_7: {
+            title: "ตื่นกลางดึกหรือไม่",
+            emergency: false,
+            question: "ตื่นกลางดึกหรือไม่",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "ใช่", question: "ตื่นกลางดึกหรือไม่" },
+                { type: "c", title: "ไม่ใช่", question: "ตื่นกลางดึกหรือไม่" },
+            ]
+        },
+        question_8: {
+            title: "หลังตื่นนอนสามารถหลับต่อได้หรือไม่",
+            emergency: false,
+            question: "หลังตื่นนอนสามารถหลับต่อได้หรือไม่",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "ได้", question: "หลังตื่นนอนสามารถหลับต่อได้หรือไม่" },
+                { type: "c", title: "ไม่ได้", question: "หลังตื่นนอนสามารถหลับต่อได้หรือไม่" },
+            ]
+        },
+        question_9: {
+            title: "เวลาตื่น",
+            emergency: false,
+            question: "เวลาตื่น",
+            type: "Choice",
+            answer: [
+                { type: "T", title: "เวลา", question: "เวลาตื่น" },
+            ]
+        },
+        question_10: {
+            title: "การนอนช่วงกลางวัน",
+            emergency: false,
+            question: "การนอนช่วงกลางวัน",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "นอนช่วงกลางวัน", question: "การนอนช่วงกลางวัน" },
+                { type: "c", title: "ไม่นอนกลางวัน", question: "การนอนช่วงกลางวัน" },
+            ]
+        },
+        question_11: {
+            title: "การดำเนินชีวิต",
+            emergency: false,
+            question: "การดำเนินชีวิต",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "ดื่มเครื่องดื่มที่มีคาเฟอีน", question: "การดำเนินชีวิต" },
+                { type: "c", title: "ชอบดื่มน้ำอัดลม", question: "การดำเนินชีวิต" },
+                { type: "c", title: "ชอบดื่มเครื่องดื่มชูกำลัง", question: "การดำเนินชีวิต" },
+                { type: "c", title: "ข้าม", question: "การดำเนินชีวิต" }
+            ]
+        },
+        question_12: {
+            title: "สภาพแวดล้อมในการนอน",
+            emergency: false,
+            question: "สภาพแวดล้อมในการนอน",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "เสียงดัง", question: "สภาพแวดล้อมในการนอน" },
+                { type: "c", title: "แสงสว่าง", question: "สภาพแวดล้อมในการนอน" },
+                { type: "c", title: "อุณหภูมิไม่เหมาะสม", question: "สภาพแวดล้อมในการนอน" },
+                { type: "c", title: "ข้าม", question: "สภาพแวดล้อมในการนอน" }
             ]
         },
     },
