@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Navigator, Image, TouchableHighlight, NativeModules, ListView, TextInput, ToastAndroid, ImageBackground, ScrollView, Picker, FlatList, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Navigator, Image, TouchableHighlight, NativeModules, ListView, TextInput, KeyboardAvoidingView, ToastAndroid, ImageBackground, ScrollView, Picker, FlatList, Dimensions } from 'react-native';
 import { BottomNavigation, COLOR, ThemeProvider, Icon, IconToggle, ListItem } from 'react-native-material-ui';
 import VectorIcon from 'react-native-vector-icons/MaterialIcons'
 import { Button, Avatar, Card } from 'react-native-elements'
@@ -28,6 +28,7 @@ export default class SymptomTakingScreen extends Component {
             answersForThePage: [], //store 1 or 2 answer from each page 
             currentQuestion: questionSource.chiefQuestion,
             questionHistory: [questionSource.chiefQuestion],
+            pageHistory: [],
             questionBasedOnChiefComplaint: "",
             chiefComplaint: "", //main symptom
             progress: 0,
@@ -120,9 +121,7 @@ export default class SymptomTakingScreen extends Component {
         console.log("otherPatientAnswer = ", this.state.otherPatientAnswer)
     }
 
-    // _setDate = (date) => {
-    //     this.setState({ date })
-    // }
+
     //Progress shows when ask specific questions
     _calculateProgress = () => {
         let numberOfDoneQuestion = this.state.questionNumber - 1 //Because it include chiefQuestion
@@ -154,6 +153,7 @@ export default class SymptomTakingScreen extends Component {
                         otherPatientAnswer: "",
                         questionNumber: 1,
                         questionHistory: _.uniq(history),
+                        pageHistory: [],
                         currentQuestion: questionSource.chiefQuestion,
                         time: "",
                         timeUnit: "",
@@ -183,6 +183,8 @@ export default class SymptomTakingScreen extends Component {
                     console.log("next Qset= ", nextQuestionSet)
                     let allPatientAnswers = this.state.allPatientAnswers
                     allPatientAnswers.push("" + this.state.currentQuestion.title + ": " + this.state.currentPatientAnswer.title)
+                    let pageHistory = this.state.pageHistory
+                    pageHistory.push(pages[next].page_1) 
 
                     await this.setState({
                         chiefComplaint: this.state.currentPatientAnswer.title,
@@ -190,6 +192,7 @@ export default class SymptomTakingScreen extends Component {
                         pagesBasedOnChiefComplaint: pages[next],
                         questionNumber,
                         questionHistory: _.uniq(history),
+                        pageHistory: _.uniq(pageHistory),
                         currentQuestion: nextQuestionSet,
                         currentQuestionSet: nextQuestionSet,
                         currentPage: pages[next].page_1,
@@ -201,7 +204,6 @@ export default class SymptomTakingScreen extends Component {
                         answerNumberSelected: 0,
                     })
                     this.lenOfSpecificQuestion = Object.keys(this.state.questionBasedOnChiefComplaint).length
-                    console.log('this.state.questionBasedOnChiefComplaint = ', this.state.questionBasedOnChiefComplaint)
                     console.log("len for progress = ", this.lenOfSpecificQuestion)
                     console.log("_next = ", this.state)
                 }
@@ -214,7 +216,7 @@ export default class SymptomTakingScreen extends Component {
         //user has answered
         else if (_.isEmpty(this.state.answersForThePage) === false) {
             //Emergency
-            if (this.state.answersForThePage.some((answer) => answer.type === "E" || answer.type === "U")) {
+            if (this.state.answersForThePage.some((answer) => answer.type === "E" || answer.type === "EM"|| answer.type === "EF"|| answer.type === "U"|| answer.type === "UM"|| answer.type === "UF")) {
                 this._goToEmergency()
             }
 
@@ -231,7 +233,6 @@ export default class SymptomTakingScreen extends Component {
                     })
                     .value()
                 groupAnswers = groupAnswers.filter((answer) => answer.questionTitle !== "undefined")
-                console.log("group = ", groupAnswers)
 
                 //user doesn't answer all the questions in page
                 if (groupAnswers.length !== this.state.currentQuestionSet.length) {
@@ -242,6 +243,8 @@ export default class SymptomTakingScreen extends Component {
                 let questionNumber = this.state.questionNumber + this.state.currentQuestionSet.length
                 let history = this.state.questionHistory
                 history.push(this.state.currentQuestionSet)
+                let pageHistory = this.state.pageHistory
+                pageHistory.push(this.state.currentPage)
                 let nextQuestionSet = []
                 let nextPage
 
@@ -278,6 +281,7 @@ export default class SymptomTakingScreen extends Component {
                     str = str.replace('วว/ดด/ปปปป', '')
                     str = str.replace('วันเดือนปี', '')
                     str = str.replace('วันเดือน', '')
+                    str = str.replace('เวลา', '')
                     str = str.replace('ถ่ายรูป', '')
                     allPatientAnswers.push(str)
                 })
@@ -289,6 +293,7 @@ export default class SymptomTakingScreen extends Component {
                     await this.setState({
                         questionNumber: 1,
                         questionHistory: _.uniq(history),
+                        pageHistory: _.uniq(pageHistory),
                         questionBasedOnChiefComplaint: "",
                         pagesBasedOnChiefComplaint: "",
                         currentQuestion: "",
@@ -320,7 +325,7 @@ export default class SymptomTakingScreen extends Component {
                                             nextQuestionSet.push(value)
                                         }
                                         //user doesn't have the right sex
-                                        //TODO: error when both question is sex specific or the last question of the symtom is sex specific
+                                        
                                         else {
                                             // console.log("COUNT = ", questionBasedOnSexCount, nextQuestionNames.length)
                                             // questionBasedOnSexCount++
@@ -331,7 +336,7 @@ export default class SymptomTakingScreen extends Component {
                                             //     let nextQuestionNamesAfterSkip = nextPageObjAfterSkip.questionSet
                                             //     let nextQuestionSetAfterSkip = []
                                             //     nextQuestionNamesAfterSkip.map((name) => {
-                                            //         Object.entries(this.state.questionBasedOnChiefComplaint).forEach(
+                                            //         Object.entries(ุthis.state.questionBasedOnChiefComplaint).forEach(
                                             //             ([key, value]) => {
                                             //                 if (key === name) {
                                             //                     nextQuestionSetAfterSkip.push(value)
@@ -344,6 +349,7 @@ export default class SymptomTakingScreen extends Component {
                                             //     await this.setState({
                                             //         questionNumber,
                                             //         questionHistory: _.uniq(history),
+                                            //         pageHistory: _.uniq(page),
                                             //         allPatientAnswers,
                                             //         answersForThePage: [],
                                             //         currentQuestion: nextQuestionSetAfterSkip,
@@ -367,10 +373,12 @@ export default class SymptomTakingScreen extends Component {
                             }
                         )
                     })
-
+                    
+                    let currentPage = this.state.currentPage
                     await this.setState({
                         questionNumber,
                         questionHistory: _.uniq(history),
+                        pageHistory: _.uniq(pageHistory),
                         allPatientAnswers,
                         answersForThePage: [],
                         currentQuestion: nextQuestionSet,
@@ -394,6 +402,8 @@ export default class SymptomTakingScreen extends Component {
     }
 
     _back = async () => {
+        let pageHistory = this.state.pageHistory
+        let prevPage = pageHistory.pop()
         let prevQuestionSet = this.state.questionHistory.pop()
         let questionNumber = this.state.questionNumber - prevQuestionSet.length
         //When only chiefQuestion are left in allPatientAnswers
@@ -424,6 +434,8 @@ export default class SymptomTakingScreen extends Component {
             await this.setState({
                 currentQuestion: prevQuestionSet,
                 currentQuestionSet: prevQuestionSet,
+                currentPage: prevPage,
+                pageHistory,
                 questionNumber,
                 allPatientAnswers,
                 currentPatientAnswer: "",
@@ -435,39 +447,7 @@ export default class SymptomTakingScreen extends Component {
             this._calculateProgress()
         }
 
-        // let prevQuestion = this.state.questionHistory.pop()
-        // let questionNumber = this.state.questionNumber - 1
-        // //When only chiefQuestion left in allPatientAnswers
-        // if (this.state.allPatientAnswers.length <= 1) {
-        //     await this.setState({
-        //         currentQuestion: prevQuestion,
-        //         questionNumber,
-        //         allPatientAnswers: [],
-        //         progress: 0,
-        //         currentPatientAnswer: "",
-        //         multipleChoiceCurrentAnswer: [],
-        //         otherPatientAnswer: "",
-        //         time: "",
-        //         timeUnit: "",
-        //         chiefComplaint: ""
-        //     })
-        // }
-        // //When there are more
-        // else {
-        //     let allPatientAnswers = this.state.allPatientAnswers
-        //     allPatientAnswers.pop()
-        //     await this.setState({
-        //         currentQuestion: prevQuestion,
-        //         questionNumber,
-        //         allPatientAnswers,
-        //         currentPatientAnswer: "",
-        //         multipleChoiceCurrentAnswer: [],
-        //         otherPatientAnswer: "",
-        //         time: "",
-        //         timeUnit: ""
-        //     })
-        //     this._calculateProgress()
-        // }
+      
         console.log("back ", this.state)
     }
 
@@ -499,13 +479,11 @@ export default class SymptomTakingScreen extends Component {
         //     })
     }
 
-    //TODO: it doesn't look good when device is in landscape mode
     _renderGeneralQuestions = () => {
         return (
             <ThemeProvider uiTheme={uiTheme}>
                 <View style={styles.container}>
                     <ImageBackground source={require('../assets/images/bg.png')} style={{ width: '100%', height: '100%' }}>
-                        {/*<ScrollView style={{ flex: 1, flexGrow: 1 }} >*/}
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginVertical: 20 }}>
                             <View style={{ borderWidth: 2, borderColor: '#FFFFFF', height: 90, width: 90, borderRadius: 45, alignItems: 'center', justifyContent: 'center' }}>
                                 <Avatar
@@ -574,7 +552,6 @@ export default class SymptomTakingScreen extends Component {
                             buttonStyle={styles.nextButton}
                             containerViewStyle={{ backgroundColor: 'transparent' }}
                         />
-                        {/*</ScrollView>*/}
                     </ImageBackground>
                 </View>
             </ThemeProvider >
@@ -585,7 +562,7 @@ export default class SymptomTakingScreen extends Component {
     _renderSpecificQuestions = () => {
         return (
             <ThemeProvider uiTheme={uiTheme}>
-                <View style={styles.containerSpecific}>
+                <KeyboardAvoidingView style={styles.containerSpecific}>
                     <ScrollView style={{ flex: 1 }}>
 
                         <QuestionDisplay
@@ -639,7 +616,7 @@ export default class SymptomTakingScreen extends Component {
                             }
                         </View>
                     </ScrollView>
-                </View>
+                </KeyboardAvoidingView>
             </ThemeProvider>
         )
     }
