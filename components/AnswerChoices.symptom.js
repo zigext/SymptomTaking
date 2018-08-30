@@ -20,7 +20,6 @@ export default class AnswerChoices extends Component {
         if (this.props.currentPatientAnswer.title !== this.props.answer.title) {
             //Press already selected answer
             if (this.state.selected === true) {
-                ToastAndroid.showWithGravityAndOffset('เลือกซ้ำที่ไม่ล่าสุด', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
                 this.setState({
                     selected: !this.state.selected
                 })
@@ -30,7 +29,6 @@ export default class AnswerChoices extends Component {
                 //not select any choice
                 if (!this.props.alreadyChooseAnswer) {
                     if (!this.props.currentPatientAnswer.title) {
-                        ToastAndroid.showWithGravityAndOffset('เลือกข้อแรก', ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 300)
                         this.setState({
                             selected: !this.state.selected
                         })
