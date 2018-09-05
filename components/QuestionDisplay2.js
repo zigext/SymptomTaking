@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ListView, TextInput, ToastAndroid, ScrollView, Dimensions, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, ListView, TextInput, ToastAndroid, ScrollView, Dimensions, TouchableHighlight, KeyboardAvoidingView } from 'react-native';
 import { Button, Icon } from 'react-native-elements'
 import AnswerChoices from './AnswerChoices.symptom'
 import AnswerMultiChoices from './AnswerMultiChoices.symptom'
@@ -261,61 +261,6 @@ export default class QuestionDisplay extends Component {
             }
             this.props._setAnswersForThePage(answer, method)
         }
-
-
-        // this.props._setAnswersForThePage(answer, method)
-
-        // this.props._setAnswersForThePage(answer, method)
-
-
-
-        // if (this.state.time_1) {
-        //     // let obj = {}
-        //     // obj.type = this.state.currentPatientAnswer_1.type
-        //     // obj.question = this.state.currentPatientAnswer_1.question
-        //     // obj.next = this.state.currentPatientAnswer_1.next
-        //     // obj.title = this.state.time_1
-        //     // this.props._setAnswersForThePage(obj, method)
-        // }
-        // if (this.state.timeUnit_1) {
-        //     // let obj = {}
-        //     // obj.type = this.state.currentPatientAnswer_1.type
-        //     // obj.question = this.state.currentPatientAnswer_1.question
-        //     // obj.next = this.state.currentPatientAnswer_1.next
-        //     // obj.title = this.state.timeUnit_1
-        //     // this.props._setAnswersForThePage(obj, method)
-        // }
-
-        // else {
-        //     //user doesn't choose both time and timeUnit
-        //     if ((this.state.time_1 && !this.state.timeUnit_1) || (!this.state.time_1 && this.state.timeUnit_1)) {
-        //         console.log("return")
-        //         return
-        //     }
-        //     if ((this.state.time_2 && !this.state.timeUnit_2) || (!this.state.time_2 && this.state.timeUnit_2)) {
-        //         return
-        //     }
-
-        //     //user answer textInput 
-        //     if (this.state.currentPatientAnswer_1.type === "o" && this.state.otherPatientAnswer_1 !== "") {
-        //         let obj = {}
-        //         obj.type = this.state.currentPatientAnswer_1.type
-        //         obj.question = this.state.currentPatientAnswer_1.question
-        //         obj.title = `${this.state.otherPatientAnswer_1} `
-        //         this.props._setAnswersForThePage(obj, method)
-        //         return
-        //     }
-        //     if (this.state.currentPatientAnswer_2.type === "o" && this.state.otherPatientAnswer_2 !== "") {
-        //         let obj = {}
-        //         obj.type = this.state.currentPatientAnswer_2.type
-        //         obj.question = this.state.currentPatientAnswer_2.question
-        //         obj.title = `${this.state.otherPatientAnswer_2} 
-        //         this.props._setAnswersForThePage(obj, method)
-        //         return
-        //     }
-        //     console.log("X")
-        //     this.props._setAnswersForThePage(answer, method)
-        // }
     }
 
     _toggleAlreadyChooseAnswer1 = async (value) => {
@@ -329,8 +274,6 @@ export default class QuestionDisplay extends Component {
     _setCurrentPatientAnswer1 = async (currentPatientAnswer_1) => {
         await this.setState({ currentPatientAnswer_1 })
         this._callSetAnswerForThePage(currentPatientAnswer_1, ADD)
-
-
         console.log("current answer 1 = ", this.state.currentPatientAnswer_1)
     }
 

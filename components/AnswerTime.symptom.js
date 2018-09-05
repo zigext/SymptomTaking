@@ -16,8 +16,6 @@ export default class AnswerTime extends Component {
         }
     }
 
-    //TODO: Can click only 1 choice
-
     _toggleTimePicker = () => {
         this.setState({
             showTimePicker: !this.state.showTimePicker

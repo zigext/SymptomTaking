@@ -29,11 +29,11 @@ export default class AnswerTakePicture extends Component {
     _onPress = async () => {
         ImagePicker.showImagePicker(imageOptions, response => {
             if (response.didCancel) {
-                console.log('User cancelled image picker')
+                
             } else if (response.error) {
-                console.log('ImagePicker Error: ', response.error)
+                
             } else if (response.customButton) {
-                console.log('User tapped custom button: ', response.customButton)
+        
             } else {
                 let imageSource = { uri: 'data:image/jpeg;base64,' + response.data }
                 let imageUri = response.uri + ''
@@ -45,12 +45,10 @@ export default class AnswerTakePicture extends Component {
                     this.setState({ imageSource: imageUri })
                 })
                     .then(() => {
-                        console.log(this.state)
                         this.props._setCurrentPatientAnswer(this.props.answer)
                         this.props._setImage(this.state.path, this.state.filename, this.state.timestamp)
                     })
                     .catch(err => {
-                        console.log('error in choose photo ', err)
                         Alert.alert('ผิดพลาด! ไม่สามารถเลือกรูปภาพ')
                     })
             }

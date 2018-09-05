@@ -12,13 +12,11 @@ export default class AnswerPictureChoice extends Component {
     }
 
     _onPress = () => {
-        console.log("already = ", this.props.alreadyChooseAnswer)
         //not select any choice
         if (!this.props.alreadyChooseAnswer) {
             this.setState({
                 selected: !this.state.selected
             })
-            // this.props._setCurrentPatientAnswer(this.props.answer)
             this.props._setChoiceCurrentAnswer(this.props.answer, "add")
             this.props._toggleAlreadyChooseAnswer(true)
         }

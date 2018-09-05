@@ -87,16 +87,7 @@ export default class AnswerOther extends Component {
 
 
             }
-            // await this.setState({
-            //     selected: !this.state.selected
-            // })
-            // this._toggleTextInput()
-            // if (this.state.selected) {
-            //     this.props._setCurrentPatientAnswer(this.props.answer)
-            // }
-            // else {
-            //     this.props._setCurrentPatientAnswer("")
-            // }
+         
         }
 
 
