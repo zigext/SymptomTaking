@@ -1206,7 +1206,7 @@ const questionSource = {
                 { type: "T", title: "เป็นช่วงๆ", question: "ความถี่ของอาการ" },
             ]
         },
-        question_7: { //TODO: question based on sex
+        question_7: { 
             title: "ประจำเดือนครั้งสุดท้าย",
             emergency: false,
             question: "ประจำเดือนครั้งสุดท้าย",

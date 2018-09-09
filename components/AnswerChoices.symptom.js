@@ -6,8 +6,6 @@ const { height, width } = Dimensions.get('window');
 const minItemWidth = (width - 11) / 2.45; //at first (width - 15) / 2
 const maxItemWidth = (width - 15) / 2;
 
-
-//TODO: when select another choice change the previous selected one to gray
 export default class AnswerChoices extends Component {
     constructor(props) {
         super(props)

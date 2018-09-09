@@ -14,8 +14,6 @@ import User from '../UcareData/mockdata' //mock user from firebase => KOPAI
 
 var _ = require('lodash')
 
-//TODO: how to check if user answer both questions
-
 export default class SymptomTakingScreen extends Component {
     constructor(props) {
         super(props)
@@ -83,26 +81,6 @@ export default class SymptomTakingScreen extends Component {
             check
         })
     }
-
-    // _setMultipleChoiceCurrentAnswer = async (answer, method) => {
-    //     //user click new answer
-    //     if (method === "add") {
-    //         let newMultiple = this.state.multipleChoiceCurrentAnswer
-    //         newMultiple.push(answer)
-    //         await this.setState({
-    //             multipleChoiceCurrentAnswer: _.uniq(newMultiple)
-    //         })
-    //     }
-    //     //user click already selected answer
-    //     else if (method === "delete") {
-    //         let multipleChoiceCurrentAnswer = this.state.multipleChoiceCurrentAnswer
-    //         removedMultipleChoice = multipleChoiceCurrentAnswer.filter((selectedAnswer) => {
-    //             return selectedAnswer.title !== answer.title
-    //         })
-    //         await this.setState({ multipleChoiceCurrentAnswer: removedMultipleChoice })
-    //     }
-    //     console.log("multiple current answer = ", this.state.multipleChoiceCurrentAnswer)
-    // }
 
     _setAnswerNumberSelected = async (answerNumberSelected) => {
         await this.setState({ answerNumberSelected })
@@ -204,7 +182,6 @@ export default class SymptomTakingScreen extends Component {
                         answerNumberSelected: 0,
                     })
                     this.lenOfSpecificQuestion = Object.keys(this.state.questionBasedOnChiefComplaint).length
-                    console.log("len for progress = ", this.lenOfSpecificQuestion)
                     console.log("_next = ", this.state)
                 }
             }
@@ -255,7 +232,6 @@ export default class SymptomTakingScreen extends Component {
                         this.state.answersForThePage.map((a) => {
                             if (answer.title === a.title) {
                                 nextPage = answer.next
-                                console.log("special = ", nextPage, answer.title, this.state.currentPatientAnswer.title)
                             }
                         })
 
@@ -328,40 +304,40 @@ export default class SymptomTakingScreen extends Component {
                                         
                                         else {
                                             // console.log("COUNT = ", questionBasedOnSexCount, nextQuestionNames.length)
-                                            // questionBasedOnSexCount++
-                                            // //if both of the question in the next page are based on sex
-                                            // if (questionBasedOnSexCount === nextQuestionNames.length) {
-                                            //     let nextPageObjAfterSkip = this.state.pagesBasedOnChiefComplaint[nextPageObj.nextNormal.next]
-                                            //     console.log("__", nextPageObjAfterSkip)
-                                            //     let nextQuestionNamesAfterSkip = nextPageObjAfterSkip.questionSet
-                                            //     let nextQuestionSetAfterSkip = []
-                                            //     nextQuestionNamesAfterSkip.map((name) => {
-                                            //         Object.entries(ุthis.state.questionBasedOnChiefComplaint).forEach(
-                                            //             ([key, value]) => {
-                                            //                 if (key === name) {
-                                            //                     nextQuestionSetAfterSkip.push(value)
-                                            //                 }
-                                            //             }
-                                            //         )
-                                            //     })
-                                            //     let test = this.state.pagesBasedOnChiefComplaint[nextPageObj.nextNormal.next]
-                                            //     console.log("YO = ", nextQuestionSetAfterSkip, this.state.pagesBasedOnChiefComplaint[nextPageObj.nextNormal.next])
-                                            //     await this.setState({
-                                            //         questionNumber,
-                                            //         questionHistory: _.uniq(history),
-                                            //         pageHistory: _.uniq(page),
-                                            //         allPatientAnswers,
-                                            //         answersForThePage: [],
-                                            //         currentQuestion: nextQuestionSetAfterSkip,
-                                            //         currentQuestionSet: nextQuestionSetAfterSkip,
-                                            //         currentPage: test,
-                                            //         otherPatientAnswer: ""
-                                            //     })
-                                            //     console.log("SKIP = ", this.state)
-                                            //     await this.refs.questionDisplay.reset()
-                                            //     this._calculateProgress()
-                                            //     return
-                                            // }
+                                            questionBasedOnSexCount++
+                                            //if both of the question in the next page are based on sex
+                                            if (questionBasedOnSexCount === nextQuestionNames.length) {
+                                                let nextPageObjAfterSkip = this.state.pagesBasedOnChiefComplaint[nextPageObj.nextNormal.next]
+                                                console.log("__", nextPageObjAfterSkip)
+                                                let nextQuestionNamesAfterSkip = nextPageObjAfterSkip.questionSet
+                                                let nextQuestionSetAfterSkip = []
+                                                nextQuestionNamesAfterSkip.map((name) => {
+                                                    Object.entries(this.state.questionBasedOnChiefComplaint).forEach(
+                                                        ([key, value]) => {
+                                                            if (key === name) {
+                                                                nextQuestionSetAfterSkip.push(value)
+                                                            }
+                                                        }
+                                                    )
+                                                })
+                                                let test = this.state.pagesBasedOnChiefComplaint[nextPageObj.nextNormal.next]
+                                                console.log("YO = ", nextQuestionSetAfterSkip, this.state.pagesBasedOnChiefComplaint[nextPageObj.nextNormal.next])
+                                                await this.setState({
+                                                    questionNumber,
+                                                    questionHistory: _.uniq(history),
+                                                    pageHistory: _.uniq(page),
+                                                    allPatientAnswers,
+                                                    answersForThePage: [],
+                                                    currentQuestion: nextQuestionSetAfterSkip,
+                                                    currentQuestionSet: nextQuestionSetAfterSkip,
+                                                    currentPage: test,
+                                                    otherPatientAnswer: ""
+                                                })
+                                                console.log("SKIP = ", this.state)
+                                                await this.refs.questionDisplay.reset()
+                                                this._calculateProgress()
+                                                return
+                                            }
                                             //skip this question (skip page)
                                         }
                                     }
@@ -558,7 +534,6 @@ export default class SymptomTakingScreen extends Component {
         )
     }
 
-    //TODO: render multiChoice in direction row
     _renderSpecificQuestions = () => {
         return (
             <ThemeProvider uiTheme={uiTheme}>
