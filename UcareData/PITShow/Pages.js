@@ -675,7 +675,7 @@ const pages = {
         },
     },
 
-       //ใจสั่น
+    //ใจสั่น
     palpitationQuestions: {
         page_1: {
             questionSet: ['question_1'],
@@ -695,7 +695,7 @@ const pages = {
         },
     },
 
-     //แน่นหน้าอก
+    //แน่นหน้าอก
     chestBurnQuestions: {
         page_1: {
             questionSet: ['question_1'],
@@ -737,7 +737,7 @@ const pages = {
             questionSet: ['question_1', 'question_2'],
             nextNormal: { next: 'page_2' }
         },
-          page_2: {
+        page_2: {
             questionSet: ['question_3', 'question_4'],
             nextNormal: { next: 'end' }
         },
@@ -764,7 +764,7 @@ const pages = {
         page_5: {
             questionSet: ['question_7'],
             nextNormal: { next: 'page_7' },
-             nextSpecial: [
+            nextSpecial: [
                 { title: 'ใช่', next: 'page_6' }
             ]
         },
@@ -778,7 +778,7 @@ const pages = {
         },
     },
 
-     //ไข้
+    //ไข้
     coldQuestions: {
         page_1: {
             questionSet: ['question_1'],
@@ -840,6 +840,85 @@ const pages = {
         },
         page_7: {
             questionSet: ['question_11', 'question_12'],
+            nextNormal: { next: 'end' }
+        },
+    },
+
+    //ก้อนที่คอ
+    neckTumorQuestions: {
+        page_1: {
+            questionSet: ['question_1', 'question_2'],
+            nextNormal: { next: 'page_2' }
+        },
+        page_2: {
+            questionSet: ['question_3', 'question_4'],
+            nextNormal: { next: 'page_3' }
+        },
+        page_3: {
+            questionSet: ['question_5', 'question_6'],
+            nextNormal: { next: 'page_4' }
+        },
+        page_4: {
+            questionSet: ['question_7'],
+            nextNormal: { next: 'end' }
+        },
+    },
+
+    // ก้อนที่ท้องน้อย
+    lowerAbsTumorQuestions: {
+        page_1: {
+            questionSet: ['question_1', 'question_2'],
+            nextNormal: { next: 'page_2' }
+        },
+        page_2: {
+            questionSet: ['question_3', 'question_4'],
+            nextNormal: { next: 'page_3' }
+        },
+        page_3: {
+            questionSet: ['question_5', 'question_6'],
+            nextNormal: { next: 'page_4' }
+        },
+        page_4: {
+            questionSet: ['question_7', 'question_8'],
+            nextNormal: { next: 'page_5' }
+        },
+        page_5: {
+            questionSet: ['question_9'],
+            nextNormal: { next: 'page_6' },
+        },
+        page_6: {
+            questionSet: ['question_10'],
+            nextNormal: { next: 'end' },
+              nextSpecial: [
+                { title: 'มาปกติ', next: 'page_7' }
+            ]
+        },
+        page_7: {
+            questionSet: ['question_11', 'question_12'],
+            nextNormal: { next: 'page_8' },
+        },
+        page_8: {
+            questionSet: ['question_13', 'question_14'],
+            nextNormal: { next: 'end' }
+        },
+    },
+
+      // กล้ามเนื้ออ่อนแรง
+    weakMuscleQuestions: {
+        page_1: {
+            questionSet: ['question_1'],
+            nextNormal: { next: 'page_2' }
+        },
+        page_2: {
+            questionSet: ['question_2'],
+            nextNormal: { next: 'page_3' }
+        },
+        page_3: {
+            questionSet: ['question_3', 'question_4'],
+            nextNormal: { next: 'page_4' }
+        },
+        page_4: {
+            questionSet: ['question_5', 'question_6'],
             nextNormal: { next: 'end' }
         },
     },

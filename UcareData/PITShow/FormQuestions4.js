@@ -56,10 +56,10 @@ const questionSource = {
             { type: "c", title: "คลื่นไส้ อาเจียน", next: "nauseaQuestions", sex: "MF" },
             { type: "c", title: "ไข้", next: "coldQuestions", sex: "MF" },
             { type: "c", title: "นอนหลับผิดปกติ", next: "insomniaQuestions", sex: "MF" },
-            { type: "c", title: "ก้อนที่ท้องน้อย", next: 267, sex: "F" },
-            { type: "c", title: "ก้อนที่คอ", next: 281, sex: "MF" },
-            { type: "c", title: "กล้ามเนื้ออ่อนแรง ", next: 288, sex: "MF" },
-            { type: "o", title: "อื่นๆ", question: "อาการสำคัญ", sex: "MF", category: "description", next: "end" }, //test
+            { type: "c", title: "ก้อนที่ท้องน้อย", next: "lowerAbsTumorQuestions", sex: "F" },
+            { type: "c", title: "ก้อนที่คอ", next: "neckTumorQuestions", sex: "MF" },
+            { type: "c", title: "กล้ามเนื้ออ่อนแรง ", next: "weakMuscleQuestions", sex: "MF" },
+            { type: "o", title: "อื่นๆ", question: "อาการสำคัญ", sex: "MF", category: "description", next: "end" }, 
 
         ]
     },
@@ -3487,7 +3487,7 @@ const questionSource = {
                 { type: "c", title: "ไม่ใช่", question: "คาดว่าเกิดจากอาหารที่ทานหรือไม่" }
             ]
         },
-        question_8: { 
+        question_8: {
             title: "เกิดหลังรับประทานอาหารนานเท่าไหร่",
             emergency: false,
             question: "เกิดหลังรับประทานอาหารนานเท่าไหร่",
@@ -3497,7 +3497,7 @@ const questionSource = {
                 { type: "c", title: "ข้าม", question: "เกิดหลังรับประทานอาหารนานเท่าไหร่" }
             ]
         },
-        question_9: { 
+        question_9: {
             title: "ประจำเดือนครั้งสุดท้าย",
             emergency: false,
             question: "ประจำเดือนครั้งสุดท้าย",
@@ -3771,6 +3771,362 @@ const questionSource = {
                 { type: "c", title: "แสงสว่าง", question: "สภาพแวดล้อมในการนอน" },
                 { type: "c", title: "อุณหภูมิไม่เหมาะสม", question: "สภาพแวดล้อมในการนอน" },
                 { type: "c", title: "ข้าม", question: "สภาพแวดล้อมในการนอน" }
+            ]
+        },
+    },
+
+    //ก้อนที่คอ
+    neckTumorQuestions: {
+        question_1: {
+            title: "ตำแหน่งของก้อน",
+            emergency: false,
+            question: "ตำแหน่งของก้อน",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "ขวา", question: "ตำแหน่งของก้อน" },
+                { type: "c", title: "ซ้าย", question: "ตำแหน่งของก้อน" },
+                { type: "c", title: "กลาง", question: "ตำแหน่งของก้อน" },
+                { type: "o", title: "อื่นๆ", question: "ตำแหน่งของก้อน" },
+                { type: "c", title: "ข้าม", question: "ตำแหน่งของก้อน" },
+            ]
+        },
+
+        question_2: {
+            title: "ระยะเวลาที่เป็น",
+            emergency: false,
+            question: "ระยะเวลาที่เป็น",
+            type: "Choice",
+            answer: [
+                { type: "T", title: "ระยะเวลา", question: "ระยะเวลาที่เป็น" },
+            ]
+        },
+        question_3: {
+            title: "การเปลี่ยนแปลงของขนาด",
+            emergency: false,
+            question: "การเปลี่ยนแปลงของขนาด",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "เท่าๆเดิม", question: "การเปลี่ยนแปลงของขนาด" },
+                { type: "c", title: "โตๆยุบๆ", question: "การเปลี่ยนแปลงของขนาด" },
+                { type: "c", title: "โตขึ้น", question: "การเปลี่ยนแปลงของขนาด" },
+                { type: "c", title: "เล็กลง", question: "การเปลี่ยนแปลงของขนาด" },
+                { type: "c", title: "ไม่แน่ใจ", question: "การเปลี่ยนแปลงของขนาด" },
+            ]
+        },
+        question_4: {
+            title: "จำนวนก้อน",
+            emergency: false,
+            question: "จำนวนก้อน",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "ก้อนเดียว", question: "จำนวนก้อน" },
+                { type: "c", title: "หลายก้อน", question: "จำนวนก้อน" },
+            ]
+        },
+        question_5: {
+            title: "ตำแหน่งที่ปวด",
+            emergency: false,
+            question: "ตำแหน่งที่ปวด",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "ไม่มี", question: "ตำแหน่งที่ปวด" },
+                { type: "o", title: "อื่นๆ", question: "ตำแหน่งที่ปวด", category: "description" },
+            ]
+        },
+        question_6: {
+            title: "อาการร่วม",
+            emergency: false,
+            question: "อาการร่วม",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "ไข้", question: "อาการร่วม" },
+                { type: "c", title: "คัดจมูก", question: "อาการร่วม" },
+                { type: "c", title: "น้ำมูก", question: "อาการร่วม" },
+                { type: "c", title: "น้ำมูกปนเลือด", question: "อาการร่วม" },
+                { type: "c", title: "กลืนแล้วเจ็บ", question: "อาการร่วม" },
+                { type: "c", title: "กลืนลำบาก", question: "อาการร่วม" },
+                { type: "c", title: "หูอื้อ", question: "อาการร่วม" },
+                { type: "c", title: "ไอเป็นเลือด", question: "อาการร่วม" },
+                { type: "c", title: "หายใจเสียงดัง", question: "อาการร่วม" },
+                { type: "c", title: "หน้าเบี้ยว", question: "อาการร่วม" },
+                { type: "o", title: "อื่นๆ", question: "อาการร่วม", category: "description" },
+                { type: "c", title: "ไม่มี", question: "อาการร่วม" }
+            ]
+        },
+        question_7: {
+            title: "ปัจจัยเสี่ยง",
+            emergency: false,
+            question: "ปัจจัยเสี่ยง",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "ใช้เข็มฉีดยาร่วมกับผู้อื่น", question: "ปัจจัยเสี่ยง" },
+                { type: "c", title: "มีเพศสัมพันธ์ในกลุ่มเสี่ยงโดยไม่ได้ป้องกัน", question: "ปัจจัยเสี่ยง" },
+                { type: "c", title: "มีประวัติมะเร็งในครอบครัว", question: "ปัจจัยเสี่ยง" },
+                { type: "c", title: "ดื่มเหล้า", question: "ปัจจัยเสี่ยง" },
+                { type: "c", title: "สูบบุหรี่", question: "ปัจจัยเสี่ยง" },
+                { type: "c", title: "ประวัติฉายแสงบริเวณลำคอ", question: "ปัจจัยเสี่ยง" },
+                { type: "c", title: "ไม่มี", question: "ปัจจัยเสี่ยง" }
+            ]
+        },
+
+    },
+
+    //ก้อนที่ท้องน้อย
+    lowerAbsTumorQuestions: {
+        question_1: {
+            title: "ตำแหน่ง",
+            emergency: false,
+            question: "ตำแหน่ง",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "ซ้าย", question: "ตำแหน่ง" },
+                { type: "c", title: "กลาง", question: "ตำแหน่ง" },
+                { type: "c", title: "ขวา", question: "ตำแหน่ง" }
+            ]
+        },
+        question_2: {
+            title: "ระยะเวลาคลำพบก้อน",
+            emergency: false,
+            question: "ระยะเวลาคลำพบก้อน",
+            type: "Choice",
+            answer: [
+                { type: "T", title: "ระยะเวลา", question: "ระยะเวลาคลำพบก้อน" },
+                { type: "c", title: "ไม่แน่ใจ", question: "ระยะเวลาคลำพบก้อน" },
+            ]
+        },
+        question_3: {
+            title: "ลักษณะก้อน",
+            emergency: false,
+            question: "ลักษณะก้อน",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "กดเจ็บ", question: "ลักษณะก้อน" },
+                { type: "c", title: "โตช้า", question: "ลักษณะก้อน" },
+                { type: "c", title: "ขยับได้", question: "ลักษณะก้อน" },
+                { type: "c", title: "โตขึ้นเร็ว", question: "ลักษณะก้อน" },
+                { type: "o", title: "อื่นๆ", question: "ลักษณะก้อน" },
+                { type: "c", title: "ไม่แน่ใจ", question: "ลักษณะก้อน" }
+            ]
+        },
+        question_4: {
+            title: "ขนาดของก้อน",
+            emergency: false,
+            question: "ขนาดของก้อน",
+            type: "Choice",
+            answer: [
+                { type: "o", title: "ขนาดของก้อน", question: "ขนาดของก้อน" },
+                { type: "c", title: "ไม่แน่ใจ", question: "ขนาดของก้อน" },
+                { type: "c", title: "ข้าม", question: "ขนาดของก้อน" }
+            ]
+        },
+        question_5: {
+            title: "อาการร่วม",
+            emergency: false,
+            question: "อาการร่วม",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "ไข้", question: "อาการร่วม" },
+                { type: "c", title: "ตึงคัดเต้านม", question: "อาการร่วม" },
+                { type: "c", title: "ตกขาว", question: "อาการร่วม" },
+                { type: "c", title: "ท้องโตขึ้น", question: "อาการร่วม" },
+                { type: "c", title: "ประจำเดือนมามาก", question: "อาการร่วม" },
+                { type: "c", title: "เบื่ออาหาร", question: "อาการร่วม" },
+                { type: "c", title: "เลือดออกกะปริดกะปรอยทางช่องคลอด", question: "อาการร่วม" },
+                { type: "c", title: "น้ำหนักลด", question: "อาการร่วม" },
+                { type: "c", title: "ปวดท้อง", question: "อาการร่วม" },
+                { type: "c", title: "คลื่นไส้/อาเจียน", question: "อาการร่วม" },
+                { type: "c", title: "ประจำเดือนขาด", question: "อาการร่วม" },
+                { type: "c", title: "อุจจาระหรือปัสสาวะผิดปกติ", question: "อาการร่วม" },
+                { type: "c", title: "ปวดประจำเดือนมากขึ้น", question: "อาการร่วม" },
+                { type: "c", title: "หอบเหนื่อย", question: "อาการร่วม" },
+                { type: "o", title: "อื่นๆ", question: "อาการร่วม", category: "description" },
+                { type: "c", title: "ไม่มี", question: "อาการร่วม" }
+            ]
+        },
+        question_6: {
+            title: "การคุมกำเนิด",
+            emergency: false,
+            question: "การคุมกำเนิด",
+            type: 'Choice',
+            answer: [
+                { type: "c", title: "ใช้", question: "การคุมกำเนิด" },
+                { type: "c", title: "ไม่ใช้", question: "การคุมกำเนิด" }
+            ]
+        },
+        question_7: {
+            title: "ประวัติการตรวจภายในและมะเร็งปากมดลูก",
+            emergency: false,
+            question: "ประวัติการตรวจภายในและมะเร็งปากมดลูก",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "ไม่มี", question: "ประวัติการตรวจภายในและมะเร็งปากมดลูก" },
+                { type: "o", title: "อื่นๆ  ", question: "ประวัติการตรวจภายในและมะเร็งปากมดลูก" }
+            ]
+        },
+        question_8: {
+            title: "ประวัติมะเร็งในครอบครัว",
+            emergency: false,
+            question: "ประวัติมะเร็งในครอบครัว",
+            type: 'MultiChoice',
+            answer: [
+                { type: "c", title: "มะเร็งเต้านม", question: "ประวัติมะเร็งในครอบครัว" },
+                { type: "c", title: "มะเร็งรังไข่", question: "ประวัติมะเร็งในครอบครัว" },
+                { type: "c", title: "มะเร็งลำไส้", question: "ประวัติมะเร็งในครอบครัว" },
+                { type: "c", title: "ไม่แน่ใจ", question: "ประวัติมะเร็งในครอบครัว" },
+                { type: "o", title: "อื่นๆ", question: "ประวัติมะเร็งในครอบครัว", category: "description" }
+            ]
+        },
+        question_9: {
+            title: "มีประวัติโรคติดเชื้อทางเพศสัมพันธ์",
+            emergency: false,
+            question: "มีประวัติโรคติดเชื้อทางเพศสัมพันธ์",
+            type: "Choice",
+            answer: [
+                { type: "c", title: "ใช่", question: "มีประวัติโรคติดเชื้อทางเพศสัมพันธ์" },
+                { type: "c", title: "ไม่ใช่", question: "มีประวัติโรคติดเชื้อทางเพศสัมพันธ์" }
+            ]
+        },
+        question_10: {
+            title: "ลักษณะของประจำเดือนก่อนหน้า (ที่ปกติ)",
+            emergency: false,
+            question: "ลักษณะของประจำเดือนก่อนหน้า (ที่ปกติ)",
+            type: 'Choice',
+            answer: [
+                { type: "c", title: "มาปกติ", question: "ลักษณะของประจำเดือนก่อนหน้า (ที่ปกติ)" },
+                { type: "c", title: "มามากกว่าปกติ", question: "ลักษณะของประจำเดือนก่อนหน้า (ที่ปกติ)" },
+                { type: "c", title: "ประจำเดือนหมดแล้ว", question: "ลักษณะของประจำเดือนก่อนหน้า (ที่ปกติ)" },
+                { type: "c", title: "ไม่แน่ใจ", question: "ลักษณะของประจำเดือนก่อนหน้า (ที่ปกติ)" },
+            ]
+        },
+        question_11: {
+            title: "จำนวนผ้าอนามัยที่ใช้ (แผ่นต่อวัน)",
+            emergency: false,
+            question: "จำนวนผ้าอนามัย",
+            type: 'Choice',
+            answer: [
+                { type: "o", title: "จำนวน", question: "จำนวนผ้าอนามัยที่ใช้ (แผ่นต่อวัน)", category: "quantity" }
+            ]
+        },
+        question_12: {
+            title: "ระยะเวลาประจำเดือน",
+            emergency: false,
+            question: "ระยะเวลาประจำเดือน",
+            type: 'Choice',
+            answer: [
+                { type: "T", title: "วันเดือนปี", question: "ระยะเวลาประจำเดือน" }
+            ]
+        },
+        question_13: {
+            title: "ระยะห่างระหว่างรอบเดือน (วัน)",
+            emergency: false,
+            question: "ระยะห่างระหว่างรอบเดือน (วัน)",
+            type: 'Choice',
+            answer: [
+                { type: "o", title: "จำนวนวัน", question: "ระยะห่างระหว่างรอบเดือน (วัน)", category: "quantity" }
+            ]
+        },
+        question_14: {
+            title: "ประจำเดือนล่าสุด",
+            emergency: false,
+            question: "ประจำเดือนล่าสุด",
+            type: 'Choice',
+            answer: [
+                { type: "T", title: "วว/ดด/ปปปป", question: "ประจำเดือนล่าสุด" }
+            ]
+        }
+    },
+
+    //กล้ามเนื้ออ่อนแรง
+    weakMuscleQuestions: {
+        question_1: {
+            title: "อาการฉุกเฉิน",
+            emergency: false,
+            question: "มีอาการเหล่านี้ไหม",
+            type: "MultiChoice",
+            answer: [
+                { type: "E", title: "ครึ่งซีกของร่างกาย", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "พูดไม่ชัด", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "ปากเบี้ยว", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "มุมปากตก", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "น้ำลายไหล", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "กลืนลำบาก", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "เห็นภาพซ้อน", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "สำลักอาหาร", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "ปวดศีรษะทันทีทันใด", question: "อาการฉุกเฉิน" },
+                { type: "E", title: "เดินเซ/ทรงตัวลำบาก", question: "อาการฉุกเฉิน" },
+                { type: "c", title: "ไม่มี", question: "อาการฉุกเฉิน" },
+            ]
+        },
+         question_2: {
+            title: "การดำเนินของอาการ",
+            emergency: false,
+            question: "การดำเนินของอาการ",
+            type: "Choice",
+            answer: [
+                { type: "E", title: "ทันที", question: "การดำเนินของอาการ" },
+                { type: "c", title: "ค่อยๆเป็น", question: "การดำเนินของอาการ" },
+                { type: "c", title: "เป็นๆหายๆ", question: "การดำเนินของอาการ" },
+                { type: "c", title: "ไม่แน่ใจ", question: "การดำเนินของอาการ" }
+            ]
+        },
+        question_3: {
+            title: "ตำแหน่ง",
+            emergency: false,
+            question: "ตำแหน่ง",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "แขน", question: "ตำแหน่ง" },
+                { type: "c", title: "ขา", question: "ตำแหน่ง" },
+            ]
+        },
+       
+        question_4: {
+            title: "ลักษณะอาการ",
+            emergency: false,
+            question: "ลักษณะอาการ",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "หวีผม/หยิบของที่สูงไม่ได้", question: "ลักษณะอาการ" },
+                { type: "c", title: "ลุกขึ้น/ขึ้นบันไดลำบาก", question: "ลักษณะอาการ" },
+                { type: "c", title: "เดินลากเท้า/เขย่งเท้าไม่ได้", question: "ลักษณะอาการ" },
+                { type: "c", title: "กระดกข้อมือไม่ได้", question: "ลักษณะอาการ" },
+                { type: "c", title: "หลับตาไม่สนิท", question: "ลักษณะอาการ" },
+                { type: "c", title: "ผิวปาก/ทำปากจู๋ไม่ได้	", question: "ลักษณะอาการ" },
+                { type: "c", title: "กลั้นปัสสาวะอุจจาระไม่ได้", question: "ลักษณะอาการ" },
+                { type: "o", title: "อื่นๆ", question: "ลักษณะอาการ" },
+                { type: "c", title: "ไม่มี", question: "ลักษณะอาการ" }
+            ]
+        },
+        question_5: {
+            title: "อาการร่วม",
+            emergency: false,
+            question: "อาการร่วม",
+            type: "MultiChoice",
+            answer: [
+                { type: "c", title: "รู้สึกเหน็บ หนา ที่ผิวหนัง", question: "อาการร่วม" },
+                { type: "c", title: "ไข้", question: "อาการร่วม" },
+                { type: "c", title: "กล้ามเนื้อลีบ", question: "อาการร่วม" },
+                { type: "c", title: "กล้ามเนื้อเต้น", question: "อาการร่วม" },
+                { type: "c", title: "ปวดกล้ามเนื้อ", question: "อาการร่วม" },
+                { type: "c", title: "ปวดศีรษะ", question: "อาการร่วม" },
+                { type: "c", title: "อาเจียน", question: "อาการร่วม" },
+                { type: "c", title: "ตาโปน", question: "อาการร่วม" },
+                { type: "c", title: "ใจสั่น", question: "อาการร่วม" },
+                { type: "c", title: "น้ำหนักลด", question: "อาการร่วม" },
+                { type: "c", title: "ปัสสาวะกลางคัน", question: "อาการร่วม" },
+                { type: "o", title: "อื่นๆ", question: "อาการร่วม", category: "description" },
+                { type: "c", title: "ไม่มี", question: "อาการร่วม" }
+            ]
+        },
+        question_6: {
+            title: "ประวัติในอดีต",
+            emergency: false,
+            question: "ประวัติในอดีต",
+            type: 'MultiChoice',
+            answer: [
+                { type: "c", title: "ทานยาลดไขมัน", question: "ประวัติในอดีต" },
+                { type: "c", title: "ทานยารักษาวัณโรค", question: "ประวัติในอดีต" },
+                 { type: "c", title: "ไม่มี", question: "ประวัติในอดีต" }
             ]
         },
     },
