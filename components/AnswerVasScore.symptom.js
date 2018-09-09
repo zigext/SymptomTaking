@@ -21,8 +21,8 @@ export default class AnswerVasScore extends Component {
         if (value >= 0 && value <= 1) {
             return (
                 <View>
-                    <Text style={styles.topicText}>best</Text>
-                    <Text style={styles.descriptionText}>เหมือนนั่งเล่นสบายๆ</Text>
+                    <Text style={[styles.topicText, styles.best]}>best</Text>
+                    <Text style={[styles.descriptionText, styles.best]}>เหมือนนั่งเล่นสบายๆ</Text>
                 </View>
             )
         }
@@ -30,8 +30,8 @@ export default class AnswerVasScore extends Component {
         else if (value >= 2 && value <= 3) {
             return (
                 <View>
-                    <Text style={styles.topicText}>Good</Text>
-                    <Text style={styles.descriptionText}>เหนื่อยเล็กน้อย พูดคุยได้ปกติ</Text>
+                    <Text style={[styles.topicText, styles.good]}>Good</Text>
+                    <Text style={[styles.descriptionText, styles.good]}>เหนื่อยเล็กน้อย พูดคุยได้ปกติ</Text>
                 </View>
             )
         }
@@ -39,8 +39,8 @@ export default class AnswerVasScore extends Component {
         else if (value >= 4 && value <= 5) {
             return (
                 <View>
-                    <Text style={styles.topicText}>normal</Text>
-                    <Text style={styles.descriptionText}>เหนื่อยมากขึ้นแต่ทนได้ พูดสื่อสารได้ ใจไม่สั่น</Text>
+                    <Text style={[styles.topicText, styles.normal]}>normal</Text>
+                    <Text style={[styles.descriptionText, styles.normal]}>เหนื่อยมากขึ้นแต่ทนได้ พูดสื่อสารได้ ใจไม่สั่น</Text>
                 </View>
             )
         }
@@ -48,16 +48,16 @@ export default class AnswerVasScore extends Component {
         else if (value >= 6 && value <= 7) {
             return (
                 <View>
-                    <Text style={styles.topicText}>not good</Text>
-                    <Text style={styles.descriptionText}>เหนื่อย หายใจเร็ว พูดได้เป็นคำๆ ต้องหยุดพัก</Text>
+                    <Text style={[styles.topicText, styles.notgood]}>not good</Text>
+                    <Text style={[styles.descriptionText, styles.notgood]}>เหนื่อย หายใจเร็ว พูดได้เป็นคำๆ ต้องหยุดพัก</Text>
                 </View>
             )
         }
         else if (value >= 8 && value <= 9) {
             return (
                 <View>
-                    <Text style={styles.topicText}>bad</Text>
-                    <Text style={styles.descriptionText}>เหนื่อย หายใจเร็ว พูดได้เป็นคำๆ ต้องหยุดพัก</Text>
+                    <Text style={[styles.topicText, styles.bad]}>bad</Text>
+                    <Text style={[styles.descriptionText, styles.bad]}>เหนื่อย หายใจเร็ว พูดได้เป็นคำๆ ต้องหยุดพัก</Text>
                 </View>
             )
         }
@@ -65,8 +65,8 @@ export default class AnswerVasScore extends Component {
         else {
             return (
                 <View>
-                    <Text style={styles.topicText}>very bad</Text>
-                    <Text style={styles.descriptionText}>เหนื่อยจนหอบ พูดไม่ไหว ใจสั่น</Text>
+                    <Text style={[styles.topicText, styles.verybad]}>very bad</Text>
+                    <Text style={[styles.descriptionText, styles.verybad]}>เหนื่อยจนหอบ พูดไม่ไหว ใจสั่น</Text>
                 </View>
             )
         }
@@ -175,22 +175,22 @@ const styles = {
         textAlign: 'center',
         marginTop: 30
     },
-    // best: {
-    //     color: ""
-    // },
-    // good: {
-    //     color: ""
-    // },
-    // normal: {
-    //     color: ""
-    // },
-    // notgood: {
-    //     color: ""
-    // },
-    // bad: {
-    //     color: ""
-    // },
-    // verybad: {
-    //     color: ""
-    // },
+    best: {
+        color: "#00cc00" //green
+    },
+    good: {
+        color: "#ace600" //yellow green
+    },
+    normal: {
+        color: "#e6e600" //yellow
+    },
+    notgood: {
+        color: "#ffc266" //dark yellow
+    },
+    bad: {
+        color: "#ff8000" //orange
+    },
+    verybad: {
+        color: "#ff6666" //red
+    },
 }
